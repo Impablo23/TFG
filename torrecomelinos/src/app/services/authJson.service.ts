@@ -20,10 +20,10 @@ export class AuthJsonService {
     return structuredClone(this.usuario);
   }
 
-  login (email: string, password: string): Observable<Usuario> {
+  login (email: string, password: string): Observable<Usuario[]> {
 
-    return this.http.get<Usuario>(`${this.baseUrl}/users?email=${email}&pass=${password}`).pipe(
-      tap( usuario => this.usuario = usuario)
+    return this.http.get<Usuario[]>(`${this.baseUrl}/users?email=${email}&pass=${password}`).pipe(
+      tap( usuario => this.usuario = usuario[0])
     );
 
   }

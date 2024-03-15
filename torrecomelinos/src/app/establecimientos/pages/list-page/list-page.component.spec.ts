@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LayoutAppComponent } from './layout-app.component';
+import { ListPageComponent } from './list-page.component';
 
-describe('LayoutAppComponent', () => {
-  let component: LayoutAppComponent;
-  let fixture: ComponentFixture<LayoutAppComponent>;
+describe('ListPageComponent', () => {
+  let component: ListPageComponent;
+  let fixture: ComponentFixture<ListPageComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [LayoutAppComponent]
+      declarations: [ListPageComponent]
     });
-    fixture = TestBed.createComponent(LayoutAppComponent);
+    fixture = TestBed.createComponent(ListPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

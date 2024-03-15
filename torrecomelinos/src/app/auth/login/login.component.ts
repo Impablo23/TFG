@@ -12,7 +12,7 @@ export class LoginComponent {
 
   email: string = ''
   pass: string = ''
-  public usuarioOK!: Usuario
+  // public usuarioOK!: Usuario
 
   listadoUsers: Usuario[] = [];
 
@@ -26,8 +26,26 @@ export class LoginComponent {
 
     // Llama a tu servicio de autenticación para realizar el inicio de sesión
     this.authJsonService.login(this.email, this.pass).subscribe(usuario => {
-      this.usuarioOK=usuario;
-      console.log(this.usuarioOK)
+      const usuarioOK = usuario[0];
+      // console.log(usuarioOK);
+
+      if (this.email === '' || this.pass === ''){
+        console.log('No están todos los campos rellenados.');
+        return;
+      }
+
+      if (usuarioOK != undefined) {
+        console.log('Inicio de Sesión correcto.');
+        localStorage.setItem('id', (usuarioOK.id).toString());
+        localStorage.setItem('email', usuarioOK.email);
+        localStorage.setItem('nombreCompleto', usuarioOK.nombreCompleto);
+        localStorage.setItem('idRol', (usuarioOK.idRol).toString());
+        localStorage.setItem('token', usuarioOK.token);
+        // this.router.navigate
+      }else {
+        console.log('Error.');
+      }
+
 
     });
 
