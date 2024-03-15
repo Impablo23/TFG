@@ -28,6 +28,11 @@ export class AuthJsonService {
 
   }
 
+  logout() {
+    this.usuario = undefined;
+    localStorage.clear();
+  }
+
   getUsers(): Observable<Usuario[]> {
     return this.http.get<Usuario[]>(`${this.baseUrl}/users`)
   }

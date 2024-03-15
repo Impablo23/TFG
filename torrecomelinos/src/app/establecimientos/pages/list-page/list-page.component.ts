@@ -3,6 +3,10 @@ import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { EstablecimientosJsonService } from '../../../services/establecimientos.service';
 import { Zona } from 'src/app/interfaces/zona.interface';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
+import { Router } from '@angular/router';
+import { DialogComponent } from '../../components/dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Overlay } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-list-page',
@@ -11,7 +15,10 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 })
 export class ListPageComponent {
 
-  constructor(private establecimientosService: EstablecimientosJsonService){}
+  constructor(private establecimientosService: EstablecimientosJsonService,
+    private router: Router,
+    private dialog: MatDialog,
+    private overlay: Overlay,){}
 
   public listadoEstablecimientos: Establecimiento[] = [];
   public listadoZonas: Zona[] = [];
@@ -54,6 +61,28 @@ export class ListPageComponent {
       }
     }
     return nombre;
+  }
+
+  navigateToDetails(id: number): void {
+    this.router.navigate([`establecimientos/detalles/${id}`]);
+  }
+
+  evitarErrorEnFoto(foto: string): string {
+    if (foto.length === 0) {
+      return 'assets/no_foto.png';
+    }else{
+      return foto;
+    }
+  }
+
+  async deleteEstablecimiento(establecimiento: Establecimiento) {
+    const dialogRef = this.dialog.open(DialogComponent, { data:establecimiento, scrollStrategy: this.overlay.scrollStrategies.noop() });
+    const RESULT = await dialogRef.afterClosed().toPromise();
+    if (RESULT) {
+      this.establecimientosService.deleteEstablecimiento(establecimiento.id).subscribe( resultado => {console.log(resultado)});
+      this.listadoEstablecimientos = this.listadoEstablecimientos.filter(item => item !== establecimiento);
+      this.router.navigate(['/establecimientos'])
+    }
   }
 
 }

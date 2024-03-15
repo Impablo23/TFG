@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthJsonService } from 'src/app/services/authJson.service';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +23,14 @@ export class LoginComponent {
     this.router.navigate(['auth/register']);
   }
 
+  calcularHashMD5(password: string): string {
+    return CryptoJS.MD5(password).toString();
+  }
+
   public login() :void {
 
     // Llama a tu servicio de autenticación para realizar el inicio de sesión
-    this.authJsonService.login(this.email, this.pass).subscribe(usuario => {
+    this.authJsonService.login(this.email, this.calcularHashMD5(this.pass)).subscribe(usuario => {
       const usuarioOK = usuario[0];
       // console.log(usuarioOK);
 
@@ -41,7 +46,7 @@ export class LoginComponent {
         localStorage.setItem('nombreCompleto', usuarioOK.nombreCompleto);
         localStorage.setItem('idRol', (usuarioOK.idRol).toString());
         localStorage.setItem('token', usuarioOK.token);
-        // this.router.navigate
+        this.router.navigate(['/establecimientos'])
       }else {
         console.log('Error.');
       }

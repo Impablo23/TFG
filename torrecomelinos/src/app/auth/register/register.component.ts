@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthJsonService } from '../../services/authJson.service';
+import * as CryptoJS from 'crypto-js';
+import { v4 as uuid} from 'uuid';
 
 
 @Component({
@@ -23,6 +25,11 @@ export class RegisterComponent {
     this.router.navigate(['auth/login']);
   }
 
+    // Función para calcular el hash MD5 de una contraseña
+  calcularHashMD5(password: string): string {
+    return CryptoJS.MD5(password).toString();
+  }
+
 
   registrar() :void {
 
@@ -42,10 +49,10 @@ export class RegisterComponent {
       const usuarioARegistrar: Usuario = {
         id: 4,
         email: this.email,
-        pass: this.pass,
+        pass: this.calcularHashMD5(this.pass),
         nombreCompleto: this.nombreCompleto,
         idRol: 2,
-        token: 'ubrwfvdsfhv634gfrefb74bfu'
+        token: uuid()
       };
       // this.usuarioRegistro.id = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
 

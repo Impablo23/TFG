@@ -4,6 +4,8 @@ export interface Establecimiento {
   id_zona: number;
   nombre: string;
   descripcion: string;
+  numResenas: number;
+  direccion: string;
   telefono: string;
   foto: string;
   enlace: string;
