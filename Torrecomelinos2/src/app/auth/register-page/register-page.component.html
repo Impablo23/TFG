@@ -1,0 +1,24 @@
+<div style="background-image: url('../../../assets/logo-empresa.png');height: 296px;width: 420px;margin: auto;margin-top: 100px;border-radius: 30px;"></div>
+
+<h1 style="text-align: center;margin-top: 50px;font-family: fantasy;">Registrarse</h1>
+
+<div class="input-group flex-nowrap" style="width: 30%;margin: auto;">
+  <input type="email" class="form-control" placeholder="Email" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="email" required>
+</div>
+
+<div class="input-group flex-nowrap" style="width: 30%;margin: auto;margin-top: 30px;">
+  <input type="text" class="form-control" placeholder="Nombre" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="nombreCompleto" required>
+</div>
+<div class="input-group flex-nowrap" style="width: 30%;margin: auto;margin-top: 30px;">
+  <input type="password" class="form-control" placeholder="Contraseña" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="pass" required>
+</div>
+
+
+<!-- <button type="button" class="btn btn-outline-light" style="width: 20%;">Iniciar Sesión</button> -->
+
+<div style="border: 5px solid black;width: 200px;height: 45px;margin: auto;margin-top: 30px; border-radius: 10px;">
+  <button mat-raised-button  style="width: 100%;" (click)="registrar()">Crear Cuenta</button>
+</div>
+<p style="text-align: center;margin-top: 10px;">¿Ya tienes cuenta?, <a style="color: white;" href="/auth/">¡Inicia Sesión aquí!</a></p>
+
+
