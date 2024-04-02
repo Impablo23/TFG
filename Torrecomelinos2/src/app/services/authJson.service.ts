@@ -20,6 +20,12 @@ export class AuthJsonService {
     return structuredClone(this.usuario);
   }
 
+  verificaCorreo(email: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}/users?email=${email}`).pipe(
+      tap( usuario => this.usuario = usuario[0])
+    );
+  }
+
   login (email: string, password: string): Observable<Usuario[]> {
 
     return this.http.get<Usuario[]>(`${this.baseUrl}/users?email=${email}&pass=${password}`).pipe(

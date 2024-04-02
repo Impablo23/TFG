@@ -1,8 +1,8 @@
 export interface Establecimiento {
-  id: number;
+  id: string;
   id_categoria: number;
   id_zona: number;
-  nombre: string;
+  nombre: string; // Obligatorio
   descripcion: string;
   numResenas: number;
   direccion: string;

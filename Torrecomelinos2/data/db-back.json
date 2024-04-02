@@ -15,6 +15,38 @@
       "nombreCompleto": "Ivan User",
       "idRol": "2",
       "token": "eca44a4e-d1e4-4e6e-ba80-a31c394a3279"
+    },
+    {
+      "id": "4",
+      "email": "juan@gmail.com",
+      "pass": "a94652aa97c7211ba8954dd15a3cf838",
+      "nombreCompleto": "juan",
+      "idRol": 2,
+      "token": "833917c0-cc27-45f9-954d-30a1d615e82d"
+    },
+    {
+      "id": "4",
+      "email": "juan@gmail.com",
+      "pass": "a94652aa97c7211ba8954dd15a3cf838",
+      "nombreCompleto": "jauuuu",
+      "idRol": 2,
+      "token": "91e18936-ed30-4c8b-949f-ca2e1ae6d136"
+    },
+    {
+      "id": "4",
+      "email": "pepin@gmail.com",
+      "pass": "c69dc337a48b4392e2ccfb49b46a043d",
+      "nombreCompleto": "pepin",
+      "idRol": 2,
+      "token": "e3f0a1cb-5941-4ae4-97ab-ae7185001683"
+    },
+    {
+      "id": "4",
+      "email": "juanma@gmail.com",
+      "pass": "65a368f66ad6b9ee45263577713d8a95",
+      "nombreCompleto": "juaauau",
+      "idRol": 2,
+      "token": "af64f5a0-99d8-4954-b93d-93a0ee65be2d"
     }
   ],
   "categorias": [
@@ -158,7 +190,7 @@
       "id": "8",
       "id_categoria": 2,
       "id_zona": 2,
-      "nombre": "MC Donals",
+      "nombre": "MC Donalsdeadfd",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 2009,
       "direccion": "Av. del Lido, 11, 29620 Torremolinos, Málaga",
@@ -204,13 +236,13 @@
     },
     {
       "id": "12",
-      "id_categoria": 2,
-      "id_zona": 3,
-      "nombre": "La Gaviota",
-      "descripcion": "Descripción del Establecimiento 2",
-      "numResenas": 1500,
-      "direccion": "Calle del Mar, 22, 29630 Benalmádena, Málaga",
-      "telefono": "0987654321",
+      "id_categoria": 1,
+      "id_zona": 2,
+      "nombre": "Tus muertosddd",
+      "descripcion": "Descripción del Establecimiento 2dd",
+      "numResenas": 150044,
+      "direccion": "Calle del Mar, 22, 2dd9630 Benalmádena, Málaga",
+      "telefono": "0987654321dd",
       "foto": "",
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+gaviota+benalmadena&oq=restaurante+la+gaviota&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
     },
@@ -228,15 +260,22 @@
     },
     {
       "id": "14",
-      "id_categoria": 2,
+      "id_categoria": 3,
       "id_zona": 3,
-      "nombre": "La Marisma",
+      "nombre": "tdgfg",
       "descripcion": "Descripción del Establecimiento 4",
-      "numResenas": 2200,
+      "numResenas": 22005,
       "direccion": "Calle Principal, 10, 29640 Fuengirola, Málaga",
       "telefono": "2468013579",
       "foto": "",
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+marisma+fuengirola&oq=restaurante+la+marisma&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
+    }
+  ],
+  "favoritos": [
+    {
+      "id": "1",
+      "id_usuario": "1",
+      "id_establecimiento": "1"
     }
   ]
 }

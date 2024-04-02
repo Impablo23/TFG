@@ -7,6 +7,7 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { Zona } from 'src/app/interfaces/zona.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { Favorito } from '../../interfaces/favorito.interface';
 
 @Component({
   selector: 'app-details-page',
@@ -20,13 +21,12 @@ export class DetailsPageComponent {
   public listadoCategorias: Categoria[] = [];
 
   public idRol : string = '';
+  public id : string = '';
 
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private dialog: MatDialog,
-    private overlay: Overlay,
   ){
 
   }
@@ -35,8 +35,8 @@ export class DetailsPageComponent {
     this.router.navigate(['/establecimientos/list']);
   }
 
-  public goToEdit(id: number){
-    this.router.navigate([`/establecimientos/editar/${id}`]);
+  public goToEdit(id: string){
+    this.router.navigate([`/establecimientos/edit/${id}`]);
   }
 
 
@@ -59,6 +59,7 @@ export class DetailsPageComponent {
       });
 
     this.idRol = localStorage.getItem('idRol')!;
+    this.id = localStorage.getItem('id')!;
 
   }
 
@@ -94,13 +95,22 @@ export class DetailsPageComponent {
     }
   }
 
-  // async deleteEstablecimiento(establecimiento: Establecimiento) {
-  //   const dialogRef = this.dialog.open(DialogComponent, { data:establecimiento, scrollStrategy: this.overlay.scrollStrategies.noop() });
-  //   const RESULT = await dialogRef.afterClosed().toPromise();
-  //   if (RESULT) {
-  //     this.establecimientosJsonService.deleteEstablecimiento(establecimiento.id).subscribe( resultado => {console.log(resultado)});
-  //     this.router.navigate(['/establecimientos'])
-  //   }
+  // verificarFavorito(): number {
+  //   let ok = 0;
+
+  //   this.establecimientosJsonService.getFavoritoByUserByName(this.id,this.establecimientoDetalles!.id).subscribe(
+  //     favoritos => {
+  //       const favorito: Favorito = favoritos[0];
+
+  //       if (favorito != undefined) {
+  //         ok = 1;
+  //       }else {
+  //         ok = 0;
+  //       }
+  //     }
+  //   );
+  //   return ok;
   // }
+
 
 }

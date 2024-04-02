@@ -67,8 +67,16 @@ export class ListPageComponent {
     return nombre;
   }
 
-  navigateToDetails(id: number): void {
+  navigateToDetails(id: string): void {
     this.router.navigate([`establecimientos/details/${id}`]);
+  }
+
+  navigateToDelete(id: string): void {
+    this.router.navigate([`establecimientos/delete/${id}`]);
+  }
+
+  navigateToAdd(): void {
+    this.router.navigate([`establecimientos/add`]);
   }
 
   evitarErrorEnFoto(foto: string): string {
@@ -78,15 +86,5 @@ export class ListPageComponent {
       return foto;
     }
   }
-
-  // async deleteEstablecimiento(establecimiento: Establecimiento) {
-  //   const dialogRef = this.dialog.open(DialogComponent, { data:establecimiento, scrollStrategy: this.overlay.scrollStrategies.noop() });
-  //   const RESULT = await dialogRef.afterClosed().toPromise();
-  //   if (RESULT) {
-  //     this.establecimientosService.deleteEstablecimiento(establecimiento.id).subscribe( resultado => {console.log(resultado)});
-  //     this.listadoEstablecimientos = this.listadoEstablecimientos.filter(item => item !== establecimiento);
-  //     this.router.navigate(['/establecimientos'])
-  //   }
-  // }
 
 }

@@ -1,5 +1,8 @@
+<div style="padding: 40px;">
+  <h1 style="text-align: center;font-size: 40px;font-family: monospace;">Mis Lugares Favoritos</h1>
+</div>
 
-<section>
+<section *ngFor="let establecimientoDetalles of listadoFavoritosDetalles">
 	<div class="container py-4">
 		<h1 class="h1 text-center" id="pageHeaderTitle"></h1>
 
@@ -21,23 +24,11 @@
           <div style="float: left;">
             <a href="{{establecimientoDetalles?.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="width: 30%; margin-right: 20px;">Sitio web</a>
             <!-- <a type="button" class="btn btn-outline-danger" style="width: 15%;" *ngIf="idRol === '1'"><mat-icon>delete</mat-icon></a> -->
-            <a type="button" class="btn btn-outline-success" style="width: 15%;margin-left: 20px;" (click)="goToEdit(establecimientoDetalles!.id)" *ngIf="idRol === '1'"><mat-icon>edit</mat-icon></a>
-            <label class="container">
-              <input type="checkbox">
-              <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
-            </label>
-            <label class="containerok">
-              <input type="checkbox">
-              <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
-            </label>
+            <!-- <a type="button" class="btn btn-outline-success" style="width: 15%;margin-left: 20px;"><mat-icon>edit</mat-icon></a> -->
           </div>
         </div>
 		</article>
 	</div>
 </section>
-
-<div style="width: 200px;height: 45px;margin: auto;margin-top: 30px; border-radius: 10px;">
-  <button mat-raised-button  style="width: 100%;font-family: monospace;" (click)="goToList()">Volver al listado</button>
-</div>
 
 

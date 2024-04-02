@@ -1,0 +1,108 @@
+<div style="height: 100%; width: 40%; float: left; overflow: hidden;">
+  <h1 style="font-family: monospace;text-align: center;padding: 20px;">Añadir establecimiento: {{nombre}}</h1>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="nombre" style="text-align: left;margin-top: 10px;margin-right: 10px;">Nombre:</label>
+      <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="addon-wrapping" [(ngModel)]="nombre" name="nombre" required>
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="zona" style="text-align: left; margin-top: 10px; margin-right: 10px;">Zona:</label>
+      <select class="form-control" id="zona" [(ngModel)]="id_zona" name="zona">
+        <option value="0" disabled selected hidden>Selecciona una zona</option>
+        <option *ngFor="let zona of listadoZonas" [value]="zona.id">{{ zona.nombre }}</option>
+      </select>
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="numResenas" style="text-align: left;margin-top: 10px;margin-right: 10px;">Número de Reseñas:</label>
+      <input type="number" class="form-control" placeholder="Número de Reseñas" aria-label="Número de Reseñas" aria-describedby="addon-wrapping" [(ngModel)]="numResenas" name="numResenas">
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="zona" style="text-align: left; margin-top: 10px; margin-right: 10px;">Categoría:</label>
+      <select class="form-control" id="caterogia" [(ngModel)]="id_categoria" name="zona">
+        <option value="0" disabled selected hidden>Selecciona una categoría</option>
+        <option *ngFor="let caterogia of listadoCategorias" [value]="caterogia.id">{{ caterogia.nombre }}</option>
+      </select>
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="descripcion" style="text-align: left;margin-top: 10px;margin-right: 10px;">Descripción:</label>
+      <input type="text" class="form-control" placeholder="Descripción" aria-label="Descripción" aria-describedby="addon-wrapping" [(ngModel)]="descripcion" name="descripcion">
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="direccion" style="text-align: left;margin-top: 10px;margin-right: 10px;">Dirección:</label>
+      <input type="text" class="form-control" placeholder="Dirección" aria-label="Dirección" aria-describedby="addon-wrapping" [(ngModel)]="direccion" name="direccion">
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="telefono" style="text-align: left;margin-top: 10px;margin-right: 10px;">Teléfono:</label>
+      <input type="text" class="form-control" placeholder="Teléfono" aria-label="Teléfono" aria-describedby="addon-wrapping" [(ngModel)]="telefono" name="telefono">
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="foto" style="text-align: left;margin-top: 10px;margin-right: 10px;">Enlace para la foto:</label>
+      <input type="text" class="form-control" placeholder="Enlace para la foto" aria-label="Enlace para la foto" aria-describedby="addon-wrapping" [(ngModel)]="foto" name="foto">
+    </form>
+  </div>
+
+  <div style="width: 70%; margin: auto;">
+    <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+      <label for="enlace" style="text-align: left;margin-top: 10px;margin-right: 10px;">Enlace al sitio web:</label>
+      <input type="text" class="form-control" placeholder="Enlace al sitio web" aria-label="Enlace al sitio web" aria-describedby="addon-wrapping" [(ngModel)]="enlace" name="enlace">
+    </form>
+  </div>
+
+  <div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
+    <button type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="addEstablecimiento()">Aceptar</button>
+    <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="goToList()">Cancelar</button>
+  </div>
+</div>
+
+<div style="height: 100%; width: 60%; float: right;">
+  <h1 style="font-family: monospace;text-align: center;padding: 20px;">Vista Previa</h1>
+
+  <section>
+    <div class="container py-4">
+      <h1 class="h1 text-center" id="pageHeaderTitle"></h1>
+
+      <article class="postcard dark blue" style="width: 70%;margin: auto;">
+        <a class="postcard__img_link" href="#">
+          <img class="postcard__img" src="{{evitarErrorEnFoto(foto)}}" alt="{{foto}}" />
+        </a>
+        <div class="postcard__text">
+          <h1 class="postcard__title blue"><a>{{nombre}} ({{obtenerNombreZona(id_zona)}}) <span style="font-size: 15px;">Reseñas: {{numResenas}}</span></a></h1>
+          <div class="postcard__subtitle small">
+            <time datetime="2020-05-25 12:00:00">
+              <i class="fas fa-calendar-alt mr-2"></i>Categoría: {{obtenerNombreCategoria(id_categoria)}}
+            </time>
+          </div>
+          <div class="postcard__bar"></div>
+            <p>{{descripcion}}</p>
+            <p><span style="font-size: 15px;font-weight: bold;">Dirección: </span>{{direccion}}</p>
+            <p><span style="font-size: 15px;font-weight: bold;">Teléfono: </span>{{telefono}}</p>
+            <div style="float: left;">
+              <a href="{{enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="width: 30%; margin-right: 20px;">Sitio web</a>
+            </div>
+          </div>
+      </article>
+    </div>
+  </section>
+</div>

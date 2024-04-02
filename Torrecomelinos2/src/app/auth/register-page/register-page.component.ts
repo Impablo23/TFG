@@ -38,36 +38,45 @@ export class RegisterPageComponent {
       return;
     }
 
-    this.authJsonService.login(this.email, this.calcularHashMD5(this.pass)).subscribe(verificaUsuario => {
-
-      // console.log(this.email+" "+this.pass)
-
-      const exiteUsuario = verificaUsuario[0];
-      // console.log(exiteUsuario);
-
-      if (exiteUsuario != undefined){
+    this.authJsonService.verificaCorreo(this.email).subscribe(verificaCorreo => {
+      const correo = verificaCorreo[0];
+      console.log(correo);
+      if (correo != undefined) {
         this.snackbar.open("El usuario registrado ya existe", "Cerrar",{duration: 2000,panelClass:['background']});
         return;
       }
+      this.authJsonService.login(this.email, this.calcularHashMD5(this.pass)).subscribe(verificaUsuario => {
 
-      const usuarioARegistrar: Usuario = {
-        id: 4,
-        email: this.email,
-        pass: this.calcularHashMD5(this.pass),
-        nombreCompleto: this.nombreCompleto,
-        idRol: 2,
-        token: uuidv4()
-      };
-      // this.usuarioRegistro.id = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
+        // console.log(this.email+" "+this.pass)
 
-      this.authJsonService.addUser(usuarioARegistrar).subscribe(usuario => {
-        const registroOk = usuario;
-        // console.log(registroOk);
-        this.snackbar.open("Usuario registrado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-        this.router.navigate(['auth/login']);
+        const exiteUsuario = verificaUsuario[0];
+        // console.log(exiteUsuario);
 
+        if (exiteUsuario != undefined){
+          this.snackbar.open("El usuario registrado ya existe", "Cerrar",{duration: 2000,panelClass:['background']});
+          return;
+        }
+
+        const usuarioARegistrar: Usuario = {
+          id: 11,
+          email: this.email,
+          pass: this.calcularHashMD5(this.pass),
+          nombreCompleto: this.nombreCompleto,
+          idRol: 2,
+          token: uuidv4()
+        };
+        // this.usuarioRegistro.id = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
+
+        this.authJsonService.addUser(usuarioARegistrar).subscribe(usuario => {
+          const registroOk = usuario;
+          // console.log(registroOk);
+          this.snackbar.open("Usuario registrado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+          this.router.navigate(['auth/login']);
+
+        });
       });
-    });
+    })
+
 
   }
 

@@ -1,7 +1,7 @@
-<mat-sidenav-container fullscreen style="width: 100%;height: 100%;font-family: monospace;">
+<mat-sidenav-container fullscreen style="width: 100%;height: 100%;font-family: monospace;background-color: rgb(124 124 252);">
 
-  <mat-sidenav #sidenav mode="push" style="width: 350px;background-color: rgb(124 124 252);color: rgb(255, 255, 255);">
-    <mat-toolbar>
+  <mat-sidenav #sidenav mode="push" style="width: 350px;background-color: rgb(255, 255, 255);color: rgb(255, 255, 255);">
+    <mat-toolbar style="background-color: rgb(124 124 252);color: black;">
       <span style="font-family: monospace;">Bienvenido, {{nombre}}</span>
       <span class="spacer"></span>
       <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
@@ -20,8 +20,6 @@
         <mat-icon matListItemIcon >{{iconos.icon}}</mat-icon>
         {{iconos.label}}
       </mat-list-item>
-
-
 
     </mat-nav-list>
 

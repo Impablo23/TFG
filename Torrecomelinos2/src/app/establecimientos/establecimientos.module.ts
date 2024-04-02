@@ -7,7 +7,11 @@ import { ListPageComponent } from './list-page/list-page.component';
 import { SearchPageComponent } from './search-page/search-page.component';
 import { MaterialModule } from '../material/material.module';
 import { DetailsPageComponent } from './details-page/details-page.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { AddPageComponent } from './add-page/add-page.component';
+import { DeletePageComponent } from './delete-page/delete-page.component';
+import { FavouritePageComponent } from './favourite-page/favourite-page.component';
 
 
 @NgModule({
@@ -15,13 +19,18 @@ import { ReactiveFormsModule } from '@angular/forms';
     LayoutPageComponent,
     ListPageComponent,
     SearchPageComponent,
-    DetailsPageComponent
+    DetailsPageComponent,
+    EditPageComponent,
+    AddPageComponent,
+    DeletePageComponent,
+    FavouritePageComponent
   ],
   imports: [
     CommonModule,
     EstablecimientosRoutingModule,
     MaterialModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class EstablecimientosModule { }
