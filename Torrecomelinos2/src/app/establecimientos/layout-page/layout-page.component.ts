@@ -14,6 +14,8 @@ export class LayoutPageComponent {
   public nombre : string ='';
   public id : string ='';
 
+  public numFav : number = 0;
+
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
@@ -24,27 +26,48 @@ export class LayoutPageComponent {
     this.idRol = localStorage.getItem('idRol')!;
     this.nombre = localStorage.getItem('nombreCompleto')!;
     this.id = localStorage.getItem('id')!;
+
+    this.numFavoritos();
   }
 
   public sidebarItems = [
-    {label: 'Listado', icon: 'label', url: 'establecimientos/list'},
+    {label: 'Listado', icon: 'label', url: './list'},
     {label: 'Búsqueda', icon: 'search', url: './search'},
-    {label: 'Mis Lugares Favoritos', icon: 'star', url: './favourite-list'}
   ]
 
   public AdminItems = [
-    {label: 'Zona Administrador', icon: 'settings_accessibility', url: '/usuarios'},
+    {label: 'Zona Administrador', icon: 'settings_accessibility', url: '/admin'},
+  ]
+
+  public FavoriteItems = [
+    {label: 'Mis Lugares Favoritos', icon: 'star', url: './favourite-list'}
   ]
 
 
   public navega(url: string):void {
-    this.router.navigate([url]);
+    this.router.navigate([`${url}`]);
   }
 
   public logout(): void {
     localStorage.clear();
     this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
     this.router.navigate(['/auth']);
+  }
+
+  public numFavoritos(): void {
+    this.establecimientosJsonService.getFavoritosByUser(this.id).subscribe(
+      favoritos => {
+        this.numFav = favoritos.length;
+      }
+    );
+  }
+
+  public verificaFavoritos(): boolean {
+    let ok = false;
+    if (this.numFav>0){
+      ok = true;
+    }
+    return ok;
   }
 
 }

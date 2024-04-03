@@ -11,8 +11,8 @@ const routes: Routes = [
     loadChildren: () => import('./establecimientos/establecimientos.module').then(m => m.EstablecimientosModule),
   },
   {
-    path: 'usuarios',
-    loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule),
+    path: 'admin',
+    loadChildren: () => import('./zona-admin/zona-admin.module').then(m => m.ZonaAdminModule),
   },
   {
     path: '',

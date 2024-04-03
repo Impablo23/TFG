@@ -1,5 +1,5 @@
 export interface Favorito {
   id: number;
-  id_usuario: string;
-  id_establecimiento: string;
+  id_usuario: number;
+  id_establecimiento: number;
 }

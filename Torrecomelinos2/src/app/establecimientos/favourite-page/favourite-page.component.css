@@ -402,3 +402,40 @@ a:hover {
 }
 
 
+/* corazon con like */
+
+.containerok input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.containerok {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 10px;
+}
+
+.containerok svg {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+  transition: all 0.3s;
+  fill: #E3474F;
+}
+
+.containerok svg:hover {
+  transform: scale(1.1);
+}
+
+.containerok input:checked ~ svg {
+  fill: #666;
+}
+
+

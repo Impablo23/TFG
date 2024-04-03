@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { Favorito } from 'src/app/interfaces/favorito.interface';
@@ -20,7 +21,8 @@ export class FavouritePageComponent {
   public listadoCategorias: Categoria[] = [];
 
   constructor(
-    private establecimientosJsonService: EstablecimientosJsonService
+    private establecimientosJsonService: EstablecimientosJsonService,
+    private snackbar: MatSnackBar
   ){}
 
   ngOnInit() {
@@ -37,7 +39,7 @@ export class FavouritePageComponent {
     // this.listadoFavoritosDetalles = [];
     this.obtenerDatosEstablecimientosFavoritos();
 
-    console.log(this.listadoFavoritosDetalles);
+    // console.log(this.listadoFavoritosDetalles);
   }
 
   obtenerNombreZona(idZona: number): string {
@@ -77,7 +79,7 @@ export class FavouritePageComponent {
       favoritos => {
         this.listadoFavoritos = favoritos;
         for (let i = 0; i < this.listadoFavoritos.length;i++) {
-          this.establecimientosJsonService.getEstablecimientoById(parseInt(this.listadoFavoritos[i].id_establecimiento, 10)).subscribe(
+          this.establecimientosJsonService.getEstablecimientoById(this.listadoFavoritos[i].id_establecimiento).subscribe(
             establecimientos => {
               // this.listadoFavoritosDetalles = establecimiento;
               const establecimiento: Establecimiento = establecimientos[0];
@@ -89,6 +91,31 @@ export class FavouritePageComponent {
       }
     );
     // console.log(this.listadoFavoritosDetalles);
+  }
+
+  public eliminarFavorito(id_establecimiento: string) {
+    this.establecimientosJsonService.deleteFavorito(parseInt(this.id,10),parseInt(id_establecimiento,10)).subscribe(
+      (response) => {
+        // Eliminar el favorito de listadoFavoritos
+        const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === parseInt(this.id,10) && favorito.id_establecimiento === parseInt(id_establecimiento,10));
+        console.log(index);
+        if (index !== -1) {
+          this.listadoFavoritos.splice(index, 1);
+        }
+        console.log(this.listadoFavoritos);
+        // Eliminar el establecimiento de listadoFavoritosDetalles
+        const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
+        if (establecimientoIndex !== -1) {
+          this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
+        }
+        console.log(this.listadoFavoritosDetalles);
+
+        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+      },
+      (error) => {
+        this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+      }
+    );
   }
 
 }

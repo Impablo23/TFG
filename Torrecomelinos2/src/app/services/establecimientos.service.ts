@@ -57,8 +57,20 @@ export class EstablecimientosJsonService {
     return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}`)
   }
 
+  getFavoritos() : Observable<Favorito[]> {
+    return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos`)
+  }
+
   getFavoritoByUserByName(id_usuario:string, id_establecimiento:string) : Observable<Favorito[]> {
     return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`)
+  }
+
+  deleteFavorito(id_usuario: number,id_establecimiento: number): Observable<boolean> {
+    return this.http.delete(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
+  }
+
+  addFavorito(favorito: Favorito) : Observable<boolean> {
+    return this.http.post(`${this.baseUrl}/favoritos`,favorito).pipe(map( response => true),catchError(error => of(false)))
   }
 
 

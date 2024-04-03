@@ -21,6 +21,13 @@
         {{iconos.label}}
       </mat-list-item>
 
+      <ng-container *ngIf="verificaFavoritos()">
+        <mat-list-item *ngFor="let iconos of FavoriteItems" routerLink="{{iconos.url}}" (click)="sidenav.toggle()">
+          <mat-icon matListItemIcon>{{iconos.icon}}</mat-icon>
+          {{iconos.label}}
+        </mat-list-item>
+      </ng-container>
+
     </mat-nav-list>
 
 

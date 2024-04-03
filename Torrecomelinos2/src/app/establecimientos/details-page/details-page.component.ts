@@ -8,6 +8,7 @@ import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { Zona } from 'src/app/interfaces/zona.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
 import { Favorito } from '../../interfaces/favorito.interface';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-details-page',
@@ -23,10 +24,14 @@ export class DetailsPageComponent {
   public idRol : string = '';
   public id : string = '';
 
+  public esFavorito: boolean = false;
+  public numFav: number = 0;
+
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private snackbar: MatSnackBar
   ){
 
   }
@@ -41,11 +46,17 @@ export class DetailsPageComponent {
 
 
   ngOnInit(): void {
+    this.idRol = localStorage.getItem('idRol')!;
+    this.id = localStorage.getItem('id')!;
+
+
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/listado']);
 
         this.establecimientoDetalles = establecimiento[0];
+
+        this.verificarFavorito(this.id,this.establecimientoDetalles.id);
 
         return;
       });
@@ -58,16 +69,15 @@ export class DetailsPageComponent {
         this.listadoCategorias = categoria;
       });
 
-    this.idRol = localStorage.getItem('idRol')!;
-    this.id = localStorage.getItem('id')!;
+
+
 
   }
 
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (zona.id == idZona) {
         nombre = zona.nombre
       }
@@ -78,8 +88,7 @@ export class DetailsPageComponent {
   obtenerNombreCategoria(idCategoria: number): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (categoria.id == idCategoria) {
         nombre = categoria.nombre
       }
@@ -95,22 +104,63 @@ export class DetailsPageComponent {
     }
   }
 
-  // verificarFavorito(): number {
-  //   let ok = 0;
 
-  //   this.establecimientosJsonService.getFavoritoByUserByName(this.id,this.establecimientoDetalles!.id).subscribe(
-  //     favoritos => {
-  //       const favorito: Favorito = favoritos[0];
+  public verificarFavorito(id_usuario: string, id_establecimiento: string) {
 
-  //       if (favorito != undefined) {
-  //         ok = 1;
-  //       }else {
-  //         ok = 0;
-  //       }
-  //     }
-  //   );
-  //   return ok;
-  // }
+    this.establecimientosJsonService.getFavoritoByUserByName(id_usuario,id_establecimiento).subscribe(
+      favoritos => {
+        const favorito: Favorito = favoritos[0];
+        if (favorito != undefined){
+          this.esFavorito = true;
+        }
+
+      }
+    );
+
+  }
+
+  public addFavorito(id_establecimiento: string) {
+    this.establecimientosJsonService.getFavoritos().subscribe(
+      favoritas => {
+        this.numFav = favoritas.length;
+
+        const fav : Favorito = {
+          id: this.numFav+1,
+          id_usuario: parseInt(this.id, 10),
+          id_establecimiento: parseInt(id_establecimiento,10),
+        }
+
+        this.establecimientosJsonService.addFavorito(fav).subscribe(
+
+          (response) => {
+            this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+            window.location.reload();
+          },
+          (error) => {
+            this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+            window.location.reload();
+          }
+
+        );
+
+      }
+    );
+  }
+
+  public eliminaFavorito(id_establecimiento: string) {
+
+    this.establecimientosJsonService.deleteFavorito(parseInt(this.id,10),parseInt(id_establecimiento,10)).subscribe(
+      (response) => {
+        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+        window.location.reload();
+      },
+      (error) => {
+        this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+        window.location.reload();
+      }
+    );
+
+  }
 
 
 }

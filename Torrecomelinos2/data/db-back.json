@@ -47,6 +47,14 @@
       "nombreCompleto": "juaauau",
       "idRol": 2,
       "token": "af64f5a0-99d8-4954-b93d-93a0ee65be2d"
+    },
+    {
+      "id": 11,
+      "email": "pablo@user.com",
+      "pass": "ee11cbb19052e40b07aac0ca060c23ee",
+      "nombreCompleto": "user",
+      "idRol": 2,
+      "token": "4bb0c60f-0121-474c-97bd-ed7e07a8d4f0"
     }
   ],
   "categorias": [
@@ -276,6 +284,31 @@
       "id": "1",
       "id_usuario": "1",
       "id_establecimiento": "1"
+    },
+    {
+      "id": "2",
+      "id_usuario": "1",
+      "id_establecimiento": "2"
+    },
+    {
+      "id": "3",
+      "id_usuario": "1",
+      "id_establecimiento": "3"
+    },
+    {
+      "id": "4",
+      "id_usuario": "1",
+      "id_establecimiento": "4"
+    },
+    {
+      "id": "5",
+      "id_usuario": "1",
+      "id_establecimiento": "5"
+    },
+    {
+      "id": "6",
+      "id_usuario": "2",
+      "id_establecimiento": "3"
     }
   ]
 }
