@@ -1,0 +1,12 @@
+<h1 style="text-align: center;font-size: 20px;font-family: monospace;padding: 30px;">Editar Categoría</h1>
+
+<div style="width: 70%; margin: auto;">
+  <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+    <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="addon-wrapping" [(ngModel)]="nombre" name="nombre" required>
+  </form>
+</div>
+
+<div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
+  <button *ngIf="nombre.length>0" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="editCategoria()">Aceptar</button>
+  <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
+</div>

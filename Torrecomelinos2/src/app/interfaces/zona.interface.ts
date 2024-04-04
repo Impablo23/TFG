@@ -1,4 +1,4 @@
 export interface Zona {
-  id: number,
+  id: string,
   nombre: string
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,7 +6,13 @@ import { Router } from '@angular/router';
   templateUrl: './layout-admin.component.html',
   styleUrls: ['./layout-admin.component.css']
 })
-export class LayoutAdminComponent {
+export class LayoutAdminComponent implements OnInit  {
+
+  public nombrePublico ='';
+
+  ngOnInit(): void {
+    this.nombrePublico = localStorage.getItem('nombreCompleto')!;
+  }
 
   public AdminItems = [
     {label: 'Gestión de Zonas', icon: 'playlist_add', url: 'admin/zonas'},

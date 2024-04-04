@@ -81,7 +81,7 @@ export class EditPageComponent {
     this.router.navigate([`/establecimientos/details/${id}`]);
   }
 
-  obtenerNombreZona(idZona: number): string {
+  obtenerNombreZona(idZona: string): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
       // console.log(zona.id);
@@ -93,7 +93,7 @@ export class EditPageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: number): string {
+  obtenerNombreCategoria(idCategoria: string): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
       // console.log(zona.id);

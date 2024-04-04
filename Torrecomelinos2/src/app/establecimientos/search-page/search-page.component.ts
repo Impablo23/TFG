@@ -78,7 +78,7 @@ export class SearchPageComponent  implements OnInit {
   }
 
 
-  obtenerNombreZona(idZona: number): string {
+  obtenerNombreZona(idZona: string): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
       // console.log(zona.id);
@@ -90,7 +90,7 @@ export class SearchPageComponent  implements OnInit {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: number): string {
+  obtenerNombreCategoria(idCategoria: string): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
       // console.log(zona.id);
@@ -111,7 +111,7 @@ export class SearchPageComponent  implements OnInit {
     }
   }
 
-  navigateToDetails(id: number): void {
+  navigateToDetails(id: string): void {
     this.router.navigate([`establecimientos/details/${id}`]);
   }
 }

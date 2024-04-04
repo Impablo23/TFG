@@ -74,7 +74,7 @@ export class DetailsPageComponent {
 
   }
 
-  obtenerNombreZona(idZona: number): string {
+  obtenerNombreZona(idZona: string): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
 
@@ -85,7 +85,7 @@ export class DetailsPageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: number): string {
+  obtenerNombreCategoria(idCategoria: string): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
 

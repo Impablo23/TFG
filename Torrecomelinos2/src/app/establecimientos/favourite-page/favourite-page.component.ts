@@ -42,7 +42,7 @@ export class FavouritePageComponent {
     // console.log(this.listadoFavoritosDetalles);
   }
 
-  obtenerNombreZona(idZona: number): string {
+  obtenerNombreZona(idZona: string): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
       // console.log(zona.id);
@@ -54,7 +54,7 @@ export class FavouritePageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: number): string {
+  obtenerNombreCategoria(idCategoria: string): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
       // console.log(zona.id);

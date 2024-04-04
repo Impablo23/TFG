@@ -5,7 +5,7 @@
       "email": "pablo@admin.com",
       "pass": "21232f297a57a5a743894a0e4a801fc3",
       "nombreCompleto": "Pablo Admin",
-      "idRol": "1",
+      "idRol": 1,
       "token": "d4df6eff-c660-4b8d-a6df-d83baa5ad0f6"
     },
     {
@@ -13,7 +13,7 @@
       "email": "ivan@user.com",
       "pass": "2c42e5cf1cdbafea04ed267018ef1511",
       "nombreCompleto": "Ivan User",
-      "idRol": "2",
+      "idRol": 2,
       "token": "eca44a4e-d1e4-4e6e-ba80-a31c394a3279"
     },
     {
@@ -49,7 +49,7 @@
       "token": "af64f5a0-99d8-4954-b93d-93a0ee65be2d"
     },
     {
-      "id": 11,
+      "id": "11",
       "email": "pablo@user.com",
       "pass": "ee11cbb19052e40b07aac0ca060c23ee",
       "nombreCompleto": "user",
@@ -95,13 +95,17 @@
     {
       "id": "4",
       "nombre": "El Pinillo"
+    },
+    {
+      "id": "6",
+      "nombre": "Calvario"
     }
   ],
   "establecimientos": [
     {
       "id": "1",
       "id_categoria": 1,
-      "id_zona": 4,
+      "id_zona": 2,
       "nombre": "Mirador de María",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 421,
@@ -185,7 +189,7 @@
     {
       "id": "8",
       "id_categoria": 2,
-      "id_zona": 2,
+      "id_zona": 1,
       "nombre": "MC Donalsdeadfd",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 2009,
@@ -299,9 +303,14 @@
       "id_establecimiento": "3"
     },
     {
-      "id": 7,
+      "id": "7",
       "id_usuario": 2,
       "id_establecimiento": 1
+    },
+    {
+      "id": 8,
+      "id_usuario": 1,
+      "id_establecimiento": 8
     }
   ]
 }

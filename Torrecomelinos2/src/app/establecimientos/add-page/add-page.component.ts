@@ -36,7 +36,7 @@ export class AddPageComponent {
 
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
-    private activatedRoute: ActivatedRoute,
+    // private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar
   ){
@@ -70,7 +70,7 @@ export class AddPageComponent {
     this.router.navigate([`/establecimientos/list`]);
   }
 
-  obtenerNombreZona(idZona: number): string {
+  obtenerNombreZona(idZona: string): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
       // console.log(zona.id);
@@ -82,7 +82,7 @@ export class AddPageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: number): string {
+  obtenerNombreCategoria(idCategoria: string): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
       // console.log(zona.id);
