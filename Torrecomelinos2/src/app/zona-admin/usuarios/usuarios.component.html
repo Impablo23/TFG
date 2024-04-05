@@ -1,6 +1,6 @@
 <h1 style="text-align: center;font-size: 40px;font-family: monospace;padding: 30px;">Gestión de Usuarios</h1>
 
-<div style="border: 5px solid black; height: 100%; width: 60%;float: left;">
+<div style="height: 100%; width: 60%;float: left;">
 
   <div>
     <table style="width: 80%;margin: auto;">
@@ -18,10 +18,10 @@
           <td class="td">
             {{usuario.nombreCompleto}}
           </td>
-          <td class="td" *ngIf="usuario.idRol === 1 ">
+          <td class="td" *ngIf="usuario.idRol === '1' ">
             Administrador
           </td>
-          <td class="td" *ngIf="usuario.idRol === 2">
+          <td class="td" *ngIf="usuario.idRol === '2'">
             Usuario
           </td>
           <td class="td">
@@ -41,6 +41,6 @@
 </div>
 
 
-<div style="border: 5px solid black; height: 100%; width: 40%;float: right;">
+<div style="height: 100%; width: 40%;float: right;">
   <router-outlet></router-outlet>
 </div>

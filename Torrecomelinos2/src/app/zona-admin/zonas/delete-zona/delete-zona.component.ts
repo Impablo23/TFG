@@ -48,15 +48,17 @@ export class DeleteZonaComponent {
     this.establecimientosJsonService.deleteZona(this.zonaSeleccionada.id).subscribe(
       (response) => {
         // console.log('perita');
-        this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
         window.location.reload();
+        this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
       },
       (error) => {
         // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al eliminar la zona", "Cerrar",{duration: 2000,panelClass:['background']});
         window.location.reload();
+        this.snackbar.open("Ha ocurrido un error al eliminar la zona", "Cerrar",{duration: 2000,panelClass:['background']});
       }
     );
+
+    this.router.navigate(['admin/zonas/']);
   }
 
 }

@@ -79,6 +79,10 @@ export class ListPageComponent {
     this.router.navigate([`establecimientos/add`]);
   }
 
+  navigateToSuggestion(): void {
+    this.router.navigate(['establecimientos/suggestions'])
+  }
+
   evitarErrorEnFoto(foto: string): string {
     if (foto.length === 0) {
       return 'assets/no_foto.png';

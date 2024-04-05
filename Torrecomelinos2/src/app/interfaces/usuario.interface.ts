@@ -1,8 +1,8 @@
 export interface Usuario {
-  id: number;
+  id: string;
   email: string;
   pass: string;
   nombreCompleto: string;
-  idRol: number;
+  idRol: string;
   token: string;
 }

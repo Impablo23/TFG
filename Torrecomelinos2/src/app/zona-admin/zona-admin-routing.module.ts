@@ -10,6 +10,9 @@ import { AddZonaComponent } from './zonas/add-zona/add-zona.component';
 import { AddCategoriaComponent } from './categorias/add-categoria/add-categoria.component';
 import { EditCategoriaComponent } from './categorias/edit-categoria/edit-categoria.component';
 import { DeleteCategoriaComponent } from './categorias/delete-categoria/delete-categoria.component';
+import { AddUsuarioComponent } from './usuarios/add-usuario/add-usuario.component';
+import { EditUsuarioComponent } from './usuarios/edit-usuario/edit-usuario.component';
+import { DeleteUsuarioComponent } from './usuarios/delete-usuario/delete-usuario.component';
 
 const routes: Routes = [
   {
@@ -31,7 +34,13 @@ const routes: Routes = [
           { path: 'delete/:id', component: DeleteCategoriaComponent }
         ]
       },
-      {path: 'usuarios', component: UsuariosComponent},
+      { path: 'usuarios', component: UsuariosComponent,
+        children: [
+          { path: '', component: AddUsuarioComponent },
+          { path: 'edit/:id', component: EditUsuarioComponent },
+          { path: 'delete/:id', component: DeleteUsuarioComponent }
+        ]
+      },
       {path: '**', redirectTo: 'zonas'},
     ]
   }

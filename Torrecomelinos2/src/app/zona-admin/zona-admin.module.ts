@@ -14,6 +14,9 @@ import { DeleteZonaComponent } from './zonas/delete-zona/delete-zona.component';
 import { AddCategoriaComponent } from './categorias/add-categoria/add-categoria.component';
 import { EditCategoriaComponent } from './categorias/edit-categoria/edit-categoria.component';
 import { DeleteCategoriaComponent } from './categorias/delete-categoria/delete-categoria.component';
+import { AddUsuarioComponent } from './usuarios/add-usuario/add-usuario.component';
+import { EditUsuarioComponent } from './usuarios/edit-usuario/edit-usuario.component';
+import { DeleteUsuarioComponent } from './usuarios/delete-usuario/delete-usuario.component';
 
 
 @NgModule({
@@ -27,7 +30,10 @@ import { DeleteCategoriaComponent } from './categorias/delete-categoria/delete-c
     DeleteZonaComponent,
     AddCategoriaComponent,
     EditCategoriaComponent,
-    DeleteCategoriaComponent
+    DeleteCategoriaComponent,
+    AddUsuarioComponent,
+    EditUsuarioComponent,
+    DeleteUsuarioComponent
   ],
   imports: [
     CommonModule,

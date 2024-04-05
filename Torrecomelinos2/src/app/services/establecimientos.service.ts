@@ -92,7 +92,7 @@ export class EstablecimientosJsonService {
     return this.http.get<Establecimiento[]>(`${this.baseUrl}/establecimientos`)
   }
 
-  getEstablecimientoById(id: number): Observable<Establecimiento[]> {
+  getEstablecimientoById(id: string): Observable<Establecimiento[]> {
     return this.http.get<Establecimiento[]>(`${this.baseUrl}/establecimientos?id=${id}`)
   }
 
@@ -130,7 +130,7 @@ export class EstablecimientosJsonService {
     return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`)
   }
 
-  deleteFavorito(id_usuario: number,id_establecimiento: number): Observable<boolean> {
+  deleteFavorito(id_usuario: string,id_establecimiento: string): Observable<boolean> {
     return this.http.delete(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
   }
 

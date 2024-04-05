@@ -8,6 +8,7 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { AddPageComponent } from './add-page/add-page.component';
 import { DeletePageComponent } from './delete-page/delete-page.component';
 import { FavouritePageComponent } from './favourite-page/favourite-page.component';
+import { SuggestionPageComponent } from './suggestion-page/suggestion-page.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       {path: 'search', component: SearchPageComponent},
       {path: 'add', component: AddPageComponent},
       {path: 'favourite-list', component: FavouritePageComponent},
+      {path: 'suggestions', component: SuggestionPageComponent},
       {path: 'details/:id', component: DetailsPageComponent},
       {path: 'delete/:id', component: DeletePageComponent},
       {path: 'edit/:id', component: EditPageComponent},

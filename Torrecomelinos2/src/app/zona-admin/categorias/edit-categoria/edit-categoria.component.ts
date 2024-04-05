@@ -5,6 +5,7 @@ import { switchMap } from 'rxjs';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
 
+
 @Component({
   selector: 'app-edit-categoria',
   templateUrl: './edit-categoria.component.html',
@@ -67,7 +68,8 @@ export class EditCategoriaComponent {
         this.snackbar.open("Ha ocurrido un error al actualizar la categoria", "Cerrar",{duration: 2000,panelClass:['background']});
         window.location.reload();
       }
-    )
+    );
+    this.router.navigate(['admin/categorias/']);
 
   }
 

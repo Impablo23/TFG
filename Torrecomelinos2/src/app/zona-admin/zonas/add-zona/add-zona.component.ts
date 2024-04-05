@@ -42,6 +42,7 @@ export class AddZonaComponent implements OnInit {
 
   public cancelar() {
     this.nombre = '';
+    this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
   }
 
   public addZona() {
@@ -50,7 +51,7 @@ export class AddZonaComponent implements OnInit {
       zonas => {
 
         // Ver cantidad de zonas para el id.
-        this.numZonas = zonas.length;
+        this.numZonas = zonas.length+1;
 
         const nombreEstandar = this.capitalizarPalabra(this.nombre);
 

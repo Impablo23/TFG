@@ -12,6 +12,7 @@ import { EditPageComponent } from './edit-page/edit-page.component';
 import { AddPageComponent } from './add-page/add-page.component';
 import { DeletePageComponent } from './delete-page/delete-page.component';
 import { FavouritePageComponent } from './favourite-page/favourite-page.component';
+import { SuggestionPageComponent } from './suggestion-page/suggestion-page.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { FavouritePageComponent } from './favourite-page/favourite-page.componen
     EditPageComponent,
     AddPageComponent,
     DeletePageComponent,
-    FavouritePageComponent
+    FavouritePageComponent,
+    SuggestionPageComponent
   ],
   imports: [
     CommonModule,

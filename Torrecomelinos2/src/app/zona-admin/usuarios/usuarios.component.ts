@@ -27,11 +27,11 @@ export class UsuariosComponent {
   }
 
   public goToEditZona(id: string) {
-    this.router.navigate(['admin/zonas/edit', id]);
+    this.router.navigate(['admin/usuarios/edit', id]);
   }
 
   public goToDeleteZona(id: string) {
-    this.router.navigate(['admin/zonas/delete', id]);
+    this.router.navigate(['admin/usuarios/delete', id]);
   }
 
 }

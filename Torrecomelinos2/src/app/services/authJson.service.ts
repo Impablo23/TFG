@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { environments } from "environments/environments";
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from "../interfaces/usuario.interface";
-import { Observable, tap } from "rxjs";
+import { Observable, catchError, map, of, tap } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,19 @@ export class AuthJsonService {
 
   addUser(usuario:Usuario): Observable<Usuario>  {
     return this.http.post<Usuario>(`${this.baseUrl}/users`,usuario)
+  }
+
+  getUserById(id: string): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.baseUrl}/users?id=${id}`)
+  }
+
+  updateUser(usuario : Usuario): Observable<boolean> {
+    return this.http.patch<Usuario>(`${ this.baseUrl }/users/${ usuario.id }`, usuario).pipe(map( response => true),catchError(error => of(false)))
+  }
+
+
+  deleteUser(id: string): Observable<boolean> {
+    return this.http.delete(`${ this.baseUrl }/users/${id}`).pipe(map( response => true),catchError(error => of(false)))
   }
 
 

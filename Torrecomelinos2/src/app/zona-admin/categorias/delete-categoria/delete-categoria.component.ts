@@ -44,18 +44,20 @@ export class DeleteCategoriaComponent {
     this.router.navigate(['admin/categorias/']);
   }
 
-  public deleteZona() {
+  public deleteCategoria() {
     this.establecimientosJsonService.deleteCategoria(this.categoriaSeleccionada.id).subscribe(
       (response) => {
         // console.log('perita');
-        this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+        this.snackbar.open("Categoría eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+
         window.location.reload();
       },
       (error) => {
         // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al eliminar la zona", "Cerrar",{duration: 2000,panelClass:['background']});
+        this.snackbar.open("Ha ocurrido un error al eliminar la categoría", "Cerrar",{duration: 2000,panelClass:['background']});
         window.location.reload();
       }
     );
+    this.router.navigate(['admin/categorias/']);
   }
 }

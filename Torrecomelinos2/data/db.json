@@ -5,7 +5,7 @@
       "email": "pablo@admin.com",
       "pass": "21232f297a57a5a743894a0e4a801fc3",
       "nombreCompleto": "Pablo Admin",
-      "idRol": 1,
+      "idRol": "1",
       "token": "d4df6eff-c660-4b8d-a6df-d83baa5ad0f6"
     },
     {
@@ -13,7 +13,7 @@
       "email": "ivan@user.com",
       "pass": "2c42e5cf1cdbafea04ed267018ef1511",
       "nombreCompleto": "Ivan User",
-      "idRol": 2,
+      "idRol": "2",
       "token": "eca44a4e-d1e4-4e6e-ba80-a31c394a3279"
     },
     {
@@ -21,39 +21,15 @@
       "email": "juan@gmail.com",
       "pass": "a94652aa97c7211ba8954dd15a3cf838",
       "nombreCompleto": "juan",
-      "idRol": 2,
+      "idRol": "2",
       "token": "833917c0-cc27-45f9-954d-30a1d615e82d"
     },
     {
-      "id": "4",
-      "email": "juan@gmail.com",
-      "pass": "a94652aa97c7211ba8954dd15a3cf838",
-      "nombreCompleto": "jauuuu",
-      "idRol": 2,
-      "token": "91e18936-ed30-4c8b-949f-ca2e1ae6d136"
-    },
-    {
-      "id": "4",
-      "email": "pepin@gmail.com",
-      "pass": "c69dc337a48b4392e2ccfb49b46a043d",
-      "nombreCompleto": "pepin",
-      "idRol": 2,
-      "token": "e3f0a1cb-5941-4ae4-97ab-ae7185001683"
-    },
-    {
-      "id": "4",
-      "email": "juanma@gmail.com",
-      "pass": "65a368f66ad6b9ee45263577713d8a95",
-      "nombreCompleto": "juaauau",
-      "idRol": 2,
-      "token": "af64f5a0-99d8-4954-b93d-93a0ee65be2d"
-    },
-    {
-      "id": "11",
+      "id": "10",
       "email": "pablo@user.com",
       "pass": "ee11cbb19052e40b07aac0ca060c23ee",
       "nombreCompleto": "user",
-      "idRol": 2,
+      "idRol": "2",
       "token": "4bb0c60f-0121-474c-97bd-ed7e07a8d4f0"
     }
   ],
@@ -99,6 +75,10 @@
     {
       "id": "6",
       "nombre": "Calvario"
+    },
+    {
+      "id": "6",
+      "nombre": "Ead"
     }
   ],
   "establecimientos": [
@@ -304,13 +284,65 @@
     },
     {
       "id": "7",
-      "id_usuario": 2,
-      "id_establecimiento": 1
+      "id_usuario": "2",
+      "id_establecimiento": "1"
     },
     {
-      "id": 8,
-      "id_usuario": 1,
-      "id_establecimiento": 8
+      "id": "8",
+      "id_usuario": "1",
+      "id_establecimiento": "8"
+    },
+    {
+      "id": "9",
+      "id_usuario": "1",
+      "id_establecimiento": "9"
+    },
+    {
+      "id": "10",
+      "id_usuario": "1",
+      "id_establecimiento": "12"
+    }
+  ],
+  "sugerencias": [
+    {
+      "id": "1",
+      "nombre": "Restaurante El Faro"
+    },
+    {
+      "id": "2",
+      "nombre": "Cafetería La Plaza"
+    },
+    {
+      "id": "3",
+      "nombre": "Hotel Los Pinos"
+    },
+    {
+      "id": "4",
+      "nombre": "Pizzería La Bella Napoli"
+    },
+    {
+      "id": "5",
+      "nombre": "Bar La Cervecería"
+    },
+    {
+      "id": "6",
+      "nombre": "Restaurante La Terraza"
+    },
+    {
+      "id": "7",
+      "nombre": "Cafetería El Rincón"
+    },
+    {
+      "id": "8",
+      "nombre": "Hotel Marítimo"
+    },
+    {
+      "id": "9",
+      "nombre": "Parrilla Los Asados"
+    },
+    {
+      "id": "10",
+      "nombre": "Bar El Pescador"
     }
   ]
 }

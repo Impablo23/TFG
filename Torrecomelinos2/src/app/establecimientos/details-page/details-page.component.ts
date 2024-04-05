@@ -125,9 +125,9 @@ export class DetailsPageComponent {
         this.numFav = favoritas.length;
 
         const fav : Favorito = {
-          id: this.numFav+1,
-          id_usuario: parseInt(this.id, 10),
-          id_establecimiento: parseInt(id_establecimiento,10),
+          id: (this.numFav+1).toString(),
+          id_usuario: this.id,
+          id_establecimiento: id_establecimiento,
         }
 
         this.establecimientosJsonService.addFavorito(fav).subscribe(
@@ -149,7 +149,7 @@ export class DetailsPageComponent {
 
   public eliminaFavorito(id_establecimiento: string) {
 
-    this.establecimientosJsonService.deleteFavorito(parseInt(this.id,10),parseInt(id_establecimiento,10)).subscribe(
+    this.establecimientosJsonService.deleteFavorito(this.id,id_establecimiento).subscribe(
       (response) => {
         this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
         window.location.reload();

@@ -42,6 +42,7 @@ export class AddCategoriaComponent {
 
   public cancelar() {
     this.nombre = '';
+    this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
   }
 
   public addZona() {
