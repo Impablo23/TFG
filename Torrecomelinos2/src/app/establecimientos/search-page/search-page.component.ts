@@ -7,6 +7,8 @@ import { Zona } from 'src/app/interfaces/zona.interface';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Router } from '@angular/router';
 
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
 @Component({
   selector: 'app-search-page',
   templateUrl: './search-page.component.html',
@@ -19,9 +21,24 @@ export class SearchPageComponent  implements OnInit {
   public listadoZonas: Zona[] = [];
   public listadoCategorias: Categoria[] = [];
 
+  public valorBusqueda: string = '';
+
   constructor(private establecimientosJsonService: EstablecimientosJsonService, private snackbar: MatSnackBar,private router: Router){}
 
   ngOnInit(): void {
+
+    this.searchForm.get('searchInput')!.valueChanges
+      .pipe(
+        debounceTime(300), // Esperar 300 milisegundos después de que el usuario deje de escribir
+        distinctUntilChanged() // No realizar la búsqueda si el término no ha cambiado
+      )
+      .subscribe(valor => {
+        if (!valor.trim()) {
+          this.establecimientosEncontrados = [];
+          return; // No realizar la búsqueda si el término está vacío
+        }
+        this.cargarEstablecimientos(valor);
+      });
 
     this.establecimientosJsonService.getZonas().subscribe(zonas => {
       this.listadoZonas = zonas;
@@ -49,14 +66,14 @@ export class SearchPageComponent  implements OnInit {
 
 
 
-  public searchEstablecimiento(){
-    const valor: string = this.searchForm.get('searchInput')!.value;
-    if (!valor.trim()) {
-      return; // No realizar la búsqueda si el término está vacío
-    }
+  // public searchEstablecimiento(){
+  //   const valor: string = this.searchForm.get('searchInput')!.value;
+  //   if (!valor.trim()) {
+  //     return; // No realizar la búsqueda si el término está vacío
+  //   }
 
-    this.cargarEstablecimientos(valor);
-  }
+  //   this.cargarEstablecimientos(valor);
+  // }
 
   public cargarEstablecimientos(valor: string) {
 
@@ -70,7 +87,7 @@ export class SearchPageComponent  implements OnInit {
       this.snackbar.open("Resultados de "+valor, "Cerrar",{duration: 2000,panelClass:['background']})
     }
 
-    this.searchForm.get('searchInput')!.setValue('');
+
 
     // console.log(this.establecimientosEncontrados);
 
@@ -113,5 +130,9 @@ export class SearchPageComponent  implements OnInit {
 
   navigateToDetails(id: string): void {
     this.router.navigate([`establecimientos/details/${id}`]);
+  }
+
+  reseteo () {
+    this.searchForm.get('searchInput')!.setValue('');
   }
 }

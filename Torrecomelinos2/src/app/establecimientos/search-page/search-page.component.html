@@ -2,7 +2,7 @@
   <h1  style="font-size: 40px;font-family: monospace;">Busca un Establecimiento</h1>
 </div>
 <form [formGroup]="searchForm" class="input-group flex-nowrap" style="width: 40%;margin: auto;padding: 20px;">
-  <input type="text" class="form-control" placeholder="Escribe el nombre de algún establecimiento" aria-label="Username" aria-describedby="addon-wrapping" (keyup.enter)="searchEstablecimiento()" formControlName="searchInput">
+  <input type="text" class="form-control" placeholder="Escribe el nombre de algún establecimiento" aria-label="Username" (keyup.enter)="reseteo()" aria-describedby="addon-wrapping" formControlName="searchInput">
 </form>
 
 <div class="grid mb-8" style="background-color: rgb(124 124 252);">

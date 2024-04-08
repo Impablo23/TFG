@@ -215,18 +215,6 @@
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+lanjaron+torremolinos&oq=restaurante+lanjaron&gs_lcrp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
     },
     {
-      "id": "12",
-      "id_categoria": 1,
-      "id_zona": 2,
-      "nombre": "Tus muertosddd",
-      "descripcion": "Descripción del Establecimiento 2dd",
-      "numResenas": 150044,
-      "direccion": "Calle del Mar, 22, 2dd9630 Benalmádena, Málaga",
-      "telefono": "0987654321dd",
-      "foto": "",
-      "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+gaviota+benalmadena&oq=restaurante+la+gaviota&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
-    },
-    {
       "id": "13",
       "id_categoria": 2,
       "id_zona": 3,
@@ -237,42 +225,6 @@
       "telefono": "1357924680",
       "foto": "",
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+el+faro+torremolinos&oq=restaurante+el+faro&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
-    },
-    {
-      "id": "18",
-      "id_zona": 0,
-      "id_categoria": 0,
-      "nombre": "hh",
-      "descripcion": "",
-      "numResenas": 0,
-      "direccion": "",
-      "telefono": "",
-      "foto": "",
-      "enlace": ""
-    },
-    {
-      "id": "19",
-      "id_zona": 0,
-      "id_categoria": 0,
-      "nombre": "pepin",
-      "descripcion": "",
-      "numResenas": 0,
-      "direccion": "",
-      "telefono": "",
-      "foto": "",
-      "enlace": ""
-    },
-    {
-      "id": "20",
-      "id_zona": 0,
-      "id_categoria": 0,
-      "nombre": "deqd",
-      "descripcion": "",
-      "numResenas": 0,
-      "direccion": "",
-      "telefono": "",
-      "foto": "",
-      "enlace": "ed"
     }
   ],
   "favoritos": [
