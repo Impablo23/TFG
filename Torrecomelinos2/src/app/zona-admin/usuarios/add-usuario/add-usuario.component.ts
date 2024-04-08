@@ -42,55 +42,60 @@ export class AddUsuarioComponent {
     }
   }
 
-  registrar() :void {
+  public registrar(): void {
+    if (this.email === '' || this.pass === '' || this.nombreCompleto === '') {
+        this.snackbar.open("No has rellenado todos los datos requeridos", "Cerrar", { duration: 2000, panelClass: ['background'] });
+        return;
+    }
 
     this.authJsonService.verificaCorreo(this.email).subscribe(verificaCorreo => {
-      const correo = verificaCorreo[0];
-      console.log(correo);
-      if (correo != undefined) {
-        this.snackbar.open("El usuario registrado ya existe", "Cerrar",{duration: 2000,panelClass:['background']});
-        return;
-      }
-      this.authJsonService.login(this.email, this.calcularHashMD5(this.pass)).subscribe(verificaUsuario => {
-
-        // console.log(this.email+" "+this.pass)
-
-        const exiteUsuario = verificaUsuario[0];
-        // console.log(exiteUsuario);
-
-        if (exiteUsuario != undefined){
-          this.snackbar.open("El usuario registrado ya existe", "Cerrar",{duration: 2000,panelClass:['background']});
-          return;
+        const correo = verificaCorreo[0];
+        console.log(correo);
+        if (correo != undefined) {
+            this.snackbar.open("El usuario registrado ya existe", "Cerrar", { duration: 2000, panelClass: ['background'] });
+            return;
         }
 
-        const usuarioARegistrar: Usuario = {
-          id: (12).toString(),
-          email: this.email,
-          pass: this.calcularHashMD5(this.pass),
-          nombreCompleto: this.nombreCompleto,
-          idRol: this.idRol,
-          token: uuidv4()
-        };
-        // this.usuarioRegistro.id = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
+        this.authJsonService.login(this.email, this.calcularHashMD5(this.pass)).subscribe(verificaUsuario => {
+            const exiteUsuario = verificaUsuario[0];
+            if (exiteUsuario != undefined) {
+                this.snackbar.open("El usuario registrado ya existe", "Cerrar", { duration: 2000, panelClass: ['background'] });
+                return;
+            }
 
-        this.authJsonService.addUser(usuarioARegistrar).subscribe(usuario => {
-          const registroOk = usuario;
-          console.log(registroOk);
-          this.snackbar.open("Usuario registrado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+            this.authJsonService.getUsers().subscribe(usuarios => {
+                // Encontrar el máximo ID actual
+                let maxId = 0;
+                usuarios.forEach(usuario => {
+                    const idNum = parseInt(usuario.id);
+                    if (idNum > maxId) {
+                        maxId = idNum;
+                    }
+                });
 
-          this.email = '';
-          this.nombreCompleto = '';
-          this.pass = '';
-          this.idRol = '';
+                // Generar el nuevo ID sumando 1 al máximo ID encontrado
+                const nuevoId = (maxId + 1).toString();
 
-          window.location.reload();
+                // Crear el nuevo usuario con el nuevo ID
+                const usuarioARegistrar: Usuario = {
+                    id: nuevoId,
+                    email: this.email,
+                    pass: this.calcularHashMD5(this.pass),
+                    nombreCompleto: this.nombreCompleto,
+                    idRol: this.idRol,
+                    token: uuidv4()
+                };
 
+                this.authJsonService.addUser(usuarioARegistrar).subscribe(usuario => {
+                    const registroOk = usuario;
+                    this.snackbar.open( "Usuario añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                      window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                    });
+                });
+            });
         });
-      });
-    })
-
-
-  }
+    });
+}
 
 }
 

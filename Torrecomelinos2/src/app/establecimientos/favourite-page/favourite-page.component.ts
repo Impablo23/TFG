@@ -93,30 +93,59 @@ export class FavouritePageComponent {
     // console.log(this.listadoFavoritosDetalles);
   }
 
-  public eliminarFavorito(id_establecimiento: string) {
-    console.log(this.listadoFavoritosDetalles);
-    this.establecimientosJsonService.deleteFavorito(this.id,id_establecimiento).subscribe(
-      (response) => {
-        // Eliminar el favorito de listadoFavoritos
-        const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
-        console.log(index);
-        if (index !== -1) {
-          this.listadoFavoritos.splice(index, 1);
-        }
-        console.log(this.listadoFavoritos);
-        // Eliminar el establecimiento de listadoFavoritosDetalles
-        const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
-        if (establecimientoIndex !== -1) {
-          this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
-        }
-        console.log(this.listadoFavoritosDetalles);
+  // public eliminarFavorito(id_establecimiento: string) {
+  //   console.log(this.listadoFavoritosDetalles);
+  //   this.establecimientosJsonService.deleteFavorito(id_establecimiento).subscribe(
+  //     (response) => {
+  //       // Eliminar el favorito de listadoFavoritos
+  //       const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
+  //       console.log(index);
+  //       if (index !== -1) {
+  //         this.listadoFavoritos.splice(index, 1);
+  //       }
+  //       console.log(this.listadoFavoritos);
+  //       // Eliminar el establecimiento de listadoFavoritosDetalles
+  //       const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
+  //       if (establecimientoIndex !== -1) {
+  //         this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
+  //       }
+  //       console.log(this.listadoFavoritosDetalles);
 
-        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-      },
-      (error) => {
-        this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-      }
-    );
-  }
+  //       this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+  //     },
+  //     (error) => {
+  //       this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+  //     }
+  //   );
+  // }
+
+  // public deleteFavorito(id_establecimiento: string) {
+  //   // console.log(this.listadoFavoritos);
+  //   // Eliminar el favorito de listadoFavoritos
+  //   const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
+  //   // console.log(index);
+
+  //   this.establecimientosJsonService.deleteFavorito(index.toString()).subscribe(
+  //     (response) => {
+  //       // Eliminar el favorito de listadoFavoritos
+  //       this.listadoFavoritos.splice(index, 1);
+
+  //       console.log(this.listadoFavoritos);
+  //       // Eliminar el establecimiento de listadoFavoritosDetalles
+  //       const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
+  //       if (establecimientoIndex !== -1) {
+  //         this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
+  //       }
+  //       console.log(this.listadoFavoritosDetalles);
+
+  //       this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+  //     },
+  //     (error) => {
+  //       this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+  //     }
+  //   );
+
+  // }
+
 
 }

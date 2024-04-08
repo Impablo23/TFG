@@ -49,9 +49,9 @@ export class LayoutPageComponent {
   }
 
   public logout(): void {
-    localStorage.clear();
     this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
     this.router.navigate(['/auth']);
+    localStorage.clear();
   }
 
   public numFavoritos(): void {

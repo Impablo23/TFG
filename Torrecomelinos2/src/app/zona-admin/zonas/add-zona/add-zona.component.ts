@@ -46,54 +46,62 @@ export class AddZonaComponent implements OnInit {
   }
 
   public addZona() {
-
+    // Obtener la lista de zonas para determinar el máximo ID actual
     this.establecimientosJsonService.getZonas().subscribe(
-      zonas => {
+        zonas => {
+            let maxId = 0;
 
-        // Ver cantidad de zonas para el id.
-        this.numZonas = zonas.length+1;
+            // Encontrar el máximo ID actual entre las zonas existentes
+            zonas.forEach(zona => {
+                const idNum = parseInt(zona.id);
+                if (idNum > maxId) {
+                    maxId = idNum;
+                }
+            });
 
-        const nombreEstandar = this.capitalizarPalabra(this.nombre);
+            // Generar el nuevo ID sumando 1 al máximo ID encontrado
+            const nuevoId = (maxId + 1).toString();
 
-        this.establecimientosJsonService.getZonaByName(nombreEstandar).subscribe(
-          zonas => {
+            // Capitalizar el nombre de la zona
+            const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
-            const zona = zonas[0];
+            // Verificar si la zona ya existe
+            this.establecimientosJsonService.getZonaByName(nombreEstandar).subscribe(
+                zonas => {
+                    const zonaExistente = zonas[0];
 
-            if (zona != undefined) {
-              this.snackbar.open("Esta zona ya existe.", "Cerrar",{duration: 2000,panelClass:['background']});
-              this.nombre = '';
-              return;
-            }
+                    if (zonaExistente != undefined) {
+                        this.snackbar.open("Esta zona ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
+                        this.nombre = '';
+                        return;
+                    }
 
-            const zonaNueva: Zona = {
-              id: (this.numZonas+1).toString(),
-              nombre: nombreEstandar
-            }
+                    // Crear el objeto de zona con el nuevo ID y el nombre capitalizado
+                    const zonaNueva: Zona = {
+                        id: nuevoId,
+                        nombre: nombreEstandar
+                    };
 
-            this.establecimientosJsonService.addZona(zonaNueva).subscribe(
-              (response) => {
-                this.snackbar.open("Zona añadida correctamente.", "Cerrar",{duration: 2000,panelClass:['background']});
-                this.nombre = '';
-                window.location.reload();
-              },
-              (error) => {
-                this.snackbar.open("Error al añadir la zona.", "Cerrar",{duration: 2000,panelClass:['background']});
-                this.nombre = '';
-                window.location.reload();
-              }
+                    // Agregar la nueva zona utilizando el servicio correspondiente
+                    this.establecimientosJsonService.addZona(zonaNueva).subscribe(
+                        (response) => {
+                            this.snackbar.open("Zona añadida correctamente.", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                                this.nombre = ''; // Limpiar el campo de nombre
+                            });
+                        },
+                        (error) => {
+                            this.snackbar.open("Ha ocurrido un error al añadir la zona", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                                this.nombre = ''; // Limpiar el campo de nombre
+                            });
+                        }
+                    );
+                }
             );
-
-
-
-
-
-          }
-        );
-      }
+        }
     );
+}
 
-
-  }
 
 }

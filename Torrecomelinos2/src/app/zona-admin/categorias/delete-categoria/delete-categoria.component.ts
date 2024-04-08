@@ -47,15 +47,14 @@ export class DeleteCategoriaComponent {
   public deleteCategoria() {
     this.establecimientosJsonService.deleteCategoria(this.categoriaSeleccionada.id).subscribe(
       (response) => {
-        // console.log('perita');
-        this.snackbar.open("Categoría eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-
-        window.location.reload();
+        this.snackbar.open("Categoria eliminada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
       (error) => {
-        // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al eliminar la categoría", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+      this.snackbar.open("Ha ocurrido un error al eliminar la categoría.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+        window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+      });
       }
     );
     this.router.navigate(['admin/categorias/']);

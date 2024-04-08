@@ -47,14 +47,15 @@ export class DeleteUsuarioComponent {
   public deleteUsuario() {
     this.authJsonService.deleteUser(this.usuarioSeleccionado.id).subscribe(
       (response) => {
-        // console.log('perita');
-        this.snackbar.open("Usuario eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open( "Usuario eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
+
       (error) => {
-        // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al eliminar el usuario", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Ha ocurrido un error al eliminar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       }
     );
     this.router.navigate(['admin/usuarios/']);

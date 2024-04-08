@@ -7,6 +7,7 @@ import { Establecimiento } from "../interfaces/establecimiento.interface";
 import { Zona } from "../interfaces/zona.interface";
 import { Categoria } from "../interfaces/categoria.interface";
 import { Favorito } from "../interfaces/favorito.interface";
+import { Sugerencia } from "../interfaces/sugerencia.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -114,7 +115,7 @@ export class EstablecimientosJsonService {
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
-  //---------------------------------------------FAVORITOS--------------------------------------------------------
+  //---------------------------------------------FAVORITOS----------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
@@ -131,13 +132,35 @@ export class EstablecimientosJsonService {
   }
 
   deleteFavorito(id_usuario: string,id_establecimiento: string): Observable<boolean> {
-    return this.http.delete(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
+    return this.http.delete(`${this.baseUrl}/favoritos?id=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
   }
 
   addFavorito(favorito: Favorito) : Observable<boolean> {
     return this.http.post(`${this.baseUrl}/favoritos`,favorito).pipe(map( response => true),catchError(error => of(false)))
   }
 
+
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //---------------------------------------------SUGERENCIAS--------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+
+  getSugerencias() : Observable<Sugerencia[]> {
+    return this.http.get<Sugerencia[]>(`${this.baseUrl}/sugerencias`)
+  }
+
+  getSugerenciaById(id: string): Observable<Sugerencia[]> {
+    return this.http.get<Sugerencia[]>(`${this.baseUrl}/sugerencias?id=${id}`)
+  }
+
+  deleteSugerencia(id: string): Observable<boolean> {
+    return this.http.delete(`${this.baseUrl}/sugerencias/${id}`).pipe(map( response => true),catchError(error => of(false)))
+  }
+
+  addSugerencia(sugerencia: Sugerencia) : Observable<boolean> {
+    return this.http.post(`${this.baseUrl}/sugerencias`,sugerencia).pipe(map( response => true),catchError(error => of(false)))
+  }
 
 
 }

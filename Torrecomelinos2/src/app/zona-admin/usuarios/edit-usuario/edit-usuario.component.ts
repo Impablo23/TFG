@@ -89,14 +89,14 @@ export class EditUsuarioComponent {
 
     this.authJsonService.updateUser(usuarioEditado).subscribe(
       (response) => {
-        // console.log('perita');
-        this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
       (error) => {
-        // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       }
     );
 

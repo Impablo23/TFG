@@ -1,0 +1,24 @@
+<h1 style="text-align: center;font-size: 20px;font-family: monospace;padding: 30px;">¿Estás seguro de eliminar la sugerencia?</h1>
+
+<div style="width: 70%; margin: auto;">
+  <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+    <label for="numResenas" style="text-align: left;margin-top: 10px;margin-right: 10px;">Usuario:</label>
+    <input type="text" class="form-control" placeholder="Email" aria-label="Nombre" aria-describedby="addon-wrapping" [(ngModel)]="usuario" name="email" required readonly>
+  </form>
+</div>
+
+<div style="width: 70%; margin: auto;">
+  <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
+    <label for="numResenas" style="text-align: left;margin-top: 10px;margin-right: 10px;">Establecimiento:</label>
+    <input type="text" class="form-control" placeholder="Nombre" aria-label="Nombre" aria-describedby="addon-wrapping" [(ngModel)]="nombre" name="nombre" required readonly>
+  </form>
+</div>
+
+<div style="margin: auto;width: 20%;margin-top: 20px;font-family: monospace;">
+  <a href="{{sugerenciaSeleccionada.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="width: 100%;">Sitio web</a>
+</div>
+
+<div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
+  <button *ngIf="nombre.length>0" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="deleteSugerencia()">Aceptar</button>
+  <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
+</div>

@@ -9,6 +9,7 @@ import { AddPageComponent } from './add-page/add-page.component';
 import { DeletePageComponent } from './delete-page/delete-page.component';
 import { FavouritePageComponent } from './favourite-page/favourite-page.component';
 import { SuggestionPageComponent } from './suggestion-page/suggestion-page.component';
+import { AdminGuard } from '../guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -18,12 +19,12 @@ const routes: Routes = [
     children: [
       {path: 'list', component: ListPageComponent},
       {path: 'search', component: SearchPageComponent},
-      {path: 'add', component: AddPageComponent},
+      {path: 'add', component: AddPageComponent, canActivate: [AdminGuard]},
       {path: 'favourite-list', component: FavouritePageComponent},
       {path: 'suggestions', component: SuggestionPageComponent},
       {path: 'details/:id', component: DetailsPageComponent},
-      {path: 'delete/:id', component: DeletePageComponent},
-      {path: 'edit/:id', component: EditPageComponent},
+      {path: 'delete/:id', component: DeletePageComponent, canActivate: [AdminGuard]},
+      {path: 'edit/:id', component: EditPageComponent, canActivate: [AdminGuard]},
       {path: '**', redirectTo: 'list'},
     ]
   }

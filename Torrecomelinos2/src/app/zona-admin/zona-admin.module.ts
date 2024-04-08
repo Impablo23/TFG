@@ -17,6 +17,10 @@ import { DeleteCategoriaComponent } from './categorias/delete-categoria/delete-c
 import { AddUsuarioComponent } from './usuarios/add-usuario/add-usuario.component';
 import { EditUsuarioComponent } from './usuarios/edit-usuario/edit-usuario.component';
 import { DeleteUsuarioComponent } from './usuarios/delete-usuario/delete-usuario.component';
+import { SugerenciasComponent } from './sugerencias/sugerencias.component';
+import { AddSugerenciaComponent } from './sugerencias/add-sugerencia/add-sugerencia.component';
+import { DeleteSugerenciaComponent } from './sugerencias/delete-sugerencia/delete-sugerencia.component';
+import { InfoSugerenciaComponent } from './sugerencias/info-sugerencia/info-sugerencia.component';
 
 
 @NgModule({
@@ -33,7 +37,11 @@ import { DeleteUsuarioComponent } from './usuarios/delete-usuario/delete-usuario
     DeleteCategoriaComponent,
     AddUsuarioComponent,
     EditUsuarioComponent,
-    DeleteUsuarioComponent
+    DeleteUsuarioComponent,
+    SugerenciasComponent,
+    AddSugerenciaComponent,
+    DeleteSugerenciaComponent,
+    InfoSugerenciaComponent
   ],
   imports: [
     CommonModule,

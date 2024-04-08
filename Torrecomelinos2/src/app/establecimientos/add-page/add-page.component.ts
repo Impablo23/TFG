@@ -6,6 +6,7 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { Zona } from 'src/app/interfaces/zona.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { Sugerencia } from '../../interfaces/sugerencia.interface';
 
 @Component({
   selector: 'app-add-page',
@@ -20,7 +21,7 @@ export class AddPageComponent {
 
   public numEstablecimientos: number = 0;
 
-  // public idRol : string = '';
+  public idEstablecimientoSugerido: string = '';
 
 
   public nombre: string = '';
@@ -38,21 +39,30 @@ export class AddPageComponent {
     private establecimientosJsonService: EstablecimientosJsonService,
     // private activatedRoute: ActivatedRoute,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private route: ActivatedRoute
   ){
 
   }
 
 
   ngOnInit(): void {
-    // this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
-    //   {
-    //     if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
-    //     this.establecimientoDetalles = establecimiento[0];
+      this.route.queryParams.subscribe(params => {
+        this.idEstablecimientoSugerido = params['sugerenciaId'];
+        // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
+      });
 
-    //     return;
-    //   });
+      console.log("id sugerencia: "+this.idEstablecimientoSugerido);
+
+      if (this.idEstablecimientoSugerido !== undefined) {
+        this.establecimientosJsonService.getSugerenciaById(this.idEstablecimientoSugerido).subscribe(
+          sugerencias => {
+            this.nombre = sugerencias[0].nombre;
+            this.enlace = sugerencias[0].enlace;
+          }
+        );
+      }
 
       this.establecimientosJsonService.getZonas().subscribe(zonas => {
         this.listadoZonas = zonas;
@@ -103,44 +113,65 @@ export class AddPageComponent {
   }
 
 
-  public addEstablecimiento() {
-
+  public addEstablecimiento(): void {
+    // Obtener la lista de establecimientos para determinar el máximo ID actual
     this.establecimientosJsonService.getEstablecimientos().subscribe(establecimientos => {
+        let maxId = 0;
 
-      this.numEstablecimientos = establecimientos.length;
+        // Encontrar el máximo ID actual entre los establecimientos existentes
+        establecimientos.forEach(establecimiento => {
+            const idNum = parseInt(establecimiento.id);
+            if (idNum > maxId) {
+                maxId = idNum;
+            }
+        });
 
-      const establecimientoEditado: Establecimiento = {
-        id: (this.numEstablecimientos+1).toString(),
-        id_zona: parseInt(this.id_zona.toString()),
-        id_categoria: parseInt(this.id_categoria.toString()),
-        nombre: this.nombre,
-        descripcion: this.descripcion,
-        numResenas: this.numResenas,
-        direccion: this.direccion,
-        telefono: this.telefono,
-        foto: this.foto,
-        enlace: this.enlace,
-      }
+        // Generar el nuevo ID sumando 1 al máximo ID encontrado
+        const nuevoId = (maxId + 1).toString();
 
-      if (this.nombre.length === 0 ) {
-        this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar",{duration: 2000,panelClass:['background']});
-        return;
-      }
+        // Crear el objeto de establecimiento con el nuevo ID y los demás datos
+        const establecimientoEditado: Establecimiento = {
+            id: nuevoId,
+            id_zona: parseInt(this.id_zona.toString()),
+            id_categoria: parseInt(this.id_categoria.toString()),
+            nombre: this.nombre,
+            descripcion: this.descripcion,
+            numResenas: this.numResenas,
+            direccion: this.direccion,
+            telefono: this.telefono,
+            foto: this.foto,
+            enlace: this.enlace,
+        };
 
-      this.establecimientosJsonService.addEstablecimiento(establecimientoEditado).subscribe(
-        (response) => {
-          // console.log('perita');
-          this.snackbar.open("Establecimiento añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-          this.router.navigate([`/establecimientos/list`])
-          // contador= contador+1;
-        },
-        (error) => {
-          // console.log('mal');
-          this.snackbar.open("Ha ocurrido un error al añadir el establecimiento", "Cerrar",{duration: 2000,panelClass:['background']});
+        // Verificar que se haya proporcionado un nombre para el establecimiento
+        if (this.nombre.length === 0) {
+            this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+            return;
         }
-      )
-    });
 
-  }
+        // Agregar el nuevo establecimiento utilizando el servicio correspondiente
+        this.establecimientosJsonService.addEstablecimiento(establecimientoEditado).subscribe(
+            (response) => {
+                this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+
+                // Eliminar la sugerencia asociada al establecimiento (si existe)
+                if (this.idEstablecimientoSugerido !== undefined) {
+                    this.establecimientosJsonService.deleteSugerencia(this.idEstablecimientoSugerido).subscribe(
+                        (response) => { },
+                        (error) => { }
+                    );
+                }
+
+                // Navegar a la lista de establecimientos después de completar la operación
+                this.router.navigate(['/establecimientos/list']);
+            },
+            (error) => {
+                this.snackbar.open("Ha ocurrido un error al añadir el establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+            }
+        );
+    });
+}
+
+
 
 }

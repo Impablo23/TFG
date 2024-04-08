@@ -18,6 +18,7 @@ export class LayoutAdminComponent implements OnInit  {
     {label: 'Gestión de Zonas', icon: 'playlist_add', url: 'admin/zonas'},
     {label: 'Gestión de Categorías', icon: 'playlist_add', url: 'admin/categorias'},
     {label: 'Gestión de Usuarios', icon: 'playlist_add', url: 'admin/usuarios'},
+    {label: 'Gestión de Sugerencias', icon: 'playlist_add', url: 'admin/sugerencias'},
   ]
 
   constructor(

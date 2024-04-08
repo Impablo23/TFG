@@ -59,13 +59,15 @@ export class EditZonaComponent {
     this.establecimientosJsonService.updateZona(zonaEditada).subscribe(
       (response) => {
         // console.log('perita');
-        window.location.reload();
-        this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+        this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
       (error) => {
         // console.log('mal');
-        window.location.reload();
-        this.snackbar.open("Ha ocurrido un error al actualizar la zona", "Cerrar",{duration: 2000,panelClass:['background']});
+        this.snackbar.open("Ha ocurrido un error al actualizar la zona", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       }
     );
 

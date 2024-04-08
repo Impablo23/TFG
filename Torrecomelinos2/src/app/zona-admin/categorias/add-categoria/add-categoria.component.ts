@@ -45,55 +45,63 @@ export class AddCategoriaComponent {
     this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
   }
 
-  public addZona() {
-
+  public addCategoria() {
+    // Obtener la lista de categorías para determinar el máximo ID actual
     this.establecimientosJsonService.getCategorias().subscribe(
-      categorias => {
+        categorias => {
+            let maxId = 0;
 
-        // Ver cantidad de zonas para el id.
-        this.numCategorias = categorias.length;
+            // Encontrar el máximo ID actual entre las categorías existentes
+            categorias.forEach(categoria => {
+                const idNum = parseInt(categoria.id);
+                if (idNum > maxId) {
+                    maxId = idNum;
+                }
+            });
 
-        const nombreEstandar = this.capitalizarPalabra(this.nombre);
+            // Generar el nuevo ID sumando 1 al máximo ID encontrado
+            const nuevoId = (maxId + 1).toString();
 
-        this.establecimientosJsonService.getCategoriasByName(nombreEstandar).subscribe(
-          categorias => {
+            // Capitalizar el nombre de la categoría
+            const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
-            const categoria = categorias[0];
+            // Verificar si la categoría ya existe
+            this.establecimientosJsonService.getCategoriasByName(nombreEstandar).subscribe(
+                categorias => {
+                    const categoriaExistente = categorias[0];
 
-            if (categoria != undefined) {
-              this.snackbar.open("Esta zona ya existe.", "Cerrar",{duration: 2000,panelClass:['background']});
-              this.nombre = '';
-              return;
-            }
+                    if (categoriaExistente != undefined) {
+                        this.snackbar.open("Esta categoría ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
+                        this.nombre = '';
+                        return;
+                    }
 
-            const categoriaNueva: Categoria = {
-              id: (this.numCategorias+1).toString(),
-              nombre: nombreEstandar
-            }
+                    // Crear el objeto de categoría con el nuevo ID y el nombre capitalizado
+                    const categoriaNueva: Categoria = {
+                        id: nuevoId,
+                        nombre: nombreEstandar
+                    };
 
-            this.establecimientosJsonService.addCategoria(categoriaNueva).subscribe(
-              (response) => {
-                this.snackbar.open("Categoria añadida correctamente.", "Cerrar",{duration: 2000,panelClass:['background']});
-                this.nombre = '';
-                window.location.reload();
-              },
-              (error) => {
-                this.snackbar.open("Error al añadir la categoria.", "Cerrar",{duration: 2000,panelClass:['background']});
-                this.nombre = '';
-                window.location.reload();
-              }
+                    // Agregar la nueva categoría utilizando el servicio correspondiente
+                    this.establecimientosJsonService.addCategoria(categoriaNueva).subscribe(
+                        (response) => {
+                            this.snackbar.open("Categoría añadida correctamente.", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                                this.nombre = ''; // Limpiar el campo de nombre
+                            });
+                        },
+                        (error) => {
+                            this.snackbar.open("Ha ocurrido un error al añadir la categoría", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                                this.nombre = ''; // Limpiar el campo de nombre
+                            });
+                        }
+                    );
+                }
             );
-
-
-
-
-
-          }
-        );
-      }
+        }
     );
+}
 
-
-  }
 
 }

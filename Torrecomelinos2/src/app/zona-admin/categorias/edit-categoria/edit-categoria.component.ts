@@ -59,14 +59,14 @@ export class EditCategoriaComponent {
 
     this.establecimientosJsonService.updateCategoria(zonaEditada).subscribe(
       (response) => {
-        // console.log('perita');
-        this.snackbar.open("Categoria actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Categoria actualizada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
       (error) => {
-        // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al actualizar la categoria", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Ha ocurrido un error al actualizar la categoria.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       }
     );
     this.router.navigate(['admin/categorias/']);

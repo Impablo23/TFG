@@ -31,6 +31,14 @@
       "nombreCompleto": "user",
       "idRol": "2",
       "token": "4bb0c60f-0121-474c-97bd-ed7e07a8d4f0"
+    },
+    {
+      "id": "11",
+      "email": "f",
+      "pass": "8fa14cdd754f91cc6554c9e71929cce7",
+      "nombreCompleto": "f",
+      "idRol": "2",
+      "token": "6cb4a3c7-9056-42aa-be14-815c9da08a7f"
     }
   ],
   "categorias": [
@@ -53,6 +61,10 @@
     {
       "id": "5",
       "nombre": "Pastas"
+    },
+    {
+      "id": "6",
+      "nombre": "G"
     }
   ],
   "zonas": [
@@ -75,10 +87,6 @@
     {
       "id": "6",
       "nombre": "Calvario"
-    },
-    {
-      "id": "6",
-      "nombre": "Ead"
     }
   ],
   "establecimientos": [
@@ -255,94 +263,41 @@
     {
       "id": "1",
       "id_usuario": "1",
-      "id_establecimiento": "1"
+      "id_establecimiento": "2"
     },
     {
       "id": "2",
       "id_usuario": "1",
-      "id_establecimiento": "2"
+      "id_establecimiento": "3"
     },
     {
       "id": "3",
       "id_usuario": "1",
-      "id_establecimiento": "3"
+      "id_establecimiento": "1"
     },
     {
       "id": "4",
       "id_usuario": "1",
-      "id_establecimiento": "4"
-    },
-    {
-      "id": "5",
-      "id_usuario": "1",
-      "id_establecimiento": "5"
-    },
-    {
-      "id": "6",
-      "id_usuario": "2",
-      "id_establecimiento": "3"
-    },
-    {
-      "id": "7",
-      "id_usuario": "2",
-      "id_establecimiento": "1"
-    },
-    {
-      "id": "8",
-      "id_usuario": "1",
       "id_establecimiento": "8"
     },
     {
-      "id": "9",
-      "id_usuario": "1",
-      "id_establecimiento": "9"
-    },
-    {
-      "id": "10",
-      "id_usuario": "1",
-      "id_establecimiento": "12"
+      "id": "5",
+      "id_usuario": "2",
+      "id_establecimiento": "2"
     }
   ],
   "sugerencias": [
     {
       "id": "1",
-      "nombre": "Restaurante El Faro"
+      "id_usuario": "2",
+      "nombre": "Tiki",
+      "enlace": "https://www.google.com/search?q=tiki&oq=tiki&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIKCAEQABixAxiABDIKCAIQABixAxiABDINCAMQABiDARixAxiABDIJCAQQABgKGIAEMhAIBRAuGK8BGMcBGIAEGI4FMg0IBhAuGK8BGMcBGIAEMgcIBxAAGIAEMg8ICBAAGAoYgwEYsQMYgAQyBwgJEC4YgATSAQgxNjk0ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8&zx=1712562525046&no_sw_cr=1#vhid=/g/1tqp_lw0&vssid=lcl"
     },
     {
       "id": "2",
-      "nombre": "Cafetería La Plaza"
-    },
-    {
-      "id": "3",
-      "nombre": "Hotel Los Pinos"
-    },
-    {
-      "id": "4",
-      "nombre": "Pizzería La Bella Napoli"
-    },
-    {
-      "id": "5",
-      "nombre": "Bar La Cervecería"
-    },
-    {
-      "id": "6",
-      "nombre": "Restaurante La Terraza"
-    },
-    {
-      "id": "7",
-      "nombre": "Cafetería El Rincón"
-    },
-    {
-      "id": "8",
-      "nombre": "Hotel Marítimo"
-    },
-    {
-      "id": "9",
-      "nombre": "Parrilla Los Asados"
-    },
-    {
-      "id": "10",
-      "nombre": "Bar El Pescador"
+      "id_usuario": "4",
+      "nombre": "Playa Aruba",
+      "enlace": "https://www.google.com/search?q=playa+aruba&sca_esv=55d6234f4c88031b&sca_upv=1&sxsrf=ACQVn0-Kg5lldEL40JYHBFx4f-FgqV77dQ%3A1712562520367&ei=WKETZtj9FeGskdUP_u-E6A8&gs_ssp=eJzj4tVP1zc0zCpKMS5LyjAzYLRSMahIMTdKSzJIM0lNNE-2TEuzMqhINDVOtkw2TbQwMDUyNE018-IuyEmsTFRILCpNSgQAhvATyg&oq=Playa&gs_lp=Egxnd3Mtd2l6LXNlcnAiBVBsYXlhKgIIATIKEAAYgAQYigUYQzIUEC4YgAQYsQMYgwEYxwEYrwEYjgUyDRAAGIAEGIoFGEMYsQMyDRAuGIAEGIoFGEMYsQMyCxAuGIAEGLEDGIMBMgUQLhiABDILEC4YgAQYsQMYgwEyERAuGIAEGMcBGK8BGJgFGJkFMg4QLhiABBiKBRixAxiDATILEC4YgAQYsQMYgwFIkTlQvyZYsS5wAXgBkAEAmAGIAaAB9QOqAQMzLjK4AQPIAQD4AQGYAgagApgEqAISwgIHECMY6gIYJ8ICEBAuGMcBGK8BGI4FGOoCGCfCAhYQABgDGI8BGOUCGOoCGLQCGIwD2AEBwgIWEC4YAxiPARjlAhjqAhi0AhiMA9gBAcICIBAuGIAEGOMEGOkEGMcBGK8BGMgDGI4FGOoCGLQC2AECwgIcEC4YgAQYigUYQxjHARjRAxjIAxjqAhi0AtgBAsICChAjGIAEGIoFGCfCAgUQABiABMICDhAuGIAEGLEDGMcBGNEDwgILEAAYgAQYsQMYgwHCAggQABiABBixA8ICChAuGIAEGIoFGEOYAwi6BgYIARABGAu6BgYIAhABGAiSBwM0LjKgB9ZF&sclient=gws-wiz-serp"
     }
   ]
 }

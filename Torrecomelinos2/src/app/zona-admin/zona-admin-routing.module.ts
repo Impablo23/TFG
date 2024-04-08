@@ -13,6 +13,10 @@ import { DeleteCategoriaComponent } from './categorias/delete-categoria/delete-c
 import { AddUsuarioComponent } from './usuarios/add-usuario/add-usuario.component';
 import { EditUsuarioComponent } from './usuarios/edit-usuario/edit-usuario.component';
 import { DeleteUsuarioComponent } from './usuarios/delete-usuario/delete-usuario.component';
+import { SugerenciasComponent } from './sugerencias/sugerencias.component';
+import { AddSugerenciaComponent } from './sugerencias/add-sugerencia/add-sugerencia.component';
+import { DeleteSugerenciaComponent } from './sugerencias/delete-sugerencia/delete-sugerencia.component';
+import { InfoSugerenciaComponent } from './sugerencias/info-sugerencia/info-sugerencia.component';
 
 const routes: Routes = [
   {
@@ -39,6 +43,13 @@ const routes: Routes = [
           { path: '', component: AddUsuarioComponent },
           { path: 'edit/:id', component: EditUsuarioComponent },
           { path: 'delete/:id', component: DeleteUsuarioComponent }
+        ]
+      },
+      { path: 'sugerencias', component: SugerenciasComponent,
+        children: [
+          { path: '', component: InfoSugerenciaComponent},
+          { path: 'add/:id', component: AddSugerenciaComponent },
+          { path: 'delete/:id', component: DeleteSugerenciaComponent }
         ]
       },
       {path: '**', redirectTo: 'zonas'},

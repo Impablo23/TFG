@@ -1,0 +1,37 @@
+<h1 style="text-align: center;font-size: 40px;font-family: monospace;padding: 30px;">Gestión de Sugerencias</h1>
+
+<div style="height: 100%; width: 60%;float: left;">
+
+  <div>
+    <table style="width: 60%;margin: auto;">
+      <thead>
+        <tr style="width: 100%;">
+          <th class="th" colspan="2">Sugerencias</th>
+          <!-- <th class="th">Column 2</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sugerencia of listadoSugerencias">
+          <td class="td">
+            {{sugerencia.nombre}}
+          </td>
+          <td class="td">
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="goToAddSugerencia(sugerencia.id)">
+              <mat-icon>done</mat-icon>
+            </button>
+            <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="goToDeleteSugerencia(sugerencia.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+
+<div style="height: 100%; width: 40%;float: right;">
+  <router-outlet></router-outlet>
+</div>

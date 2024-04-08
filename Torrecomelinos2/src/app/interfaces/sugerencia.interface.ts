@@ -1,4 +1,6 @@
 export interface Sugerencia {
   id: string,
-  nombre: string
+  id_usuario: string,
+  nombre: string,
+  enlace: string
 }

@@ -120,43 +120,59 @@ export class DetailsPageComponent {
   }
 
   public addFavorito(id_establecimiento: string) {
+    // Obtener la lista de favoritos para determinar el máximo ID actual
     this.establecimientosJsonService.getFavoritos().subscribe(
-      favoritas => {
-        this.numFav = favoritas.length;
+        favoritos => {
+            let maxId = 0;
 
-        const fav : Favorito = {
-          id: (this.numFav+1).toString(),
-          id_usuario: this.id,
-          id_establecimiento: id_establecimiento,
+            // Encontrar el máximo ID actual entre los favoritos existentes
+            favoritos.forEach(favorito => {
+                const idNum = parseInt(favorito.id);
+                if (idNum > maxId) {
+                    maxId = idNum;
+                }
+            });
+
+            // Generar el nuevo ID sumando 1 al máximo ID encontrado
+            const nuevoId = (maxId + 1).toString();
+
+            // Crear el objeto de favorito con el nuevo ID y los demás datos
+            const nuevoFavorito: Favorito = {
+                id: nuevoId,
+                id_usuario: this.id,
+                id_establecimiento: id_establecimiento,
+            };
+
+            // Agregar el nuevo favorito utilizando el servicio correspondiente
+            this.establecimientosJsonService.addFavorito(nuevoFavorito).subscribe(
+                (response) => {
+                    this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                        window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                    });
+                },
+                (error) => {
+                    this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+                        window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                    });
+                }
+            );
         }
-
-        this.establecimientosJsonService.addFavorito(fav).subscribe(
-
-          (response) => {
-            this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-            window.location.reload();
-          },
-          (error) => {
-            this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-            window.location.reload();
-          }
-
-        );
-
-      }
     );
-  }
+}
+
 
   public eliminaFavorito(id_establecimiento: string) {
 
     this.establecimientosJsonService.deleteFavorito(this.id,id_establecimiento).subscribe(
       (response) => {
-        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       },
       (error) => {
-        this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-        window.location.reload();
+        this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+        });
       }
     );
 
