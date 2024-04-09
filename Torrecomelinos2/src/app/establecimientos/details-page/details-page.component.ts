@@ -127,7 +127,7 @@ export class DetailsPageComponent {
 
             // Encontrar el máximo ID actual entre los favoritos existentes
             favoritos.forEach(favorito => {
-                const idNum = parseInt(favorito.id);
+                const idNum =parseInt(favorito.id);
                 if (idNum > maxId) {
                     maxId = idNum;
                 }
@@ -139,20 +139,20 @@ export class DetailsPageComponent {
             // Crear el objeto de favorito con el nuevo ID y los demás datos
             const nuevoFavorito: Favorito = {
                 id: nuevoId,
-                id_usuario: this.id,
-                id_establecimiento: id_establecimiento,
+                id_usuario: (this.id),
+                id_establecimiento: (id_establecimiento),
             };
 
             // Agregar el nuevo favorito utilizando el servicio correspondiente
             this.establecimientosJsonService.addFavorito(nuevoFavorito).subscribe(
                 (response) => {
                     this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                        window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
                     });
                 },
                 (error) => {
                     this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                        window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
                     });
                 }
             );
@@ -163,7 +163,7 @@ export class DetailsPageComponent {
 
   public eliminaFavorito(id_establecimiento: string) {
 
-    this.establecimientosJsonService.deleteFavorito(this.id,id_establecimiento).subscribe(
+    this.establecimientosJsonService.deleteFavorito((this.id),(id_establecimiento)).subscribe(
       (response) => {
         this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar

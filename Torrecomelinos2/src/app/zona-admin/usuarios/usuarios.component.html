@@ -6,7 +6,8 @@
     <table style="width: 80%;margin: auto;">
       <thead>
         <tr style="width: 100%;">
-          <th class="th" colspan="4">Usuarios</th>
+          <th class="th" colspan="4" *ngIf="listadoUsuarios.length > 0">Usuarios</th>
+          <th class="th" colspan="4" *ngIf="listadoUsuarios.length == 0">No hay usuarios</th>
           <!-- <th class="th">Column 2</th> -->
         </tr>
       </thead>

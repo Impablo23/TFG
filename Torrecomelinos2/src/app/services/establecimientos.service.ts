@@ -132,7 +132,7 @@ export class EstablecimientosJsonService {
   }
 
   deleteFavorito(id_usuario: string,id_establecimiento: string): Observable<boolean> {
-    return this.http.delete(`${this.baseUrl}/favoritos?id=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
+    return this.http.delete(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
   }
 
   addFavorito(favorito: Favorito) : Observable<boolean> {

@@ -95,10 +95,10 @@ export class FavouritePageComponent {
 
   public eliminarFavorito(id_establecimiento: string) {
     console.log(this.listadoFavoritosDetalles);
-    this.establecimientosJsonService.deleteFavorito(this.id,id_establecimiento).subscribe(
+    this.establecimientosJsonService.deleteFavorito((this.id),(id_establecimiento)).subscribe(
       (response) => {
         // Eliminar el favorito de listadoFavoritos
-        const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
+        const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === (this.id) && favorito.id_establecimiento === (id_establecimiento));
         console.log(index);
         if (index !== -1) {
           this.listadoFavoritos.splice(index, 1);
