@@ -25,7 +25,7 @@ export class AddPageComponent {
 
   public numEstablecimientos: number = 0;
 
-  public idEstablecimientoSugerido: string = '';
+  public idEstablecimientoSugerido: number = 0;
 
 
   public nombre: string = '';
@@ -61,7 +61,7 @@ export class AddPageComponent {
       console.log("id sugerencia: "+this.idEstablecimientoSugerido);
 
       if (this.idEstablecimientoSugerido !== undefined) {
-        this.establecimientosJsonService.getSugerenciaById(this.idEstablecimientoSugerido).subscribe(
+        this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido).subscribe(
           sugerencias => {
             this.nombre = sugerencias[0].nombre;
             this.enlace = sugerencias[0].enlace;

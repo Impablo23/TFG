@@ -15,6 +15,12 @@ class Rol(BaseModel):
     id: int
     rol: str
     
+class Sugerencia(BaseModel):
+    id: int
+    id_usuario: int
+    nombre: str
+    enlace: str
+    
 class Zona(BaseModel):
     id: int
     nombre: str
@@ -307,6 +313,33 @@ def obtener_establecimiento_por_id(id: int) -> List[Establecimiento]:
     else:
         # Si no se encuentra el usuario, devolver una lista vacía
         return []
+    
+    
+def obtener_establecimiento_por_nombre(nombre: str) -> List[Establecimiento]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener el usuario con el ID especificado
+    consulta = "SELECT * FROM establecimientos WHERE nombre = %s"
+
+    # Ejecutar la consulta con el ID como parámetro
+    cursor.execute(consulta, (nombre,))
+
+    # Obtener el resultado
+    resultado = cursor.fetchone()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Verificar si se encontró el usuario
+    if resultado:
+        # Crear un objeto Usuario con el resultado y devolverlo como lista
+        establecimiento = Establecimiento(**resultado)
+        return [establecimiento]
+    else:
+        # Si no se encuentra el usuario, devolver una lista vacía
+        return []
 
 
 #----------------------------------------------------------------------------------------------------------
@@ -472,6 +505,66 @@ def obtenerCategoriaById(id: int) -> List[Categoria]:
         # Crear un objeto Usuario con el resultado y devolverlo como lista
         categoria = Categoria(**resultado)
         return [categoria]
+    else:
+        # Si no se encuentra el usuario, devolver una lista vacía
+        return []
+    
+  
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------SUGERENCIAS--------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------  
+    
+def obtener_sugerencias() -> List[Sugerencia]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener los usuarios
+    consulta = "SELECT * FROM sugerencias"
+    
+    # Ejecutar la consulta
+    cursor.execute(consulta)
+    
+    # Obtener resultados
+    resultados = cursor.fetchall()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Lista para almacenar los usuarios
+    sugerencias = []
+
+    # Iterar sobre los resultados y crear objetos Usuario
+    for resultado in resultados:
+        sugerencia = Sugerencia(**resultado)
+        sugerencias.append(sugerencia)
+
+    return sugerencias
+
+
+def obtenerSugerenciaById(id: int) -> List[Sugerencia]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener el usuario con el email especificado
+    consulta = "SELECT * FROM sugerencias WHERE id = %s"
+
+    # Ejecutar la consulta con el email como parámetro
+    cursor.execute(consulta, (id,))
+
+    # Obtener el resultado
+    resultado = cursor.fetchone()
+
+    # Cerrar cursor
+    cursor.close()
+
+    # Verificar si se encontró el usuario
+    if resultado:
+        # Crear un objeto Usuario con el resultado y devolverlo como lista
+        sugerencia = Sugerencia(**resultado)
+        return [sugerencia]
     else:
         # Si no se encuentra el usuario, devolver una lista vacía
         return []

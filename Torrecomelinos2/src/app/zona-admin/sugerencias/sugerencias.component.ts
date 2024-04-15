@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Sugerencia } from 'src/app/interfaces/sugerencia.interface';
+import { SugerenciaApi } from 'src/app/interfaces/sugerenciaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-sugerencias',
@@ -10,26 +13,30 @@ import { EstablecimientosJsonService } from 'src/app/services/establecimientos.s
 })
 export class SugerenciasComponent {
 
-  constructor(public router: Router,private establecimientosJsonService: EstablecimientosJsonService){}
+  constructor(public router: Router,
+    private establecimientosJsonService: EstablecimientosJsonService,
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
+  ){}
 
   ngOnInit(){
     this.listarSugerencias();
   }
-  public listadoSugerencias: Sugerencia[] = [];
+  public listadoSugerencias: SugerenciaApi[] = [];
 
   public listarSugerencias(){
-    this.establecimientosJsonService.getSugerencias().subscribe(
+    this.establecimientosApi.getSugerenciasApi().subscribe(
       sugerencias => {
         this.listadoSugerencias = sugerencias;
       }
     );
   }
 
-  public goToAddSugerencia(id: string) {
+  public goToAddSugerencia(id: number) {
     this.router.navigate(['admin/sugerencias/add', id]);
   }
 
-  public goToDeleteSugerencia(id: string) {
+  public goToDeleteSugerencia(id: number) {
     this.router.navigate(['admin/sugerencias/delete', id]);
   }
 

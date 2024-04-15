@@ -126,7 +126,7 @@ export class AddCategoriaComponent {
 
           this.establecimientosApi.addCategoriaApi(zonaAdd).subscribe(
             repuesta => {
-              this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+              this.snackbar.open( "Categoria añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
               });
             }

@@ -51,7 +51,7 @@ export class AuthApiService {
     return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`)
   }
 
-  getUsersApiById(id: string): Observable<UsuarioApi[]> {
+  getUsersApiById(id: number): Observable<UsuarioApi[]> {
     return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/id/${id}`)
   }
 

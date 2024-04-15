@@ -85,10 +85,11 @@ CREATE TABLE IF NOT EXISTS sugerencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
     nombre VARCHAR(255),
-    enlace VARCHAR(1000)
+    enlace TEXT
 );
 
 INSERT INTO sugerencias (id_usuario, nombre, enlace) VALUES
 (2, 'Tiki', 'https://www.google.com/search?gs_ssp=eJzj4tZP1zcsKSyIzyk3MGC0UjGoSDE3SktKTTVNNEo1SzQ3tjKoSDI0NTAxNjS1SDIyNrcwS_USLMnMzlQoyS8qSs3Nz8nMyy8GANs-FaA&q=tiki+torremolinos&oq=tiki&gs_lcrp=EgZjaHJvbWUqEAgFEC4YrwEYxwEYgAQYjgUyCQgAEEUYORiABDINCAEQABiDARixAxiABDIKCAIQABixAxiABDINCAMQABiDARixAxiABDIJCAQQABgKGIAEMhAIBRAuGK8BGMcBGIAEGI4FMg0IBhAuGK8BGMcBGIAEMgcIBxAAGIAEMg8ICBAAGAoYgwEYsQMYgAQyBwgJEC4YgATSAQgyMzc3ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8&safe=active&ssui=on');
 
-
+INSERT INTO sugerencias (id_usuario, nombre, enlace) VALUES
+(3, 'Tiki', 'https://www.google.com/search?gs_ssp=eJzj4tZP1zcsKSyIzyk3MGC0UjGoSDE3SktKTTVNNEo1SzQ3tjKoSDI0NTAxNjS1SDIyNrcwS_USLMnMzlQoyS8qSs3Nz8nMyy8GANs-FaA&q=tiki+torremolinos&oq=tiki&gs_lcrp=EgZjaHJvbWUqEAgFEC4YrwEYxwEYgAQYjgUyCQgAEEUYORiABDINCAEQABiDARixAxiABDIKCAIQABixAxiABDINCAMQABiDARixAxiABDIJCAQQABgKGIAEMhAIBRAuGK8BGMcBGIAEGI4FMg0IBhAuGK8BGMcBGIAEMgcIBxAAGIAEMg8ICBAAGAoYgwEYsQMYgAQyBwgJEC4YgATSAQgyMzc3ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8&safe=active&ssui=on');

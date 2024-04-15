@@ -332,6 +332,13 @@ async def establecimientosById(id: int):
     
     return establecimientos_list_by_id
 
+@api.get("/establecimientos/name/{name}")
+async def establecimientosById(name:str):
+    
+    establecimientos_list_by_name = obtener_establecimiento_por_nombre(name)
+    
+    return establecimientos_list_by_name
+
 @api.post("/establecimientos/add")
 async def agregar_establecimiento(establecimiento: Establecimiento):
     try:
@@ -390,6 +397,48 @@ async def eliminar_establecimiento(id: int):
         else:
             # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
             raise HTTPException(status_code=500, detail="Error al eliminar el establecimiento")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+    
+    
+    
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------SUGERENCIAS--------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+# APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS SUGERENCIAS
+@api.get("/sugerencias")
+async def sugerencias():
+    sugerencias_list = obtener_sugerencias()
+    return sugerencias_list
+
+@api.get("/sugerencias/id/{id}")
+async def sugerenciasById(id: int):
+    
+    sugerencias_list_by_id = obtenerSugerenciaById(id)
+    
+    return sugerencias_list_by_id
+
+@api.delete("/sugerencias/delete/{id}")   
+# Función para eliminar un usuario
+async def eliminar_sugerencia(id: int):
+    try:
+        # Consulta SQL para eliminar un usuario por su ID
+        consulta = "DELETE FROM sugerencias WHERE id = %s"
+
+        # Datos del usuario a eliminar
+        datos_sugerencia = (id,)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_sugerencia):
+            # Devolver un diccionario con un mensaje de éxito
+            return {"mensaje": "Sugerencia eliminada correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al eliminar la sugerencia")
     except Exception as e:
         # Si ocurre un error inesperado, lanzar una excepción HTTP 500
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")

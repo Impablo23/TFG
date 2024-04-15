@@ -11,6 +11,7 @@ import { Sugerencia } from "../interfaces/sugerencia.interface";
 import { EstablecimientoApi } from '../interfaces/establecimientoApi.interface';
 import { CategoriaApi } from "../interfaces/categoriaApi.interface";
 import { ZonaApi } from "../interfaces/zonaApi.interface";
+import { SugerenciaApi } from "../interfaces/sugerenciaApi.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -114,8 +115,8 @@ export class EstablecimientosApiService {
     return this.http.delete<boolean>(`${ this.baseUrl }/establecimientos/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
   }
 
-  getEstablecimientosByName(name: string): Observable<Establecimiento[]> {
-    return this.http.get<Establecimiento[]>(`${this.baseUrl}/establecimientos?nombre=${name}`)
+  getEstablecimientosApiByName(name: string): Observable<EstablecimientoApi[]> {
+    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/nombre/${name}`)
   }
 
 
@@ -154,17 +155,17 @@ export class EstablecimientosApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  // getSugerencias() : Observable<Sugerencia[]> {
-  //   return this.http.get<Sugerencia[]>(`${this.baseUrl}/sugerencias`)
-  // }
+  getSugerenciasApi() : Observable<SugerenciaApi[]> {
+    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
+  }
 
-  // getSugerenciaById(id: string): Observable<Sugerencia[]> {
-  //   return this.http.get<Sugerencia[]>(`${this.baseUrl}/sugerencias?id=${id}`)
-  // }
+  getSugerenciaApiById(id: number): Observable<SugerenciaApi[]> {
+    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias/id/${id}`)
+  }
 
-  // deleteSugerencia(id: string): Observable<boolean> {
-  //   return this.http.delete(`${this.baseUrl}/sugerencias/${id}`).pipe(map( response => true),catchError(error => of(false)))
-  // }
+  deleteSugerenciaApi(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
+  }
 
   // addSugerencia(sugerencia: Sugerencia) : Observable<boolean> {
   //   return this.http.post(`${this.baseUrl}/sugerencias`,sugerencia).pipe(map( response => true),catchError(error => of(false)))
