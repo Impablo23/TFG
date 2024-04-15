@@ -9,6 +9,10 @@ import { Zona } from 'src/app/interfaces/zona.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
 import { Favorito } from '../../interfaces/favorito.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 
 @Component({
   selector: 'app-details-page',
@@ -17,9 +21,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class DetailsPageComponent {
 
-  public establecimientoDetalles?: Establecimiento;
-  public listadoZonas: Zona[] = [];
-  public listadoCategorias: Categoria[] = [];
+  public establecimientoDetalles?: EstablecimientoApi;
+  public listadoZonas: ZonaApi[] = [];
+  public listadoCategorias: CategoriaApi[] = [];
 
   public idRol : string = '';
   public id : string = '';
@@ -31,7 +35,8 @@ export class DetailsPageComponent {
     private establecimientosJsonService: EstablecimientosJsonService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private establecimientoApi: EstablecimientosApiService
   ){
 
   }
@@ -40,7 +45,7 @@ export class DetailsPageComponent {
     this.router.navigate(['/establecimientos/list']);
   }
 
-  public goToEdit(id: string){
+  public goToEdit(id: number){
     this.router.navigate([`/establecimientos/edit/${id}`]);
   }
 
@@ -50,31 +55,54 @@ export class DetailsPageComponent {
     this.id = localStorage.getItem('id')!;
 
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
-      {
-        if (!establecimiento) return this.router.navigate(['/establecimientos/listado']);
+    // this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
+    //   {
+    //     if (!establecimiento) return this.router.navigate(['/establecimientos/listado']);
 
-        this.establecimientoDetalles = establecimiento[0];
+    //     this.establecimientoDetalles = establecimiento[0];
 
-        this.verificarFavorito(this.id,this.establecimientoDetalles.id);
+    //     this.verificarFavorito(this.id,this.establecimientoDetalles.id);
 
-        return;
-      });
+    //     return;
+    //   });
 
-      this.establecimientosJsonService.getZonas().subscribe(zonas => {
-        this.listadoZonas = zonas;
-      });
+    //   this.establecimientosJsonService.getZonas().subscribe(zonas => {
+    //     this.listadoZonas = zonas;
+    //   });
 
-      this.establecimientosJsonService.getCategorias().subscribe(categoria => {
-        this.listadoCategorias = categoria;
-      });
+    //   this.establecimientosJsonService.getCategorias().subscribe(categoria => {
+    //     this.listadoCategorias = categoria;
+    //   });
+
+      this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
+        {
+          if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
+
+          this.establecimientoDetalles = establecimiento[0];
+
+          // this.verificarFavorito(this.id,this.establecimientoDetalles.id);
+
+          return;
+        });
+
+        this.establecimientoApi.getZonasApi().subscribe(
+          zonas => {
+            this.listadoZonas = zonas
+          }
+        );
+
+        this.establecimientoApi.getCategoriasApi().subscribe(
+          categorias => {
+            this.listadoCategorias = categorias
+          }
+        );
 
 
 
 
   }
 
-  obtenerNombreZona(idZona: string): string {
+  obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
 
@@ -85,7 +113,7 @@ export class DetailsPageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: string): string {
+  obtenerNombreCategoria(idCategoria: number): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
 

@@ -12,10 +12,10 @@ export class AuthGuardService implements CanActivate {
     const token = localStorage.getItem('token');
 
     if (token) {
-      console.log('perita');
+      // console.log('perita');
       return true;
     } else {
-      console.log('malll');
+      // console.log('malll');
       this.router.navigate(['/auth']);
       return false;
     }
@@ -38,7 +38,7 @@ export class HomeGuardService implements CanActivate {
       this.router.navigate(['/establecimientos']);
       return false;
     } else {
-      console.log('perita');
+      // console.log('perita');
       return true;
     }
   }

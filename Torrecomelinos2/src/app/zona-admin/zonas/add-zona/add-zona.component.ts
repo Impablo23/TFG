@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Zona } from 'src/app/interfaces/zona.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-add-zona',
@@ -18,7 +20,8 @@ export class AddZonaComponent implements OnInit {
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private establecimientosApi: EstablecimientosApiService
   ){}
 
   ngOnInit() {
@@ -45,63 +48,95 @@ export class AddZonaComponent implements OnInit {
     this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
   }
 
-  public addZona() {
-    // Obtener la lista de zonas para determinar el máximo ID actual
-    this.establecimientosJsonService.getZonas().subscribe(
-        zonas => {
-            let maxId = 0;
+  // public addZona() {
+  //   // Obtener la lista de zonas para determinar el máximo ID actual
+  //   this.establecimientosJsonService.getZonas().subscribe(
+  //       zonas => {
+  //           let maxId = 0;
 
-            // Encontrar el máximo ID actual entre las zonas existentes
-            zonas.forEach(zona => {
-                const idNum = parseInt(zona.id);
-                if (idNum > maxId) {
-                    maxId = idNum;
-                }
-            });
+  //           // Encontrar el máximo ID actual entre las zonas existentes
+  //           zonas.forEach(zona => {
+  //               const idNum = parseInt(zona.id);
+  //               if (idNum > maxId) {
+  //                   maxId = idNum;
+  //               }
+  //           });
 
-            // Generar el nuevo ID sumando 1 al máximo ID encontrado
-            const nuevoId = (maxId + 1).toString();
+  //           // Generar el nuevo ID sumando 1 al máximo ID encontrado
+  //           const nuevoId = (maxId + 1).toString();
 
-            // Capitalizar el nombre de la zona
-            const nombreEstandar = this.capitalizarPalabra(this.nombre);
+  //           // Capitalizar el nombre de la zona
+  //           const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
-            // Verificar si la zona ya existe
-            this.establecimientosJsonService.getZonaByName(nombreEstandar).subscribe(
-                zonas => {
-                    const zonaExistente = zonas[0];
+  //           // Verificar si la zona ya existe
+  //           this.establecimientosJsonService.getZonaByName(nombreEstandar).subscribe(
+  //               zonas => {
+  //                   const zonaExistente = zonas[0];
 
-                    if (zonaExistente != undefined) {
-                        this.snackbar.open("Esta zona ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
-                        this.nombre = '';
-                        return;
-                    }
+  //                   if (zonaExistente != undefined) {
+  //                       this.snackbar.open("Esta zona ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
+  //                       this.nombre = '';
+  //                       return;
+  //                   }
 
-                    // Crear el objeto de zona con el nuevo ID y el nombre capitalizado
-                    const zonaNueva: Zona = {
-                        id: nuevoId,
-                        nombre: nombreEstandar
-                    };
+  //                   // Crear el objeto de zona con el nuevo ID y el nombre capitalizado
+  //                   const zonaNueva: Zona = {
+  //                       id: nuevoId,
+  //                       nombre: nombreEstandar
+  //                   };
 
-                    // Agregar la nueva zona utilizando el servicio correspondiente
-                    this.establecimientosJsonService.addZona(zonaNueva).subscribe(
-                        (response) => {
-                            this.snackbar.open("Zona añadida correctamente.", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-                                this.nombre = ''; // Limpiar el campo de nombre
-                            });
-                        },
-                        (error) => {
-                            this.snackbar.open("Ha ocurrido un error al añadir la zona", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-                                this.nombre = ''; // Limpiar el campo de nombre
-                            });
-                        }
-                    );
-                }
-            );
+  //                   // Agregar la nueva zona utilizando el servicio correspondiente
+  //                   this.establecimientosJsonService.addZona(zonaNueva).subscribe(
+  //                       (response) => {
+  //                           this.snackbar.open("Zona añadida correctamente.", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+  //                               window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //                               this.nombre = ''; // Limpiar el campo de nombre
+  //                           });
+  //                       },
+  //                       (error) => {
+  //                           this.snackbar.open("Ha ocurrido un error al añadir la zona", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+  //                               window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //                               this.nombre = ''; // Limpiar el campo de nombre
+  //                           });
+  //                       }
+  //                   );
+  //               }
+  //           );
+  //       }
+  //   );
+  // }
+
+  public addZonaApi() {
+
+    // Capitalizar el nombre de la zona
+    const nombreEstandar = this.capitalizarPalabra(this.nombre);
+
+    this.establecimientosApi.getZonaByNameApi(nombreEstandar).subscribe(
+      zonas => {
+        const zonaExistente = zonas[0];
+
+        if (zonaExistente != undefined) {
+          this.snackbar.open("Esta zona ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
+          this.nombre = '';
+          return;
+        }else {
+          const zonaAdd :ZonaApi = {
+            id: 0,
+            nombre: nombreEstandar
+          }
+
+          this.establecimientosApi.addZonaApi(zonaAdd).subscribe(
+            repuesta => {
+              this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+              });
+            }
+          );
         }
+      }
     );
-}
+
+  }
 
 
 }

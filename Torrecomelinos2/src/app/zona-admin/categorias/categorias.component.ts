@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-categorias',
@@ -10,26 +12,26 @@ import { EstablecimientosJsonService } from 'src/app/services/establecimientos.s
 })
 export class CategoriasComponent {
 
-  constructor(public router: Router,private establecimientosJsonService: EstablecimientosJsonService){}
+  constructor(public router: Router,private establecimientosJsonService: EstablecimientosJsonService, private establecimientosApi: EstablecimientosApiService){}
 
   ngOnInit(){
     this.listarZonas();
   }
-  public listadoCategorias: Categoria[] = [];
+  public listadoCategorias: CategoriaApi[] = [];
 
   public listarZonas(){
-    this.establecimientosJsonService.getCategorias().subscribe(
+    this.establecimientosApi.getCategoriasApi().subscribe(
       categorias => {
         this.listadoCategorias = categorias;
       }
     );
   }
 
-  public goToEditZona(id: string) {
+  public goToEditZona(id: number) {
     this.router.navigate(['admin/categorias/edit', id]);
   }
 
-  public goToDeleteZona(id: string) {
+  public goToDeleteZona(id: number) {
     this.router.navigate(['admin/categorias/delete', id]);
   }
 

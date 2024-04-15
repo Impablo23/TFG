@@ -3,7 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
+import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-delete-page',
@@ -12,15 +14,16 @@ import { EstablecimientosJsonService } from 'src/app/services/establecimientos.s
 })
 export class DeletePageComponent {
 
-  public establecimientoDetalles?: Establecimiento;
-  public idEstablecimiento: string = '';
+  public establecimientoDetalles?: EstablecimientoApi;
+  public idEstablecimiento: number = 0;
   public nombreEstablecimiento: string = '';
 
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private establecimientoApi: EstablecimientosApiService
   ){}
 
   public goToList(){
@@ -28,9 +31,9 @@ export class DeletePageComponent {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
       {
-        if (!establecimiento) return this.router.navigate(['/establecimientos/listado']);
+        if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
         this.establecimientoDetalles = establecimiento[0];
 
@@ -45,9 +48,24 @@ export class DeletePageComponent {
 
   }
 
-  public deleteEstablecimiento(id: string) {
+  // public deleteEstablecimiento(id: string) {
 
-    this.establecimientosJsonService.deleteEstablecimiento(id.toString()).subscribe(
+  //   this.establecimientosJsonService.deleteEstablecimiento(id.toString()).subscribe(
+  //     (response) => {
+  //       this.snackbar.open("Establecimiento eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+  //       this.router.navigate([`/establecimientos/list`])
+  //     },
+  //     (error) => {
+  //       this.snackbar.open("Error al eliminar el establecimiento", "Cerrar",{duration: 2000,panelClass:['background']});
+  //       this.router.navigate([`/establecimientos/list`])
+  //     }
+  //   );
+
+  // }
+
+  public deleteEstablecimientoApi(id: number) {
+
+    this.establecimientoApi.deleteEstablecimientoApi(id).subscribe(
       (response) => {
         this.snackbar.open("Establecimiento eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
         this.router.navigate([`/establecimientos/list`])

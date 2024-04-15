@@ -8,10 +8,10 @@
 				<img class="postcard__img" src="{{evitarErrorEnFoto(establecimientoDetalles!.foto)}}" alt="{{establecimientoDetalles?.nombre}}" />
 			</a>
 			<div class="postcard__text">
-				<h1 class="postcard__title blue"><a>{{establecimientoDetalles?.nombre}} ({{obtenerNombreZona((establecimientoDetalles!.id_zona).toString())}}) <span style="font-size: 15px;">Reseñas: {{establecimientoDetalles?.numResenas}}</span></a></h1>
+				<h1 class="postcard__title blue"><a>{{establecimientoDetalles?.nombre}} ({{obtenerNombreZona((establecimientoDetalles!.id_zona))}}) <span style="font-size: 15px;">Reseñas: {{establecimientoDetalles?.numResenas}}</span></a></h1>
 				<div class="postcard__subtitle small">
 					<time datetime="2020-05-25 12:00:00">
-						<i class="fas fa-calendar-alt mr-2"></i>Categoría: {{obtenerNombreCategoria((establecimientoDetalles!.id_categoria).toString())}}
+						<i class="fas fa-calendar-alt mr-2"></i>Categoría: {{obtenerNombreCategoria((establecimientoDetalles!.id_categoria))}}
 					</time>
 				</div>
 				<div class="postcard__bar"></div>
@@ -22,14 +22,14 @@
             <a href="{{establecimientoDetalles?.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="width: 30%; margin-right: 20px;">Sitio web</a>
             <!-- <a type="button" class="btn btn-outline-danger" style="width: 15%;" *ngIf="idRol === '1'"><mat-icon>delete</mat-icon></a> -->
             <a type="button" class="btn btn-outline-success" style="width: 15%;margin-left: 20px;" (click)="goToEdit(establecimientoDetalles!.id)" *ngIf="idRol === '1'"><mat-icon>edit</mat-icon></a>
-            <label class="container" *ngIf="!esFavorito">
+            <!-- <label class="container" *ngIf="!esFavorito">
               <input type="checkbox" (click)="addFavorito(establecimientoDetalles!.id)">
               <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
             </label>
             <label class="containerok" *ngIf="esFavorito">
               <input type="checkbox" (click)="eliminaFavorito(establecimientoDetalles!.id)">
               <svg id="Layer_1" version="1.0" viewBox="0 0 24 24" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M16.4,4C14.6,4,13,4.9,12,6.3C11,4.9,9.4,4,7.6,4C4.5,4,2,6.5,2,9.6C2,14,12,22,12,22s10-8,10-12.4C22,6.5,19.5,4,16.4,4z"></path></svg>
-            </label>
+            </label> -->
           </div>
         </div>
 		</article>

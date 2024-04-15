@@ -3,7 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { Zona } from 'src/app/interfaces/zona.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-delete-zona',
@@ -14,19 +16,20 @@ export class DeleteZonaComponent {
 
   public nombre: string = '';
 
-  public zonaSeleccionada!: Zona;
+  public zonaSeleccionada!: ZonaApi;
 
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private establecimientosApi: EstablecimientosApiService
   ){}
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getZonaById(id) )  ).subscribe(  zona =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
       {
-        if (!zona) return this.router.navigate(['/zona']);
+        if (!zona) return this.router.navigate(['admin/zonas']);
         this.zonaSeleccionada = zona[0];
         //Datos del formulario ya rellenos
         this.nombre  = this.zonaSeleccionada!.nombre;
@@ -45,7 +48,7 @@ export class DeleteZonaComponent {
   }
 
   public deleteZona() {
-    this.establecimientosJsonService.deleteZona(this.zonaSeleccionada.id).subscribe(
+    this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id).subscribe(
       (response) => {
         this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           window.location.reload();

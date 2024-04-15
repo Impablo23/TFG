@@ -14,10 +14,9 @@
 
 <div style="width: 52%; margin: auto; margin-top: 20px;">
   <form class="input-group flex-nowrap" style="width: 100%; margin: auto; padding: 10px;">
-    <select class="form-control" id="caterogia" [(ngModel)]="idRol" name="idRol">
+    <select class="form-control" id="id" [(ngModel)]="idRol" name="idRol">
       <!-- <option value="" selected>Selecciona un Rol para el usuario</option> -->
-      <option value="1">Administrador</option>
-      <option value="2">Usuario</option>
+      <option *ngFor="let rol of listadoRoles" value={{rol.id}}>{{rol.rol}}</option>
     </select>
   </form>
 </div>
@@ -27,7 +26,7 @@
 <!-- <button type="button" class="btn btn-outline-light" style="width: 20%;">Iniciar Sesión</button> -->
 
 <div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
-  <button *ngIf="verificaCampos() == true" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="editUsuario()">Aceptar</button>
+  <button *ngIf="verificaCampos() == true" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="editUsuarioApi()">Aceptar</button>
   <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
 </div>
 

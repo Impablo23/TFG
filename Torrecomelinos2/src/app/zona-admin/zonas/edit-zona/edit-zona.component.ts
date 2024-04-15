@@ -3,7 +3,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { Zona } from 'src/app/interfaces/zona.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-edit-zona',
@@ -14,19 +16,20 @@ export class EditZonaComponent {
 
   public nombre: string = '';
 
-  public zonaSeleccionada!: Zona;
+  public zonaSeleccionada!: ZonaApi;
 
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private establecimientosApi: EstablecimientosApiService
   ){}
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getZonaById(id) )  ).subscribe(  zona =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
       {
-        if (!zona) return this.router.navigate(['/zona']);
+        if (!zona) return this.router.navigate(['admin/zona/']);
         this.zonaSeleccionada = zona[0];
         //Datos del formulario ya rellenos
         this.nombre  = this.zonaSeleccionada!.nombre;
@@ -44,9 +47,9 @@ export class EditZonaComponent {
     this.router.navigate(['admin/zona/']);
   }
 
-  public editZona() {
+  public editZonaApi() {
     // const contador: number = 14;
-    const zonaEditada: Zona = {
+    const zonaEditada: ZonaApi = {
       id: this.zonaSeleccionada!.id,
       nombre: this.nombre,
     }
@@ -56,7 +59,7 @@ export class EditZonaComponent {
       return;
     }
 
-    this.establecimientosJsonService.updateZona(zonaEditada).subscribe(
+    this.establecimientosApi.updateZonaApi(zonaEditada).subscribe(
       (response) => {
         // console.log('perita');
         this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {

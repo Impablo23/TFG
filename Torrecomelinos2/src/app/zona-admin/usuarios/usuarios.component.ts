@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthJsonService } from 'src/app/services/authJson.service';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { AuthApiService } from '../../services/authApi.service';
+import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
 
 @Component({
   selector: 'app-usuarios',
@@ -11,17 +13,18 @@ import { EstablecimientosJsonService } from 'src/app/services/establecimientos.s
 })
 export class UsuariosComponent {
 
-  constructor(public router: Router,private authJsonService: AuthJsonService){}
+  constructor(public router: Router,private authJsonService: AuthJsonService,private authApi: AuthApiService){}
 
   ngOnInit(){
-    this.listarZonas();
+    this.listarUsuarios();
   }
-  public listadoUsuarios: Usuario[] = [];
+  public listadoUsuarios: UsuarioApi[] = [];
 
-  public listarZonas(){
-    this.authJsonService.getUsers().subscribe(
+  public listarUsuarios(){
+    this.authApi.getUsersApi().subscribe(
       usuarios => {
-        this.listadoUsuarios = usuarios;
+        this.listadoUsuarios = usuarios
+        console.log(this.listadoUsuarios);
       }
     );
   }

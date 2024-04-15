@@ -7,6 +7,10 @@ import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { Zona } from 'src/app/interfaces/zona.interface';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
 import { Sugerencia } from '../../interfaces/sugerencia.interface';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
+import { ZonaApi } from '../../interfaces/zonaApi.interface';
+import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 
 @Component({
   selector: 'app-add-page',
@@ -16,8 +20,8 @@ import { Sugerencia } from '../../interfaces/sugerencia.interface';
 export class AddPageComponent {
 
   // public establecimientoDetalles?: Establecimiento;
-  public listadoZonas: Zona[] = [];
-  public listadoCategorias: Categoria[] = [];
+  public listadoZonas: ZonaApi[] = [];
+  public listadoCategorias: CategoriaApi[] = [];
 
   public numEstablecimientos: number = 0;
 
@@ -40,7 +44,8 @@ export class AddPageComponent {
     // private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private establecimientoApi: EstablecimientosApiService
   ){
 
   }
@@ -64,13 +69,17 @@ export class AddPageComponent {
         );
       }
 
-      this.establecimientosJsonService.getZonas().subscribe(zonas => {
-        this.listadoZonas = zonas;
-      });
+      this.establecimientoApi.getZonasApi().subscribe(
+        zonas => {
+          this.listadoZonas = zonas
+        }
+      );
 
-      this.establecimientosJsonService.getCategorias().subscribe(categoria => {
-        this.listadoCategorias = categoria;
-      });
+      this.establecimientoApi.getCategoriasApi().subscribe(
+        categorias => {
+          this.listadoCategorias = categorias
+        }
+      );
 
     // this.idRol = localStorage.getItem('idRol')!;
 
@@ -80,11 +89,10 @@ export class AddPageComponent {
     this.router.navigate([`/establecimientos/list`]);
   }
 
-  obtenerNombreZona(idZona: string): string {
+  obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (zona.id == idZona) {
         nombre = zona.nombre
       }
@@ -92,11 +100,10 @@ export class AddPageComponent {
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: string): string {
+  obtenerNombreCategoria(idCategoria: number): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (categoria.id == idCategoria) {
         nombre = categoria.nombre
       }
@@ -113,64 +120,95 @@ export class AddPageComponent {
   }
 
 
-  public addEstablecimiento(): void {
-    // Obtener la lista de establecimientos para determinar el máximo ID actual
-    this.establecimientosJsonService.getEstablecimientos().subscribe(establecimientos => {
-        let maxId = 0;
+  // public addEstablecimiento(): void {
+  //   // Obtener la lista de establecimientos para determinar el máximo ID actual
+  //   this.establecimientosJsonService.getEstablecimientos().subscribe(establecimientos => {
+  //       let maxId = 0;
 
-        // Encontrar el máximo ID actual entre los establecimientos existentes
-        establecimientos.forEach(establecimiento => {
-            const idNum = parseInt(establecimiento.id);
-            if (idNum > maxId) {
-                maxId = idNum;
-            }
-        });
+  //       // Encontrar el máximo ID actual entre los establecimientos existentes
+  //       establecimientos.forEach(establecimiento => {
+  //           const idNum = parseInt(establecimiento.id);
+  //           if (idNum > maxId) {
+  //               maxId = idNum;
+  //           }
+  //       });
 
-        // Generar el nuevo ID sumando 1 al máximo ID encontrado
-        const nuevoId = (maxId + 1).toString();
+  //       // Generar el nuevo ID sumando 1 al máximo ID encontrado
+  //       const nuevoId = (maxId + 1).toString();
 
-        // Crear el objeto de establecimiento con el nuevo ID y los demás datos
-        const establecimientoEditado: Establecimiento = {
-            id: nuevoId,
-            id_zona: parseInt(this.id_zona.toString()),
-            id_categoria: parseInt(this.id_categoria.toString()),
-            nombre: this.nombre,
-            descripcion: this.descripcion,
-            numResenas: this.numResenas,
-            direccion: this.direccion,
-            telefono: this.telefono,
-            foto: this.foto,
-            enlace: this.enlace,
-        };
+  //       // Crear el objeto de establecimiento con el nuevo ID y los demás datos
+  //       const establecimientoEditado: Establecimiento = {
+  //           id: nuevoId,
+  //           id_zona: parseInt(this.id_zona.toString()),
+  //           id_categoria: parseInt(this.id_categoria.toString()),
+  //           nombre: this.nombre,
+  //           descripcion: this.descripcion,
+  //           numResenas: this.numResenas,
+  //           direccion: this.direccion,
+  //           telefono: this.telefono,
+  //           foto: this.foto,
+  //           enlace: this.enlace,
+  //       };
 
-        // Verificar que se haya proporcionado un nombre para el establecimiento
-        if (this.nombre.length === 0) {
-            this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
-            return;
-        }
+  //       // Verificar que se haya proporcionado un nombre para el establecimiento
+  //       if (this.nombre.length === 0) {
+  //           this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+  //           return;
+  //       }
 
-        // Agregar el nuevo establecimiento utilizando el servicio correspondiente
-        this.establecimientosJsonService.addEstablecimiento(establecimientoEditado).subscribe(
-            (response) => {
-                this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+  //       // Agregar el nuevo establecimiento utilizando el servicio correspondiente
+  //       this.establecimientosJsonService.addEstablecimiento(establecimientoEditado).subscribe(
+  //           (response) => {
+  //               this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
 
-                // Eliminar la sugerencia asociada al establecimiento (si existe)
-                if (this.idEstablecimientoSugerido !== undefined) {
-                    this.establecimientosJsonService.deleteSugerencia(this.idEstablecimientoSugerido).subscribe(
-                        (response) => { },
-                        (error) => { }
-                    );
-                }
+  //               // Eliminar la sugerencia asociada al establecimiento (si existe)
+  //               if (this.idEstablecimientoSugerido !== undefined) {
+  //                   this.establecimientosJsonService.deleteSugerencia(this.idEstablecimientoSugerido).subscribe(
+  //                       (response) => { },
+  //                       (error) => { }
+  //                   );
+  //               }
 
-                // Navegar a la lista de establecimientos después de completar la operación
-                this.router.navigate(['/establecimientos/list']);
-            },
-            (error) => {
-                this.snackbar.open("Ha ocurrido un error al añadir el establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
-            }
-        );
-    });
-}
+  //               // Navegar a la lista de establecimientos después de completar la operación
+  //               this.router.navigate(['/establecimientos/list']);
+  //           },
+  //           (error) => {
+  //               this.snackbar.open("Ha ocurrido un error al añadir el establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+  //           }
+  //       );
+  //   });
+  // }
+
+  public addEstablecimientoApi(): void {
+
+    // Verificar que se haya proporcionado un nombre para el establecimiento
+    if (this.nombre.length === 0) {
+      this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    // Crear el objeto de establecimiento con el nuevo ID y los demás datos
+    const establecimientoAdd: EstablecimientoApi = {
+      id: 0,
+      id_zona: parseInt(this.id_zona.toString()),
+      id_categoria: parseInt(this.id_categoria.toString()),
+      nombre: this.nombre,
+      descripcion: this.descripcion,
+      numResenas: this.numResenas,
+      direccion: this.direccion,
+      telefono: this.telefono,
+      foto: this.foto,
+      enlace: this.enlace,
+    };
+
+    this.establecimientoApi.addEstablecimientoApi(establecimientoAdd).subscribe(
+      repuesta => {
+        this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+        this.router.navigate(['/establecimientos']);
+      }
+    );
+
+  }
 
 
 
