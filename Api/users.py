@@ -442,3 +442,95 @@ async def eliminar_sugerencia(id: int):
     except Exception as e:
         # Si ocurre un error inesperado, lanzar una excepción HTTP 500
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+    
+    
+@api.post("/sugerencias/add")
+async def agregar_sugerencia(sugerencia: Sugerencia):
+    try:
+        # Consulta SQL para insertar un nuevo usuario
+        consulta = "INSERT INTO sugerencias (id_usuario,nombre,enlace) VALUES (%s,%s,%s)"
+
+        # Datos del nuevo usuario
+        datos_sugerencia = (sugerencia.id_usuario,sugerencia.nombre,sugerencia.enlace)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_sugerencia):
+            # Devolver un diccionario con la información del usuario recién agregado
+            return {"mensaje": "Sugerencia agregada correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al agregar la sugerencia")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(500, "Error al agregar la sugerencia")
+    
+    
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------FAVORITOS----------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+
+# APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS SUGERENCIAS
+@api.get("/favoritos")
+async def favoritos():
+    favoritos_list = obtener_favoritos()
+    return favoritos_list
+
+
+@api.get("/favoritos/id_usuario/{id}")
+async def favoritossByIdUser(id: int):
+    
+    favoritos_list_by_id = obtenerFavoritosByIdUser(id)
+    
+    return favoritos_list_by_id
+
+@api.get("/favoritos/id_usuario/{id_usuario}/id_establecimiento/{id_establecimiento}")
+async def favoritossByIdUserAndName(id_usuario: int,id_establecimiento: int):
+    
+    favoritos_list_by_id = obtenerFavoritosByIdUserAndName(id_usuario,id_establecimiento)
+    
+    return favoritos_list_by_id
+
+@api.post("/favoritos/add")
+async def agregar_favorito(favorito: Favorito):
+    try:
+        # Consulta SQL para insertar un nuevo usuario
+        consulta = "INSERT INTO favoritos (id_usuario,id_establecimiento) VALUES (%s,%s)"
+
+        # Datos del nuevo usuario
+        datos_favorito = (favorito.id_usuario,favorito.id_establecimiento)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_favorito):
+            # Devolver un diccionario con la información del usuario recién agregado
+            return {"mensaje": "Favorito agregado correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al agregar el favorito")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(500, "Error al agregar el favorito")
+    
+    
+@api.delete("/favoritos/delete/{id}")   
+# Función para eliminar un usuario
+async def eliminar_favorito(id: int):
+    try:
+        # Consulta SQL para eliminar un usuario por su ID
+        consulta = "DELETE FROM favoritos WHERE id = %s"
+
+        # Datos del usuario a eliminar
+        datos_favorito = (id,)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_favorito):
+            # Devolver un diccionario con un mensaje de éxito
+            return {"mensaje": "Favorito eliminado correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al eliminar el favorito")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")

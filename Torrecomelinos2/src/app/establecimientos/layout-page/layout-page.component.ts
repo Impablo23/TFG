@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-layout-page',
@@ -19,7 +20,8 @@ export class LayoutPageComponent {
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
-    private establecimientosJsonService: EstablecimientosJsonService
+    private establecimientosJsonService: EstablecimientosJsonService,
+    private establecimientoApi: EstablecimientosApiService
   ){}
 
   ngOnInit() {
@@ -27,7 +29,7 @@ export class LayoutPageComponent {
     this.nombre = localStorage.getItem('nombreCompleto')!;
     this.id = localStorage.getItem('id')!;
 
-    this.numFavoritos();
+    this.numFavoritosApi();
   }
 
   public sidebarItems = [
@@ -54,8 +56,16 @@ export class LayoutPageComponent {
     localStorage.clear();
   }
 
-  public numFavoritos(): void {
-    this.establecimientosJsonService.getFavoritosByUser(this.id).subscribe(
+  // public numFavoritos(): void {
+  //   this.establecimientosJsonService.getFavoritosByUser(this.id).subscribe(
+  //     favoritos => {
+  //       this.numFav = favoritos.length;
+  //     }
+  //   );
+  // }
+
+  public numFavoritosApi(): void {
+    this.establecimientoApi.getFavoritosByUserApi(parseInt(this.id,10)).subscribe(
       favoritos => {
         this.numFav = favoritos.length;
       }

@@ -85,24 +85,56 @@ export class AddSugerenciaComponent {
   // }
 
   public addSugerenciaApi() {
+    // Navegar hacia la ruta de agregar establecimiento
     this.router.navigate(['establecimientos', 'add'], { queryParams: { sugerenciaId: this.sugerenciaSeleccionada.id } });
 
+    // Realizar una verificación inicial si el establecimiento ya existe antes de agregarlo
     this.establecimientosApi.getEstablecimientosApiByName(this.sugerenciaSeleccionada.nombre).subscribe(
       establecimientos => {
         console.log(establecimientos);
         if (establecimientos[0] !== undefined) {
+          // Si el establecimiento ya existe, eliminar la sugerencia
           this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id).subscribe(
             (response) => {
-              console.log('perfee jay')
+              console.log('Sugerencia eliminada');
             },
             (error) => {
-              console.log("nanai");
+              console.log('Error al eliminar la sugerencia');
             }
           );
+        } else {
+          console.log('El establecimiento aún no existe'); // Esto puede ser útil para depurar
         }
       }
     );
-
   }
+
+
+  // public addSugerenciaApi() {
+  //   this.router.navigate(['establecimientos', 'add'], { queryParams: { sugerenciaId: this.sugerenciaSeleccionada.id } });
+
+  //   this.establecimientosApi.getEstablecimientosApiByName(this.sugerenciaSeleccionada.nombre).subscribe(
+  //     establecimientos => {
+  //       console.log(establecimientos);
+  //       if (establecimientos[0] !== undefined) {
+  //         // Ya existe un establecimiento con el mismo nombre, no es necesario eliminar la sugerencia
+  //         return;
+  //       }
+
+  //       // Agregar lógica para agregar el establecimiento aquí (supongo que se hace en la página de agregar establecimiento)
+
+  //       // Una vez que se agregue el establecimiento, eliminar la sugerencia
+  //       this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id).subscribe(
+  //         (response) => {
+  //           console.log('Sugerencia eliminada');
+  //         },
+  //         (error) => {
+  //           console.log('Error al eliminar la sugerencia');
+  //         }
+  //       );
+  //     }
+  //   );
+  // }
+
 
 }

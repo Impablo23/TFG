@@ -75,6 +75,9 @@ export class ListPageComponent {
       if (zona.id === idZona) {
         nombre = zona.nombre
       }
+      if (idZona === 0) {
+        nombre = 'Sin Especificar';
+      }
     }
     return nombre;
   }

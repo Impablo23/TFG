@@ -15,6 +15,11 @@ class Rol(BaseModel):
     id: int
     rol: str
     
+class Favorito(BaseModel):
+    id: int
+    id_usuario: int
+    id_establecimiento: int
+    
 class Sugerencia(BaseModel):
     id: int
     id_usuario: int
@@ -568,3 +573,94 @@ def obtenerSugerenciaById(id: int) -> List[Sugerencia]:
     else:
         # Si no se encuentra el usuario, devolver una lista vacía
         return []
+    
+    
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------FAVORITOS----------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+
+def obtener_favoritos() -> List[Favorito]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener los usuarios
+    consulta = "SELECT * FROM favoritos"
+    
+    # Ejecutar la consulta
+    cursor.execute(consulta)
+    
+    # Obtener resultados
+    resultados = cursor.fetchall()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Lista para almacenar los usuarios
+    favoritos = []
+
+    # Iterar sobre los resultados y crear objetos Usuario
+    for resultado in resultados:
+        favorito = Favorito(**resultado)
+        favoritos.append(favorito)
+
+    return favoritos
+
+
+def obtenerFavoritosByIdUser(id: int) -> List[Favorito]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener el usuario con el ID especificado
+    consulta = "SELECT * FROM favoritos WHERE id_usuario = %s"
+
+    # Ejecutar la consulta con el ID como parámetro
+    cursor.execute(consulta, (id,))
+
+    # Obtener el resultado
+    resultados = cursor.fetchall()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Lista para almacenar los usuarios
+    favoritos = []
+
+    # Iterar sobre los resultados y crear objetos Usuario
+    for resultado in resultados:
+        favorito = Favorito(**resultado)
+        favoritos.append(favorito)
+
+    return favoritos
+
+
+def obtenerFavoritosByIdUserAndName(id_usuario: int,id_establecimiento: int) -> List[Favorito]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener el usuario con el ID especificado
+    consulta = "SELECT * FROM favoritos WHERE id_usuario = %s AND id_establecimiento = %s"
+
+    # Ejecutar la consulta con el ID como parámetro
+    cursor.execute(consulta, (id_usuario,id_establecimiento,))
+
+    # Obtener el resultado
+    resultados = cursor.fetchall()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Lista para almacenar los usuarios
+    favoritos = []
+
+    # Iterar sobre los resultados y crear objetos Usuario
+    for resultado in resultados:
+        favorito = Favorito(**resultado)
+        favoritos.append(favorito)
+
+    return favoritos

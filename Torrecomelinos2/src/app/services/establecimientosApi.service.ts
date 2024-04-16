@@ -11,7 +11,8 @@ import { Sugerencia } from "../interfaces/sugerencia.interface";
 import { EstablecimientoApi } from '../interfaces/establecimientoApi.interface';
 import { CategoriaApi } from "../interfaces/categoriaApi.interface";
 import { ZonaApi } from "../interfaces/zonaApi.interface";
-import { SugerenciaApi } from "../interfaces/sugerenciaApi.interface";
+import { SugerenciaApi } from '../interfaces/sugerenciaApi.interface';
+import { FavoritoApi } from "../interfaces/favoritoApi.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -128,25 +129,25 @@ export class EstablecimientosApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  // getFavoritosByUser(id_usuario:string) : Observable<Favorito[]> {
-  //   return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}`)
-  // }
+  getFavoritosByUserApi(id_usuario:number) : Observable<FavoritoApi[]> {
+    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}`)
+  }
 
-  // getFavoritos() : Observable<Favorito[]> {
-  //   return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos`)
-  // }
+  getFavoritosApi() : Observable<FavoritoApi[]> {
+    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos`)
+  }
 
-  // getFavoritoByUserByName(id_usuario:string, id_establecimiento:string) : Observable<Favorito[]> {
-  //   return this.http.get<Favorito[]>(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`)
-  // }
+  getFavoritoByUserByNameApi(id_usuario:number, id_establecimiento:number) : Observable<FavoritoApi[]> {
+    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}/id_establecimiento/${id_establecimiento}`)
+  }
 
-  // deleteFavorito(id_usuario: string,id_establecimiento: string): Observable<boolean> {
-  //   return this.http.delete(`${this.baseUrl}/favoritos?id_usuario=${id_usuario}&id_establecimiento=${id_establecimiento}`).pipe(map( response => true),catchError(error => of(false)))
-  // }
+  deleteFavoritoApi(id: number): Observable<boolean> {
+    return this.http.delete(`${this.baseUrl}/favoritos/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
+  }
 
-  // addFavorito(favorito: Favorito) : Observable<boolean> {
-  //   return this.http.post(`${this.baseUrl}/favoritos`,favorito).pipe(map( response => true),catchError(error => of(false)))
-  // }
+  addFavoritoApi(favorito: FavoritoApi) : Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/favoritos/add`,favorito)
+  }
 
 
   //----------------------------------------------------------------------------------------------------------
@@ -167,9 +168,9 @@ export class EstablecimientosApiService {
     return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
   }
 
-  // addSugerencia(sugerencia: Sugerencia) : Observable<boolean> {
-  //   return this.http.post(`${this.baseUrl}/sugerencias`,sugerencia).pipe(map( response => true),catchError(error => of(false)))
-  // }
+  addSugerenciaApi(sugerencia: SugerenciaApi) : Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/sugerencias/add`,sugerencia)
+  }
 
 
 }

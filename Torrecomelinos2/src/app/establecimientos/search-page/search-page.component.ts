@@ -8,6 +8,9 @@ import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Router } from '@angular/router';
 
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-search-page',
@@ -16,14 +19,18 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 })
 export class SearchPageComponent  implements OnInit {
 
-  public establecimientosEncontrados : Establecimiento[] = [];
-  public establecimientos : Establecimiento[] = [];
-  public listadoZonas: Zona[] = [];
-  public listadoCategorias: Categoria[] = [];
+  public establecimientosEncontrados : EstablecimientoApi[] = [];
+  public establecimientos : EstablecimientoApi[] = [];
+  public listadoZonas: ZonaApi[] = [];
+  // public listadoCategorias: CategoriaA[] = [];
 
   public valorBusqueda: string = '';
 
-  constructor(private establecimientosJsonService: EstablecimientosJsonService, private snackbar: MatSnackBar,private router: Router){}
+  constructor(private establecimientosJsonService: EstablecimientosJsonService,
+    private snackbar: MatSnackBar,
+    private router: Router,
+    private establecimientoApi: EstablecimientosApiService
+  ){}
 
   ngOnInit(): void {
 
@@ -40,20 +47,22 @@ export class SearchPageComponent  implements OnInit {
         this.cargarEstablecimientos(valor);
       });
 
-    this.establecimientosJsonService.getZonas().subscribe(zonas => {
-      this.listadoZonas = zonas;
-    });
+      this.establecimientoApi.getZonasApi().subscribe(
+        zonas => {
+          this.listadoZonas = zonas
+        }
+      );
 
-    this.establecimientosJsonService.getCategorias().subscribe(categoria => {
-      this.listadoCategorias = categoria;
-    });
+    // this.establecimientosJsonService.getCategorias().subscribe(categoria => {
+    //   this.listadoCategorias = categoria;
+    // });
 
     this.obtenerEstablecimientos();
 
   }
 
   public obtenerEstablecimientos() {
-    this.establecimientosJsonService.getEstablecimientos().subscribe(
+    this.establecimientoApi.getEstablecimientosApi().subscribe(
       respuesta => {this.establecimientos=respuesta;
       // console.log(this.establecimientos);
     }
@@ -95,29 +104,32 @@ export class SearchPageComponent  implements OnInit {
   }
 
 
-  obtenerNombreZona(idZona: string): string {
+  obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
       // console.log(zona.id);
       // console.log(zona.nombre);
-      if (zona.id == idZona) {
+      if (zona.id === idZona) {
         nombre = zona.nombre
+      }
+      if (idZona === 0) {
+        nombre = 'Sin Especificar';
       }
     }
     return nombre;
   }
 
-  obtenerNombreCategoria(idCategoria: string): string {
-    let nombre:string = '';
-    for (const categoria of this.listadoCategorias) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
-      if (categoria.id == idCategoria) {
-        nombre = categoria.nombre
-      }
-    }
-    return nombre;
-  }
+  // obtenerNombreCategoria(idCategoria: string): string {
+  //   let nombre:string = '';
+  //   for (const categoria of this.listadoCategorias) {
+  //     // console.log(zona.id);
+  //     // console.log(zona.nombre);
+  //     if (categoria.id == idCategoria) {
+  //       nombre = categoria.nombre
+  //     }
+  //   }
+  //   return nombre;
+  // }
 
 
   evitarErrorEnFoto(foto: string): string {
@@ -128,7 +140,7 @@ export class SearchPageComponent  implements OnInit {
     }
   }
 
-  navigateToDetails(id: string): void {
+  navigateToDetails(id: number): void {
     this.router.navigate([`establecimientos/details/${id}`]);
   }
 

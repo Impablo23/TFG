@@ -13,6 +13,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
+import { FavoritoApi } from 'src/app/interfaces/favoritoApi.interface';
 
 @Component({
   selector: 'app-details-page',
@@ -54,6 +55,8 @@ export class DetailsPageComponent {
     this.idRol = localStorage.getItem('idRol')!;
     this.id = localStorage.getItem('id')!;
 
+    // this.verificarFavoritoApi(parseInt(this.id,10),this.establecimientoDetalles!.id);
+
 
     // this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosJsonService.getEstablecimientoById(id) )  ).subscribe(  establecimiento =>
     //   {
@@ -80,7 +83,7 @@ export class DetailsPageComponent {
 
           this.establecimientoDetalles = establecimiento[0];
 
-          // this.verificarFavorito(this.id,this.establecimientoDetalles.id);
+          this.verificarFavoritoApi(parseInt(this.id,10),this.establecimientoDetalles.id);
 
           return;
         });
@@ -105,9 +108,13 @@ export class DetailsPageComponent {
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
-
-      if (zona.id == idZona) {
+      // console.log(zona.id);
+      // console.log(zona.nombre);
+      if (zona.id === idZona) {
         nombre = zona.nombre
+      }
+      if (idZona === 0) {
+        nombre = 'Sin Especificar';
       }
     }
     return nombre;
@@ -119,6 +126,9 @@ export class DetailsPageComponent {
 
       if (categoria.id == idCategoria) {
         nombre = categoria.nombre
+      }
+      if (idCategoria === 0) {
+        nombre = 'Sin Especificar';
       }
     }
     return nombre;
@@ -133,11 +143,26 @@ export class DetailsPageComponent {
   }
 
 
-  public verificarFavorito(id_usuario: string, id_establecimiento: string) {
+  // public verificarFavorito(id_usuario: string, id_establecimiento: string) {
 
-    this.establecimientosJsonService.getFavoritoByUserByName(id_usuario,id_establecimiento).subscribe(
+  //   this.establecimientosJsonService.getFavoritoByUserByName(id_usuario,id_establecimiento).subscribe(
+  //     favoritos => {
+  //       const favorito: Favorito = favoritos[0];
+  //       if (favorito != undefined){
+  //         this.esFavorito = true;
+  //       }
+
+  //     }
+  //   );
+
+  // }
+
+  public verificarFavoritoApi(id_usuario: number, id_establecimiento: number) {
+
+    this.establecimientoApi.getFavoritoByUserByNameApi(id_usuario,id_establecimiento).subscribe(
       favoritos => {
-        const favorito: Favorito = favoritos[0];
+        const favorito: FavoritoApi = favoritos[0];
+
         if (favorito != undefined){
           this.esFavorito = true;
         }
@@ -147,60 +172,106 @@ export class DetailsPageComponent {
 
   }
 
-  public addFavorito(id_establecimiento: string) {
-    // Obtener la lista de favoritos para determinar el máximo ID actual
-    this.establecimientosJsonService.getFavoritos().subscribe(
-        favoritos => {
-            let maxId = 0;
+  //   public addFavorito(id_establecimiento: string) {
+  //     // Obtener la lista de favoritos para determinar el máximo ID actual
+  //     this.establecimientosJsonService.getFavoritos().subscribe(
+  //         favoritos => {
+  //             let maxId = 0;
 
-            // Encontrar el máximo ID actual entre los favoritos existentes
-            favoritos.forEach(favorito => {
-                const idNum =parseInt(favorito.id);
-                if (idNum > maxId) {
-                    maxId = idNum;
-                }
-            });
+  //             // Encontrar el máximo ID actual entre los favoritos existentes
+  //             favoritos.forEach(favorito => {
+  //                 const idNum =parseInt(favorito.id);
+  //                 if (idNum > maxId) {
+  //                     maxId = idNum;
+  //                 }
+  //             });
 
-            // Generar el nuevo ID sumando 1 al máximo ID encontrado
-            const nuevoId = (maxId + 1).toString();
+  //             // Generar el nuevo ID sumando 1 al máximo ID encontrado
+  //             const nuevoId = (maxId + 1).toString();
 
-            // Crear el objeto de favorito con el nuevo ID y los demás datos
-            const nuevoFavorito: Favorito = {
-                id: nuevoId,
-                id_usuario: (this.id),
-                id_establecimiento: (id_establecimiento),
-            };
+  //             // Crear el objeto de favorito con el nuevo ID y los demás datos
+  //             const nuevoFavorito: Favorito = {
+  //                 id: nuevoId,
+  //                 id_usuario: (this.id),
+  //                 id_establecimiento: (id_establecimiento),
+  //             };
 
-            // Agregar el nuevo favorito utilizando el servicio correspondiente
-            this.establecimientosJsonService.addFavorito(nuevoFavorito).subscribe(
-                (response) => {
-                    this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-                    });
-                },
-                (error) => {
-                    this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-                    });
-                }
-            );
-        }
+  //             // Agregar el nuevo favorito utilizando el servicio correspondiente
+  //             this.establecimientosJsonService.addFavorito(nuevoFavorito).subscribe(
+  //                 (response) => {
+  //                     this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+  //                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //                     });
+  //                 },
+  //                 (error) => {
+  //                     this.snackbar.open("Error al añadir el establecimiento a favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+  //                         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //                     });
+  //                 }
+  //             );
+  //         }
+  //     );
+  // }
+
+  public addFavoritoApi(id_establecimiento: number) {
+
+    const newFavorito: FavoritoApi = {
+      id: 0,
+      id_usuario: parseInt(this.id,10),
+      id_establecimiento: id_establecimiento
+    }
+
+    this.establecimientoApi.addFavoritoApi(newFavorito).subscribe(
+      repuesta => {
+        this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
+          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+      });
+      }
     );
-}
+  }
 
 
-  public eliminaFavorito(id_establecimiento: string) {
+  // public eliminaFavorito(id_establecimiento: string) {
 
-    this.establecimientosJsonService.deleteFavorito((this.id),(id_establecimiento)).subscribe(
-      (response) => {
-        this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-        });
-      },
-      (error) => {
-        this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-        });
+  //   this.establecimientosJsonService.deleteFavorito((this.id),(id_establecimiento)).subscribe(
+  //     (response) => {
+  //       this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+  //         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //       });
+  //     },
+  //     (error) => {
+  //       this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+  //         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+  //       });
+  //     }
+  //   );
+
+  // }
+
+  public eliminaFavoritoApi(id_establecimiento: number) {
+
+    this.establecimientoApi.getFavoritoByUserByNameApi(parseInt(this.id,10),id_establecimiento).subscribe(
+      favorito => {
+        const fav = favorito[0];
+
+        if (fav != undefined){
+          this.establecimientoApi.deleteFavoritoApi(fav.id).subscribe(
+            (response) => {
+              this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+              });
+            },
+            (error) => {
+              this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+              });
+            }
+          );
+        }else {
+          this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+            window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+          });
+        }
       }
     );
 
