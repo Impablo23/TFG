@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { RegistroApi } from 'src/app/interfaces/registroApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+import { Respuesta } from '../../interfaces/respuesta.interface copy';
 
 @Component({
   selector: 'app-layout-page',
@@ -21,7 +24,8 @@ export class LayoutPageComponent {
     private router: Router,
     private snackbar: MatSnackBar,
     private establecimientosJsonService: EstablecimientosJsonService,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   ngOnInit() {
@@ -51,9 +55,21 @@ export class LayoutPageComponent {
   }
 
   public logout(): void {
-    this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-    this.router.navigate(['/auth']);
-    localStorage.clear();
+
+    const registroLoGout: RegistroApi = {
+      id: 0,
+      id_usuario: parseInt(this.id,10),
+      estado: 'Desconectado'
+    }
+
+    this.authApi.addRegistroApi(registroLoGout).subscribe(
+      respuesta => {
+        this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
+        this.router.navigate(['/auth']);
+        localStorage.clear();
+      }
+    );
+
   }
 
   // public numFavoritos(): void {

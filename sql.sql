@@ -15,15 +15,15 @@ CREATE TABLE if not EXISTS usuarios(
     nombreCompleto VARCHAR(255),
     idRol int,
     token varchar(255),
-    CONSTRAINT FOREIGN KEY (idRol) REFERENCES tfg.roles(id)  
+    CONSTRAINT FOREIGN KEY (idRol) REFERENCES tfg.roles(id) on DELETE CASCADE
 );
 
 
-INSERT INTO usuarios (id,email, passwd, nombreCompleto, idRol, token) VALUES ('pablo@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Pablo Admin', 1, 'd4df6eff-c660-4b8d-a6df-d83baa5ad0f6');
+INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES ('pablo@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Pablo Admin', 1, 'd4df6eff-c660-4b8d-a6df-d83baa5ad0f6');
 INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES ('ivan@user.com', '2c42e5cf1cdbafea04ed267018ef1511', 'Ivan User', 2, 'eca44a4e-d1e4-4e6e-ba80-a31c394a3279');
 INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES ('juan@gmail.com', 'a94652aa97c7211ba8954dd15a3cf838', 'juan', 2, '833917c0-cc27-45f9-954d-30a1d615e82d');
 INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES ('pablo@user.com', 'ee11cbb19052e40b07aac0ca060c23ee', 'user', 2, '4bb0c60f-0121-474c-97bd-ed7e07a8d4f0');
-INSERT INTO usuarios (id,email, passwd, nombreCompleto, idRol, token) VALUES ('pabloggg@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Pablo Admin', 1, 'd4df6eff-c660-4b8d-a6df-d83baa5ad0f6');
+INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES ('pabloggg@admin.com', '21232f297a57a5a743894a0e4a801fc3', 'Pablo Admin', 1, 'd4df6eff-c660-4b8d-a6df-d83baa5ad0f6');
 
 CREATE TABLE IF NOT EXISTS categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -62,8 +62,11 @@ CREATE TABLE IF NOT EXISTS establecimientos (
     numResenas INT,
     direccion VARCHAR(255),
     telefono VARCHAR(20),
-    foto VARCHAR(255),
-    enlace VARCHAR(1000)
+    foto TEXT,
+    enlace TEXT,
+    CONSTRAINT FOREIGN KEY (id_categoria) REFERENCES tfg.categorias(id) on DELETE CASCADE, 
+    CONSTRAINT FOREIGN KEY (id_zona) REFERENCES tfg.zonas(id) on DELETE CASCADE
+    
 );
 
 INSERT INTO establecimientos (id_categoria, id_zona, nombre, descripcion, numResenas, direccion, telefono, foto, enlace) VALUES
@@ -74,21 +77,32 @@ INSERT INTO establecimientos (id_categoria, id_zona, nombre, descripcion, numRes
 CREATE TABLE IF NOT EXISTS favoritos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
-    id_establecimiento INT
+    id_establecimiento INT,
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES tfg.usuarios(id) on DELETE CASCADE,
+    CONSTRAINT FOREIGN KEY (id_establecimiento) REFERENCES tfg.establecimientos(id) on DELETE CASCADE
 );
 
 INSERT INTO favoritos (id_usuario, id_establecimiento) VALUES
-(1, 3),
-(1, 3);
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 2);
 
 CREATE TABLE IF NOT EXISTS sugerencias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT,
     nombre VARCHAR(255),
-    enlace VARCHAR(1000)
+    enlace TEXT,
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES tfg.usuarios(id) on DELETE CASCADE
 );
 
 INSERT INTO sugerencias (id_usuario, nombre, enlace) VALUES
 (2, 'Tiki', 'https://www.google.com/search?gs_ssp=eJzj4tZP1zcsKSyIzyk3MGC0UjGoSDE3SktKTTVNNEo1SzQ3tjKoSDI0NTAxNjS1SDIyNrcwS_USLMnMzlQoyS8qSs3Nz8nMyy8GANs-FaA&q=tiki+torremolinos&oq=tiki&gs_lcrp=EgZjaHJvbWUqEAgFEC4YrwEYxwEYgAQYjgUyCQgAEEUYORiABDINCAEQABiDARixAxiABDIKCAIQABixAxiABDINCAMQABiDARixAxiABDIJCAQQABgKGIAEMhAIBRAuGK8BGMcBGIAEGI4FMg0IBhAuGK8BGMcBGIAEMgcIBxAAGIAEMg8ICBAAGAoYgwEYsQMYgAQyBwgJEC4YgATSAQgyMzc3ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8&safe=active&ssui=on');
 
-
+create table if not EXISTS registro (
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    id_usuario int,
+    estado VARCHAR(50),
+    hora VARCHAR(255),
+    CONSTRAINT FOREIGN KEY (id_usuario) REFERENCES tfg.usuarios(id) on DELETE CASCADE
+);

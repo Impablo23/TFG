@@ -6,6 +6,7 @@ import { Observable, catchError, map, of, tap } from "rxjs";
 import { Respuesta } from "../interfaces/respuesta.interface copy";
 import { UsuarioApi } from "../interfaces/usuarioApi.interface";
 import { Rol } from "../interfaces/rol.interface";
+import { RegistroApi } from "../interfaces/registroApi.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -18,34 +19,21 @@ export class AuthApiService {
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
-  //---------------------------------------------USUARIOS-----------------------------------------------------
+  //---------------------------------------------ROLES--------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  // getUsers(): Observable<Usuario[]> {
-  //   return this.http.get<Usuario[]>(`${this.baseUrl}/users`)
-  // }
-
-  // addUser(usuario:Usuario): Observable<Usuario>  {
-  //   return this.http.post<Usuario>(`${this.baseUrl}/users`,usuario)
-  // }
-
-  // getUserById(id: string): Observable<Usuario[]> {
-  //   return this.http.get<Usuario[]>(`${this.baseUrl}/users?id=${id}`)
-  // }
-
-  // updateUser(usuario : Usuario): Observable<boolean> {
-  //   return this.http.patch<Usuario>(`${ this.baseUrl }/users/${ usuario.id }`, usuario).pipe(map( response => true),catchError(error => of(false)))
-  // }
-
-
-  // deleteUser(id: string): Observable<boolean> {
-  //   return this.http.delete(`${ this.baseUrl }/users/${id}`).pipe(map( response => true),catchError(error => of(false)))
-  // }
 
   getRoles(): Observable<Rol[]> {
     return this.http.get<Rol[]>(`${this.baseUrl}/roles`)
   }
+
+
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //---------------------------------------------USUARIOS-----------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
 
   getUsersApi(): Observable<UsuarioApi[]> {
     return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`)
@@ -77,6 +65,15 @@ export class AuthApiService {
 
 
 
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //---------------------------------------------REGISTRO-----------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------------------------------
+
+  addRegistroApi(registro: RegistroApi): Observable<string> {
+    return this.http.post<string>(`${this.baseUrl}/registros/add`,registro)
+  }
 
 
 

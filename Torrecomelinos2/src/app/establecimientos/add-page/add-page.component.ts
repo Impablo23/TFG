@@ -182,8 +182,8 @@ export class AddPageComponent {
   public addEstablecimientoApi(): void {
 
     // Verificar que se haya proporcionado un nombre para el establecimiento
-    if (this.nombre.length === 0) {
-      this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
+    if (this.nombre.length === 0 || this.id_zona === 0 || this.id_categoria === 0) {
+      this.snackbar.open("No has rellenado todos los datos obligatorios", "Cerrar", { duration: 2000, panelClass: ['background'] });
       return;
     }
 

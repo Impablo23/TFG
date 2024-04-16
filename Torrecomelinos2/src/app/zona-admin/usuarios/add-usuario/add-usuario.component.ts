@@ -117,8 +117,8 @@ export class AddUsuarioComponent {
             email: this.email,
             passwd: this.calcularHashMD5(this.pass),
             nombreCompleto: this.nombreCompleto,
-            idRol: this.idRol,
-            token: uuidv4()
+            idRol: 2,
+            token: ''
           }
 
 

@@ -20,6 +20,11 @@ class Favorito(BaseModel):
     id_usuario: int
     id_establecimiento: int
     
+class Registro(BaseModel):
+    id: int
+    id_usuario: int
+    estado: str
+    
 class Sugerencia(BaseModel):
     id: int
     id_usuario: int
@@ -49,10 +54,10 @@ class Establecimiento(BaseModel):
 
 # Conexión a la base de datos
 conexion = mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="pablo11504",
-    database="tfg3"
+    host="143.47.55.174",
+    user="pablo",
+    password="pablo",
+    database="tfg"
 )
 
 #----------------------------------------------------------------------------------------------------------

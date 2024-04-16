@@ -123,6 +123,36 @@ async def UserByEmailAndPass(email:str, passwd: str):
     
     return user_by_email_passwd
 
+
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------REGISTRO-----------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+
+
+@api.post("/registros/add")
+async def agregar_registro(registro: Registro):
+    try:
+        # Consulta SQL para insertar un nuevo usuario
+        consulta = "INSERT INTO registro (id_usuario, estado) VALUES (%s, %s)"
+
+        # Datos del nuevo usuario
+        datos_registro = (registro.id_usuario,registro.estado)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_registro):
+            # Devolver un diccionario con la información del usuario recién agregado
+            return {"mensaje": "Registro agregado correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al agregar el registro")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+
+
+
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------
 #---------------------------------------------ZONAS--------------------------------------------------------
@@ -131,9 +161,10 @@ async def UserByEmailAndPass(email:str, passwd: str):
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS ZONAS Y CATEGORIAS
 @api.get("/zonas")
-async def roles():
+async def zonas():
     zonas_list = obtener_zonas()
     return zonas_list
+
 
 @api.get("/zonas/id/{id}")
 async def zonasById(id: int):
@@ -219,7 +250,7 @@ async def eliminar_zona(id: int):
 #----------------------------------------------------------------------------------------------------------
 
 @api.get("/categorias")
-async def roles():
+async def categorias():
     categorias_list = obtener_categorias()
     return categorias_list
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
@@ -28,6 +29,7 @@ export class FavouritePageComponent {
   constructor(
     private establecimientosJsonService: EstablecimientosJsonService,
     private snackbar: MatSnackBar,
+    private router: Router,
     private establecimientoApi: EstablecimientosApiService
   ){}
 
@@ -50,6 +52,10 @@ export class FavouritePageComponent {
     this.obtenerDatosEstablecimientosFavoritosApi();
 
     // console.log(this.listadoFavoritosDetalles);
+  }
+
+  public goToList(){
+    this.router.navigate(['/establecimientos/list']);
   }
 
   obtenerNombreZona(idZona: number): string {
@@ -139,13 +145,17 @@ export class FavouritePageComponent {
 
     this.establecimientoApi.deleteFavoritoApi(idFavoritoEncontrado!).subscribe(
       (response) => {
-
         // Eliminar el establecimiento de listadoFavoritosDetalles
         const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
         if (establecimientoIndex !== -1) {
           this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
         }
         this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
+
+        if (this.listadoFavoritosDetalles.length === 0) {
+          this.router.navigate(['/establecimientos'])
+        }
+
       },
       (error) => {
         this.snackbar.open("Error al eliminar el establecimiento", "Cerrar",{duration: 2000,panelClass:['background']});
