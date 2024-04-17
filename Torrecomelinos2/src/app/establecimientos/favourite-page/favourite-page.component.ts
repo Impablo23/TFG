@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
-import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
-import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
-import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
-import { Favorito } from 'src/app/interfaces/favorito.interface';
-import { FavoritoApi } from 'src/app/interfaces/favoritoApi.interface';
-import { Zona } from 'src/app/interfaces/zona.interface';
-import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
+import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
+import { FavoritoApi } from 'src/app/interfaces/favoritoApi.interface';
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+
 
 @Component({
   selector: 'app-favourite-page',
@@ -19,20 +17,23 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 })
 export class FavouritePageComponent {
 
+  // Variable que almacena el id del usuario
   public id : string = '';
 
+  // Variables para almacenar los datos de los establecimientos favoritos del usuario
   public listadoFavoritos : FavoritoApi[] = [];
   public listadoFavoritosDetalles : EstablecimientoApi[] = [];
   public listadoZonas: ZonaApi[] = [];
   public listadoCategorias: CategoriaApi[] = [];
 
+  // Constructor
   constructor(
-    private establecimientosJsonService: EstablecimientosJsonService,
     private snackbar: MatSnackBar,
     private router: Router,
     private establecimientoApi: EstablecimientosApiService
   ){}
 
+  // Método que al iniciar la pestaña, da valor a la variable id y guarda los datos en los listados con los datos recogidos por la BBDD
   ngOnInit() {
     this.id = localStorage.getItem('id')!;
 
@@ -47,22 +48,22 @@ export class FavouritePageComponent {
         this.listadoCategorias = categorias
       }
     );
-    // this.listadoFavoritos = [];
-    // this.listadoFavoritosDetalles = [];
+
     this.obtenerDatosEstablecimientosFavoritosApi();
 
-    // console.log(this.listadoFavoritosDetalles);
+
   }
 
+  // Método que redirige hacia la pestaña inicial de los establecimientos
   public goToList(){
     this.router.navigate(['/establecimientos/list']);
   }
 
+  // Método que devuelve el nombre de la zona segun su id
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (zona.id === idZona) {
         nombre = zona.nombre
       }
@@ -73,6 +74,7 @@ export class FavouritePageComponent {
     return nombre;
   }
 
+  // Método que devuelve el nombre de la categoría segun su id
   obtenerNombreCategoria(idCategoria: number): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
@@ -87,6 +89,7 @@ export class FavouritePageComponent {
     return nombre;
   }
 
+  // Método para evitar de que la foto de establecimiento salga vacía y se le pone una estándar.
   evitarErrorEnFoto(foto: string): string {
     if (foto.length === 0) {
       return 'assets/no_foto.png';
@@ -95,25 +98,10 @@ export class FavouritePageComponent {
     }
   }
 
-  // public obtenerDatosEstablecimientosFavoritos(){
-  //   this.establecimientosJsonService.getFavoritosByUser(this.id).subscribe(
-  //     favoritos => {
-  //       this.listadoFavoritos = favoritos;
-  //       for (let i = 0; i < this.listadoFavoritos.length;i++) {
-  //         this.establecimientosJsonService.getEstablecimientoById(this.listadoFavoritos[i].id_establecimiento).subscribe(
-  //           establecimientos => {
-  //             // this.listadoFavoritosDetalles = establecimiento;
-  //             const establecimiento: Establecimiento = establecimientos[0];
-  //             this.listadoFavoritosDetalles.push(establecimiento);
-  //             return;
-  //           }
-  //         );
-  //       }
-  //     }
-  //   );
-  //   // console.log(this.listadoFavoritosDetalles);
-  // }
-
+  /*
+    Método que almacena en el listado de favoritos los datos recogidos de favoritos de la BBDD y a su vez guarda en el listado de los detalles de los establecimientos
+    los datos de cada establecimiento favorito mediante el id para así mostrarlos en la página.
+  */
   public obtenerDatosEstablecimientosFavoritosApi(){
     this.establecimientoApi.getFavoritosByUserApi(parseInt(this.id,10)).subscribe(
       favoritos => {
@@ -121,19 +109,27 @@ export class FavouritePageComponent {
         for (let i = 0; i < this.listadoFavoritos.length;i++) {
           this.establecimientoApi.getEstablecimientoApiById(this.listadoFavoritos[i].id_establecimiento).subscribe(
             establecimientos => {
-              // this.listadoFavoritosDetalles = establecimiento;
+
               const establecimiento: EstablecimientoApi = establecimientos[0];
               this.listadoFavoritosDetalles.push(establecimiento);
-              // console.log(this.listadoFavoritosDetalles);
+
               return;
             }
           );
         }
       }
     );
-    // console.log(this.listadoFavoritosDetalles);
+
   }
 
+  /*
+    Método que cuando pulsas el corazón, eliminas el establecimiento favorito del listado de favoritos y el de los datos de los establecimientos
+    y a su vez elimina el favorito de la BBDD.
+    --ANOTACIÓN--
+      Cuando va eliminando y no hay más establecimientos, le redirige a la página inical y si quiere entrar a la página mediante la ruta, le saldrá un mensaje de
+      que no tiene favoritos asignados y un boton para volver al listado
+    --ANOTACIÓN--
+  */
   public deleteFavoritoApi(id_establecimiento: number) {
     // Buscar el favorito por id_usuario e id_establecimiento y guardar el id del favorito
     const favoritoEncontrado = this.listadoFavoritos.find(favorito => favorito.id_usuario === parseInt(this.id, 10) && favorito.id_establecimiento === id_establecimiento);
@@ -162,60 +158,6 @@ export class FavouritePageComponent {
       }
     );
   }
-
-  // public eliminarFavorito(id_establecimiento: string) {
-  //   console.log(this.listadoFavoritosDetalles);
-  //   this.establecimientosJsonService.deleteFavorito((this.id),(id_establecimiento)).subscribe(
-  //     (response) => {
-  //       // Eliminar el favorito de listadoFavoritos
-  //       const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === (this.id) && favorito.id_establecimiento === (id_establecimiento));
-  //       console.log(index);
-  //       if (index !== -1) {
-  //         this.listadoFavoritos.splice(index, 1);
-  //       }
-  //       console.log(this.listadoFavoritos);
-  //       // Eliminar el establecimiento de listadoFavoritosDetalles
-  //       const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
-  //       if (establecimientoIndex !== -1) {
-  //         this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
-  //       }
-  //       console.log(this.listadoFavoritosDetalles);
-
-        // this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-  //     },
-  //     (error) => {
-  //       this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-  //     }
-  //   );
-  // }
-
-  // public deleteFavorito(id_establecimiento: string) {
-  //   // console.log(this.listadoFavoritos);
-  //   // Eliminar el favorito de listadoFavoritos
-  //   const index = this.listadoFavoritos.findIndex(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
-  //   // console.log(index);
-
-  //   this.establecimientosJsonService.deleteFavorito(index.toString()).subscribe(
-  //     (response) => {
-  //       // Eliminar el favorito de listadoFavoritos
-  //       this.listadoFavoritos.splice(index, 1);
-
-  //       console.log(this.listadoFavoritos);
-  //       // Eliminar el establecimiento de listadoFavoritosDetalles
-  //       const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);
-  //       if (establecimientoIndex !== -1) {
-  //         this.listadoFavoritosDetalles.splice(establecimientoIndex, 1);
-  //       }
-  //       console.log(this.listadoFavoritosDetalles);
-
-  //       this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-  //     },
-  //     (error) => {
-  //       this.snackbar.open("Error al eliminar el establecimiento de favoritos", "Cerrar",{duration: 2000,panelClass:['background']});
-  //     }
-  //   );
-
-  // }
 
 
 }

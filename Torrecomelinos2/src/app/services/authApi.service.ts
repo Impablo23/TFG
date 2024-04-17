@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
-import { environments, environmentsApi } from "environments/environments";
+import { environmentsApi } from "environments/environments";
 import { HttpClient } from '@angular/common/http';
-import { Usuario } from "../interfaces/usuario.interface";
 import { Observable, catchError, map, of, tap } from "rxjs";
-import { Respuesta } from "../interfaces/respuesta.interface copy";
+
 import { UsuarioApi } from "../interfaces/usuarioApi.interface";
-import { Rol } from "../interfaces/rol.interface";
+import { RolApi } from "../interfaces/rolApi.interface";
 import { RegistroApi } from "../interfaces/registroApi.interface";
 
 @Injectable({
@@ -23,11 +22,9 @@ export class AuthApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-
-  getRoles(): Observable<Rol[]> {
-    return this.http.get<Rol[]>(`${this.baseUrl}/roles`)
+  getRoles(): Observable<RolApi[]> {
+    return this.http.get<RolApi[]>(`${this.baseUrl}/roles`)
   }
-
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
@@ -62,8 +59,6 @@ export class AuthApiService {
   deleteUserApi(id : number): Observable<boolean> {
     return this.http.delete<boolean>(`${ this.baseUrl }/users/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
   }
-
-
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------

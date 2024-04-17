@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { Usuario } from 'src/app/interfaces/usuario.interface';
-import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
+
 import { AuthApiService } from 'src/app/services/authApi.service';
-import { AuthJsonService } from 'src/app/services/authJson.service';
+
+import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
+
 
 @Component({
   selector: 'app-delete-usuario',
@@ -14,18 +15,24 @@ import { AuthJsonService } from 'src/app/services/authJson.service';
 })
 export class DeleteUsuarioComponent {
 
+  // Variable para almacenar el email de usuario seleccionado
   public email: string = '';
 
+  // Variable para almacenar el usuario seleccionado
   public usuarioSeleccionado!: UsuarioApi;
 
+  // Constructor
   constructor(
-    private authJsonService: AuthJsonService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
     private authApi: AuthApiService
   ){}
 
+  /*
+  Método que cuando inicie la página, se buscara el usuario con el id seleccionado para almacenar en la variable anterioir los datos y
+  mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
+  */
   ngOnInit(): void {
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id) )  ).subscribe(  usuario =>
       {
@@ -38,43 +45,27 @@ export class DeleteUsuarioComponent {
         return;
       });
 
-
   }
 
+  // Método para cancelar operacion y redirige hacia el apartado de inserccion de usuarios.
   public cancelar() {
     this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
     this.email = '';
     this.router.navigate(['admin/usuarios/']);
   }
 
-  // public deleteUsuario() {
-  //   this.authJsonService.deleteUser(this.usuarioSeleccionado.id).subscribe(
-  //     (response) => {
-  //       this.snackbar.open( "Usuario eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-  //         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-  //       });
-  //     },
-
-  //     (error) => {
-  //       this.snackbar.open("Ha ocurrido un error al eliminar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-  //         window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-  //       });
-  //     }
-  //   );
-  //   this.router.navigate(['admin/usuarios/']);
-  // }
-
+  // Método que elimina el usuario de la BBDD y avisa al usuario de los que ha sucedido con un mensaje.
   public deleteUsuarioApi() {
     this.authApi.deleteUserApi(this.usuarioSeleccionado.id).subscribe(
       (response) => {
         this.snackbar.open( "Usuario eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+          window.location.reload();
         });
       },
 
       (error) => {
         this.snackbar.open("Ha ocurrido un error al eliminar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+          window.location.reload();
         });
       }
     );

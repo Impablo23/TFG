@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Usuario } from 'src/app/interfaces/usuario.interface';
-import { AuthJsonService } from 'src/app/services/authJson.service';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+
 import { AuthApiService } from '../../services/authApi.service';
+
 import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
 
 @Component({
@@ -13,7 +12,10 @@ import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
 })
 export class UsuariosComponent {
 
-  constructor(public router: Router,private authJsonService: AuthJsonService,private authApi: AuthApiService){}
+  constructor(
+    public router: Router,
+    private authApi: AuthApiService
+  ){}
 
   ngOnInit(){
     this.listarUsuarios();
@@ -24,7 +26,6 @@ export class UsuariosComponent {
     this.authApi.getUsersApi().subscribe(
       usuarios => {
         this.listadoUsuarios = usuarios
-        console.log(this.listadoUsuarios);
       }
     );
   }

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
-import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 
 @Component({
   selector: 'app-categorias',
@@ -12,14 +12,22 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 })
 export class CategoriasComponent {
 
-  constructor(public router: Router,private establecimientosJsonService: EstablecimientosJsonService, private establecimientosApi: EstablecimientosApiService){}
-
-  ngOnInit(){
-    this.listarZonas();
-  }
+  // Variable que almacena las categorías recogidas de la BBDD.
   public listadoCategorias: CategoriaApi[] = [];
 
-  public listarZonas(){
+  // Constructor
+  constructor(
+    public router: Router,
+    private establecimientosApi: EstablecimientosApiService
+  ){}
+
+  // Método que al iniciar la página, se cargar las categorias.
+  ngOnInit(){
+    this.listarCategorias();
+  }
+
+  // Método que almacena las categorías de la BBDD en el listado de categorías
+  public listarCategorias(){
     this.establecimientosApi.getCategoriasApi().subscribe(
       categorias => {
         this.listadoCategorias = categorias;
@@ -27,10 +35,12 @@ export class CategoriasComponent {
     );
   }
 
+  // Método que redirige hacia la edición de una zona en específica
   public goToEditZona(id: number) {
     this.router.navigate(['admin/categorias/edit', id]);
   }
 
+  // Método que redirige hacia la eliminación de una zona en específica
   public goToDeleteZona(id: number) {
     this.router.navigate(['admin/categorias/delete', id]);
   }

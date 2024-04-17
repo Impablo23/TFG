@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
-import { Zona } from 'src/app/interfaces/zona.interface';
-import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
+import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 
 @Component({
   selector: 'app-edit-zona',
@@ -14,24 +14,27 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 })
 export class EditZonaComponent {
 
+  // Variable para almacenar el nombre de la zona seleccionada
   public nombre: string = '';
 
+  // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
 
+  // Constructor
   constructor(
-    private establecimientosJsonService: EstablecimientosJsonService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
     private establecimientosApi: EstablecimientosApiService
   ){}
 
+  // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zona/']);
         this.zonaSeleccionada = zona[0];
-        //Datos del formulario ya rellenos
+        // Datos del formulario ya rellenos
         this.nombre  = this.zonaSeleccionada!.nombre;
 
 
@@ -41,40 +44,79 @@ export class EditZonaComponent {
 
   }
 
+  // Función para capitalizar el primer carácter
+  public capitalizarPalabra(sentence: string): string {
+    // Separar el string en palabras individuales
+    const words = sentence.split(' ');
+
+    // Convertir la primera letra de cada palabra en minúscula y dejar el resto sin cambios
+    const capitalizedWords = words.map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+
+    // Unir las palabras nuevamente en un solo string
+    const result = capitalizedWords.join(' ');
+
+    return result;
+  }
+
+  // Método que cancela la operacion y redirige hacia la ruta principal de categorías donde se encuentra la inserccion de nuevas zonas.
   public cancelar() {
     this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
     this.nombre = '';
     this.router.navigate(['admin/zona/']);
   }
 
+
+  /*
+    Método que edita la zona seleccionada si hay escrito algo en el campo de nombre y si esta OK o NO OK, se le notifica al usuario con el error o la confirmacion
+    de la edición dependiendo del caso.
+  */
   public editZonaApi() {
-    // const contador: number = 14;
-    const zonaEditada: ZonaApi = {
-      id: this.zonaSeleccionada!.id,
-      nombre: this.nombre,
-    }
+
+    // Capitalizar el nombre de la zona
+    const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
     if (this.nombre.length === 0 ) {
       this.snackbar.open("Es obligatorio rellenar el nombre de la zona", "Cerrar",{duration: 2000,panelClass:['background']});
       return;
     }
 
-    this.establecimientosApi.updateZonaApi(zonaEditada).subscribe(
-      (response) => {
-        // console.log('perita');
-        this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-        });
-      },
-      (error) => {
-        // console.log('mal');
-        this.snackbar.open("Ha ocurrido un error al actualizar la zona", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-        });
+    // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
+    this.establecimientosApi.getZonaByNameApi(nombreEstandar).subscribe(
+      zonas => {
+        const zonaExistente = zonas[0];
+
+        if (zonaExistente != undefined) {
+          this.snackbar.open("Esta zona ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
+          this.nombre = '';
+          this.router.navigate(['admin/zonas/']);
+          return;
+        }else {
+          const zonaEditada :ZonaApi = {
+            id: this.zonaSeleccionada!.id,
+            nombre: nombreEstandar
+          }
+
+          this.establecimientosApi.updateZonaApi(zonaEditada).subscribe(
+            (response) => {
+              this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                window.location.reload();
+              });
+            },
+            (error) => {
+              this.snackbar.open("Ha ocurrido un error al actualizar la zona", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+                window.location.reload();
+              });
+            }
+          );
+
+          this.router.navigate(['admin/zonas/']);
+        }
       }
     );
 
-    this.router.navigate(['admin/zonas/']);
+
 
   }
 

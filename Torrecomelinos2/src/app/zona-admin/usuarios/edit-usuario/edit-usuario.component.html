@@ -15,15 +15,10 @@
 <div style="width: 52%; margin: auto; margin-top: 20px;">
   <form class="input-group flex-nowrap" style="width: 100%; margin: auto; padding: 10px;">
     <select class="form-control" id="id" [(ngModel)]="idRol" name="idRol">
-      <!-- <option value="" selected>Selecciona un Rol para el usuario</option> -->
       <option *ngFor="let rol of listadoRoles" value={{rol.id}}>{{rol.rol}}</option>
     </select>
   </form>
 </div>
-
-
-
-<!-- <button type="button" class="btn btn-outline-light" style="width: 20%;">Iniciar Sesión</button> -->
 
 <div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
   <button *ngIf="verificaCampos() == true" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="editUsuarioApi()">Aceptar</button>

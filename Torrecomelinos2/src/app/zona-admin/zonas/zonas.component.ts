@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { EstablecimientosJsonService } from '../../services/establecimientos.service';
 import { Router } from '@angular/router';
-import { Zona } from 'src/app/interfaces/zona.interface';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 
 @Component({
@@ -12,14 +12,21 @@ import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 })
 export class ZonasComponent {
 
+  // Variable para almacenar las zonas recogidad de la BBDD
+  public listadoZonas: ZonaApi[] = [];
 
-  constructor(public router: Router,private establecimientosJsonService: EstablecimientosJsonService ,private establecimientosApi: EstablecimientosApiService ){}
+  // Constructor
+  constructor(
+    public router: Router,
+    private establecimientosApi: EstablecimientosApiService
+  ){}
 
+  // Método que al iniciar la página, se cargar las zonas.
   ngOnInit(){
     this.listarZonas();
   }
-  public listadoZonas: ZonaApi[] = [];
 
+  // Método que almacena las categorías de la BBDD en el listado de zonas
   public listarZonas(){
     this.establecimientosApi.getZonasApi().subscribe(
       zonas => {
@@ -28,10 +35,12 @@ export class ZonasComponent {
     );
   }
 
+  // Método que redirige hacia la edición de una zona en específica
   public goToEditZona(id: number) {
     this.router.navigate(['admin/zonas/edit', id]);
   }
 
+  // Método que redirige hacia la eliminación de una zona en específica
   public goToDeleteZona(id: number) {
     this.router.navigate(['admin/zonas/delete', id]);
   }

@@ -8,12 +8,15 @@ import { Router } from '@angular/router';
 })
 export class LayoutAdminComponent implements OnInit  {
 
+  // Variable para almacenar el nombre del Administrador
   public nombrePublico ='';
 
+  // Método para cuando se inicie la página, se de valor al nombrePublico el nombre del Administrador.
   ngOnInit(): void {
     this.nombrePublico = localStorage.getItem('nombreCompleto')!;
   }
 
+  // Variable para almacenar el nombre y ruta de las diferentes opciones de gestión que tiene el Administrador.
   public AdminItems = [
     {label: 'Gestión de Zonas', icon: 'playlist_add', url: 'admin/zonas'},
     {label: 'Gestión de Categorías', icon: 'playlist_add', url: 'admin/categorias'},
@@ -21,16 +24,18 @@ export class LayoutAdminComponent implements OnInit  {
     {label: 'Gestión de Sugerencias', icon: 'playlist_add', url: 'admin/sugerencias'},
   ]
 
+  // Constructor
   constructor(
     private router: Router,
   ){}
 
+  // Método que redirige hacia la pagína principal de establecimientos
   public goToApp() {
     this.router.navigate(['/establecimientos']);
   }
 
+  // Método que redirige hacia las distintas rutas de opciones de gestion que tiene el Administrador.
   public goToUrl(url: string) {
-    console.log('Navigating to:', url);
     this.router.navigate([url]);
   }
 

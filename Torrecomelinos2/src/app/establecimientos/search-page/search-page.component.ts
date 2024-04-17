@@ -1,16 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { EstablecimientosJsonService } from '../../services/establecimientos.service';
-import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Zona } from 'src/app/interfaces/zona.interface';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
 import { Router } from '@angular/router';
-
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+
+import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
-import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 @Component({
   selector: 'app-search-page',
@@ -19,19 +16,25 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 })
 export class SearchPageComponent  implements OnInit {
 
+  // Variables para guardar los datos de los establecimientos,todos y lo que busca el usuario, y de las zonas de cada establecimiento
   public establecimientosEncontrados : EstablecimientoApi[] = [];
   public establecimientos : EstablecimientoApi[] = [];
   public listadoZonas: ZonaApi[] = [];
-  // public listadoCategorias: CategoriaA[] = [];
 
+  // Variable donde se almacena el valor de la busqueda del usuario
   public valorBusqueda: string = '';
 
-  constructor(private establecimientosJsonService: EstablecimientosJsonService,
+  // Constructor
+  constructor(
     private snackbar: MatSnackBar,
     private router: Router,
     private establecimientoApi: EstablecimientosApiService
   ){}
 
+  /*
+    Aqui cargamos en el listado de los establecimientos de los nombres de los establecimientos que incluyen los caracteres que introduce el usuario
+    para asi mostrarlos y cargamos las zonas.
+  */
   ngOnInit(): void {
 
     this.searchForm.get('searchInput')!.valueChanges
@@ -53,37 +56,26 @@ export class SearchPageComponent  implements OnInit {
         }
       );
 
-    // this.establecimientosJsonService.getCategorias().subscribe(categoria => {
-    //   this.listadoCategorias = categoria;
-    // });
 
     this.obtenerEstablecimientos();
 
   }
 
+  // Método que recoge todos los establecimientos para hacer la busqueda de los solicitados
   public obtenerEstablecimientos() {
     this.establecimientoApi.getEstablecimientosApi().subscribe(
-      respuesta => {this.establecimientos=respuesta;
-      // console.log(this.establecimientos);
-    }
+      respuesta => {
+        this.establecimientos=respuesta;
+      }
     );
   }
 
+  // Formulario para el buscador de establecimientos
   public searchForm: FormGroup = new FormGroup({
     searchInput: new FormControl(''),
   });
 
-
-
-  // public searchEstablecimiento(){
-  //   const valor: string = this.searchForm.get('searchInput')!.value;
-  //   if (!valor.trim()) {
-  //     return; // No realizar la búsqueda si el término está vacío
-  //   }
-
-  //   this.cargarEstablecimientos(valor);
-  // }
-
+  // Método que guarda en una lista los establecimientos que incluyen los caracteres escritos en el buscador y le notifica de si hay resultado o no.
   public cargarEstablecimientos(valor: string) {
 
     this.establecimientosEncontrados = this.establecimientos.filter(establecimiento =>
@@ -96,19 +88,13 @@ export class SearchPageComponent  implements OnInit {
       this.snackbar.open("Resultados de "+valor, "Cerrar",{duration: 2000,panelClass:['background']})
     }
 
-
-
-    // console.log(this.establecimientosEncontrados);
-
-
   }
 
-
+  // Método que devuelve el nombre de la zona segun su id
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
-      // console.log(zona.id);
-      // console.log(zona.nombre);
+
       if (zona.id === idZona) {
         nombre = zona.nombre
       }
@@ -119,19 +105,7 @@ export class SearchPageComponent  implements OnInit {
     return nombre;
   }
 
-  // obtenerNombreCategoria(idCategoria: string): string {
-  //   let nombre:string = '';
-  //   for (const categoria of this.listadoCategorias) {
-  //     // console.log(zona.id);
-  //     // console.log(zona.nombre);
-  //     if (categoria.id == idCategoria) {
-  //       nombre = categoria.nombre
-  //     }
-  //   }
-  //   return nombre;
-  // }
-
-
+  // Método para evitar de que la foto de establecimiento salga vacía y se le pone una estándar.
   evitarErrorEnFoto(foto: string): string {
     if (foto.length === 0) {
       return 'assets/no_foto.png';
@@ -140,10 +114,12 @@ export class SearchPageComponent  implements OnInit {
     }
   }
 
+  // Método para redirigir a la pagina de detalles del establecimiento seleccionado
   navigateToDetails(id: number): void {
     this.router.navigate([`establecimientos/details/${id}`]);
   }
 
+  // Método para cada vez de que el usuario pulse enter se borran los datos del buscador
   reseteo () {
     this.searchForm.get('searchInput')!.setValue('');
   }

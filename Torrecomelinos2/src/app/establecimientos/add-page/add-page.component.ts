@@ -1,13 +1,9 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from 'rxjs';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
-import { Establecimiento } from 'src/app/interfaces/establecimiento.interface';
-import { Zona } from 'src/app/interfaces/zona.interface';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
-import { Sugerencia } from '../../interfaces/sugerencia.interface';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { ZonaApi } from '../../interfaces/zonaApi.interface';
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
@@ -19,15 +15,14 @@ import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interf
 })
 export class AddPageComponent {
 
-  // public establecimientoDetalles?: Establecimiento;
+  // Variables para almacenar las zonas y categorías de los establecimientos
   public listadoZonas: ZonaApi[] = [];
   public listadoCategorias: CategoriaApi[] = [];
 
-  public numEstablecimientos: number = 0;
-
+  // Variable para almacenar el id de la sugerencia por si se accede a la inserccion de establecimientos desde la gestión de sugerencias.
   public idEstablecimientoSugerido: number = 0;
 
-
+  // Variable para almacenar los datos escritos por el usuario del establecimiento
   public nombre: string = '';
   public descripcion: string = '';
   public direccion: string = '';
@@ -39,9 +34,8 @@ export class AddPageComponent {
   public id_categoria: number = 0;
 
 
+  // Constructor
   constructor(
-    private establecimientosJsonService: EstablecimientosJsonService,
-    // private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar,
     private route: ActivatedRoute,
@@ -51,14 +45,19 @@ export class AddPageComponent {
   }
 
 
+  /*
+    Cuando se inicie la página, vera si tiene id la sugerencia y si pasa eso es que el administrador va a añadir una sugerencia y lo que se hace es cuando acepte
+    la sugerencia y rediriga a la pagina para añadirla se la rellenara automáticamente los datos de la sugerencia que son el nombre y en enlace web y ni no tiene
+    id la sugerencia, esos campos estan vacíos para rellenarlos como un nuevo establecimiento.
+
+    También almacena en las listas de zonas y categoría los datos de estas de las BBDD.
+  */
   ngOnInit(): void {
 
       this.route.queryParams.subscribe(params => {
         this.idEstablecimientoSugerido = params['sugerenciaId'];
         // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
       });
-
-      console.log("id sugerencia: "+this.idEstablecimientoSugerido);
 
       if (this.idEstablecimientoSugerido !== undefined) {
         this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido).subscribe(
@@ -81,25 +80,30 @@ export class AddPageComponent {
         }
       );
 
-    // this.idRol = localStorage.getItem('idRol')!;
 
   }
 
+  // Método que redirige hacia la pestaña inicial de los establecimientos
   public goToList(){
-    this.router.navigate([`/establecimientos/list`]);
+    this.router.navigate(['/establecimientos/list']);
   }
 
+  // Método que devuelve el nombre de la zona segun su id
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
 
-      if (zona.id == idZona) {
+      if (zona.id === idZona) {
         nombre = zona.nombre
+      }
+      if (idZona === 0) {
+        nombre = 'Sin Especificar';
       }
     }
     return nombre;
   }
 
+  // Método que devuelve el nombre de la categoría segun su id
   obtenerNombreCategoria(idCategoria: number): string {
     let nombre:string = '';
     for (const categoria of this.listadoCategorias) {
@@ -107,10 +111,14 @@ export class AddPageComponent {
       if (categoria.id == idCategoria) {
         nombre = categoria.nombre
       }
+      if (idCategoria === 0) {
+        nombre = 'Sin Especificar';
+      }
     }
     return nombre;
   }
 
+  // Método para evitar de que la foto de establecimiento salga vacía y se le pone una estándar.
   evitarErrorEnFoto(foto: string): string {
     if (foto.length === 0) {
       return 'assets/no_foto.png';
@@ -120,65 +128,7 @@ export class AddPageComponent {
   }
 
 
-  // public addEstablecimiento(): void {
-  //   // Obtener la lista de establecimientos para determinar el máximo ID actual
-  //   this.establecimientosJsonService.getEstablecimientos().subscribe(establecimientos => {
-  //       let maxId = 0;
-
-  //       // Encontrar el máximo ID actual entre los establecimientos existentes
-  //       establecimientos.forEach(establecimiento => {
-  //           const idNum = parseInt(establecimiento.id);
-  //           if (idNum > maxId) {
-  //               maxId = idNum;
-  //           }
-  //       });
-
-  //       // Generar el nuevo ID sumando 1 al máximo ID encontrado
-  //       const nuevoId = (maxId + 1).toString();
-
-  //       // Crear el objeto de establecimiento con el nuevo ID y los demás datos
-  //       const establecimientoEditado: Establecimiento = {
-  //           id: nuevoId,
-  //           id_zona: parseInt(this.id_zona.toString()),
-  //           id_categoria: parseInt(this.id_categoria.toString()),
-  //           nombre: this.nombre,
-  //           descripcion: this.descripcion,
-  //           numResenas: this.numResenas,
-  //           direccion: this.direccion,
-  //           telefono: this.telefono,
-  //           foto: this.foto,
-  //           enlace: this.enlace,
-  //       };
-
-  //       // Verificar que se haya proporcionado un nombre para el establecimiento
-  //       if (this.nombre.length === 0) {
-  //           this.snackbar.open("Es obligatorio rellenar el nombre del establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
-  //           return;
-  //       }
-
-  //       // Agregar el nuevo establecimiento utilizando el servicio correspondiente
-  //       this.establecimientosJsonService.addEstablecimiento(establecimientoEditado).subscribe(
-  //           (response) => {
-  //               this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
-
-  //               // Eliminar la sugerencia asociada al establecimiento (si existe)
-  //               if (this.idEstablecimientoSugerido !== undefined) {
-  //                   this.establecimientosJsonService.deleteSugerencia(this.idEstablecimientoSugerido).subscribe(
-  //                       (response) => { },
-  //                       (error) => { }
-  //                   );
-  //               }
-
-  //               // Navegar a la lista de establecimientos después de completar la operación
-  //               this.router.navigate(['/establecimientos/list']);
-  //           },
-  //           (error) => {
-  //               this.snackbar.open("Ha ocurrido un error al añadir el establecimiento", "Cerrar", { duration: 2000, panelClass: ['background'] });
-  //           }
-  //       );
-  //   });
-  // }
-
+  // Método que inserta el establecimiento si he rellenado los campos mínimos obligatorios y si esta OK o NO OK, se le notifica al usuario con un mensaje de error o de confirmación
   public addEstablecimientoApi(): void {
 
     // Verificar que se haya proporcionado un nombre para el establecimiento
@@ -201,6 +151,7 @@ export class AddPageComponent {
       enlace: this.enlace,
     };
 
+    // Aplicar la llamada al servicio para añadir un establecimiento
     this.establecimientoApi.addEstablecimientoApi(establecimientoAdd).subscribe(
       repuesta => {
         this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });

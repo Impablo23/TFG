@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { Categoria } from 'src/app/interfaces/categoria.interface';
-import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
-import { EstablecimientosJsonService } from 'src/app/services/establecimientos.service';
+
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
+
+import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 
 @Component({
   selector: 'app-add-categoria',
@@ -13,13 +12,14 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 })
 export class AddCategoriaComponent {
 
+  // Variable para almacenar el nombre de la categoría
   public nombre: string = '';
 
+  // Variable para almacenar el estado de las categorías
   public numCategorias : number = 0;
 
+  // Constructor
   constructor(
-    private establecimientosJsonService: EstablecimientosJsonService,
-    private router: Router,
     private snackbar: MatSnackBar,
     private establecimientosApi: EstablecimientosApiService
   ){}
@@ -43,73 +43,22 @@ export class AddCategoriaComponent {
     return result;
   }
 
+  // Método que cancela la operacion eliminado los datos del campo nombre
   public cancelar() {
     this.nombre = '';
     this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
   }
 
-  // public addCategoria() {
-  //   // Obtener la lista de categorías para determinar el máximo ID actual
-  //   this.establecimientosJsonService.getCategorias().subscribe(
-  //       categorias => {
-  //           let maxId = 0;
 
-  //           // Encontrar el máximo ID actual entre las categorías existentes
-  //           categorias.forEach(categoria => {
-  //               const idNum = parseInt(categoria.id);
-  //               if (idNum > maxId) {
-  //                   maxId = idNum;
-  //               }
-  //           });
-
-  //           // Generar el nuevo ID sumando 1 al máximo ID encontrado
-  //           const nuevoId = (maxId + 1).toString();
-
-  //           // Capitalizar el nombre de la categoría
-  //           const nombreEstandar = this.capitalizarPalabra(this.nombre);
-
-  //           // Verificar si la categoría ya existe
-  //           this.establecimientosJsonService.getCategoriasByName(nombreEstandar).subscribe(
-  //               categorias => {
-  //                   const categoriaExistente = categorias[0];
-
-  //                   if (categoriaExistente != undefined) {
-  //                       this.snackbar.open("Esta categoría ya existe.", "Cerrar", { duration: 2000, panelClass: ['background'] });
-  //                       this.nombre = '';
-  //                       return;
-  //                   }
-
-  //                   // Crear el objeto de categoría con el nuevo ID y el nombre capitalizado
-  //                   const categoriaNueva: Categoria = {
-  //                       id: nuevoId,
-  //                       nombre: nombreEstandar
-  //                   };
-
-  //                   // Agregar la nueva categoría utilizando el servicio correspondiente
-  //                   this.establecimientosJsonService.addCategoria(categoriaNueva).subscribe(
-  //                       (response) => {
-  //                           this.snackbar.open("Categoría añadida correctamente.", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-  //                               window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-  //                               this.nombre = ''; // Limpiar el campo de nombre
-  //                           });
-  //                       },
-  //                       (error) => {
-  //                           this.snackbar.open("Ha ocurrido un error al añadir la categoría", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-  //                               window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
-  //                               this.nombre = ''; // Limpiar el campo de nombre
-  //                           });
-  //                       }
-  //                   );
-  //               }
-  //           );
-  //       }
-  //   );
-  // }
-
+  /*
+    Método que añade la categoría si hay escrito algo en el campo de nombre y si esta OK o NO OK, se le notifica al usuario con el error o la confirmacion
+    de la edición dependiendo del caso.
+  */
   public addCategoriaApi() {
     // Capitalizar el nombre de la zona
     const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
+    // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
     this.establecimientosApi.getCategoriaByNameApi(nombreEstandar).subscribe(
       zonas => {
         const categoriaExistente = zonas[0];
@@ -127,7 +76,7 @@ export class AddCategoriaComponent {
           this.establecimientosApi.addCategoriaApi(zonaAdd).subscribe(
             repuesta => {
               this.snackbar.open( "Categoria añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload(); // Recarga la página después de que el usuario cierre el Snackbar
+                window.location.reload();
               });
             }
           );

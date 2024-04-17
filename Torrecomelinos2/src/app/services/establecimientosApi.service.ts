@@ -1,13 +1,8 @@
 import { Injectable } from "@angular/core";
-import { environments, environmentsApi } from "environments/environments";
+import { environmentsApi } from "environments/environments";
 import { HttpClient } from '@angular/common/http';
-import { Usuario } from "../interfaces/usuario.interface";
 import { Observable, catchError, map, noop, of, tap } from "rxjs";
-import { Establecimiento } from "../interfaces/establecimiento.interface";
-import { Zona } from "../interfaces/zona.interface";
-import { Categoria } from "../interfaces/categoria.interface";
-import { Favorito } from "../interfaces/favorito.interface";
-import { Sugerencia } from "../interfaces/sugerencia.interface";
+
 import { EstablecimientoApi } from '../interfaces/establecimientoApi.interface';
 import { CategoriaApi } from "../interfaces/categoriaApi.interface";
 import { ZonaApi } from "../interfaces/zonaApi.interface";
