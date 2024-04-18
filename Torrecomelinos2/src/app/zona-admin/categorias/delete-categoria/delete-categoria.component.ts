@@ -58,12 +58,12 @@ export class DeleteCategoriaComponent {
     this.establecimientosApi.deleteCategoriaApi(this.categoriaSeleccionada.id).subscribe(
       (response) => {
         this.snackbar.open("Categoria eliminada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       },
       (error) => {
       this.snackbar.open("Ha ocurrido un error al eliminar la categoría.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-        window.location.reload();
+        // window.location.reload();
       });
       }
     );

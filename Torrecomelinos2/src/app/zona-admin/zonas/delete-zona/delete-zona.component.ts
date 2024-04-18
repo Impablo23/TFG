@@ -55,13 +55,13 @@ export class DeleteZonaComponent {
     this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id).subscribe(
       (response) => {
         this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+          // window.location.reload();
           this.nombre='';
         });
       },
       (error) => {
         this.snackbar.open("Ha ocurrido un error al eliminar la zona", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+          // window.location.reload();
           this.nombre='';
         });
       }

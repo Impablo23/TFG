@@ -5,6 +5,7 @@ import * as CryptoJS from 'crypto-js';
 import { AuthApiService } from 'src/app/services/authApi.service';
 
 import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-usuario',
@@ -16,7 +17,8 @@ export class AddUsuarioComponent {
   // Constructor
   constructor(
     private snackbar: MatSnackBar,
-    private authApi: AuthApiService
+    private authApi: AuthApiService,
+    private router: Router,
   ){}
 
   // Variables del formulario de Register
@@ -55,6 +57,21 @@ export class AddUsuarioComponent {
   */
   public registrarApi(): void {
 
+    if (!this.email.includes('@gmail.com') && !this.email.includes('@hotmail.com')) {
+      this.snackbar.open("No has introducido un correo electrónico válido", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (this.nombreCompleto.length<5){
+      this.snackbar.open("El nombre debe tener un mínimo de 5 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (this.pass.length < 8) {
+      this.snackbar.open("La contraseña debe tener un mínimo de 8 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
     this.authApi.getUserByEmail(this.email).subscribe(
       usuario => {
         const userOk = usuario[0];
@@ -77,10 +94,10 @@ export class AddUsuarioComponent {
           this.authApi.addUserApi(nuevoUser).subscribe(
             repuesta => {
               this.snackbar.open( "Usuario añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
               });
             }
           );
+          this.router.navigate(['admin/usuarios/']);
         }
 
 

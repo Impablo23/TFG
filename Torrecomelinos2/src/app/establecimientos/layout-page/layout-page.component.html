@@ -2,7 +2,7 @@
 
   <mat-sidenav #sidenav mode="push" style="width: 350px;background-color: rgb(255, 255, 255);color: rgb(255, 255, 255);">
     <mat-toolbar style="background-color: rgb(124 124 252);color: black;">
-      <span style="font-family: monospace;">Bienvenido, {{nombre}}</span>
+      <span style="font-family: monospace;">Bienvenido, {{nombre}} </span>
       <span class="spacer"></span>
       <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     </mat-toolbar>
@@ -21,7 +21,7 @@
         {{iconos.label}}
       </mat-list-item>
 
-      <ng-container *ngIf="verificaFavoritos()">
+      <ng-container>
         <mat-list-item *ngFor="let iconos of FavoriteItems" routerLink="{{iconos.url}}" (click)="sidenav.toggle()">
           <mat-icon matListItemIcon>{{iconos.icon}}</mat-icon>
           {{iconos.label}}

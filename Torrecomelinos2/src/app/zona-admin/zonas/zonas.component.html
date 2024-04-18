@@ -13,7 +13,7 @@
       <tbody>
         <tr *ngFor="let zona of listadoZonas">
           <td class="td">
-            {{zona.nombre}}
+            {{capitalizarPalabra(zona.nombre)}}
           </td>
           <td class="td">
             <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="goToEditZona((zona.id))">

@@ -46,8 +46,23 @@ export class RegisterPageComponent {
 
     // Verificamos que no estén los datos vacíos
     if (this.email === '' || this.pass === '' || this.nombreCompleto === '') {
-        this.snackbar.open("No has rellenado todos los datos requeridos", "Cerrar", { duration: 2000, panelClass: ['background'] });
-        return;
+      this.snackbar.open("No has rellenado todos los datos requeridos", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (!this.email.includes('@gmail.com') && !this.email.includes('@hotmail.com')) {
+      this.snackbar.open("No has introducido un correo electrónico válido", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (this.nombreCompleto.length<5){
+      this.snackbar.open("El nombre debe tener un mínimo de 5 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (this.pass.length < 8) {
+      this.snackbar.open("La contraseña debe tener un mínimo de 8 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
     }
 
     this.authApi.getUserByEmail(this.email).subscribe(

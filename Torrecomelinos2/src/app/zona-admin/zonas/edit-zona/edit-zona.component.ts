@@ -44,21 +44,6 @@ export class EditZonaComponent {
 
   }
 
-  // Función para capitalizar el primer carácter
-  public capitalizarPalabra(sentence: string): string {
-    // Separar el string en palabras individuales
-    const words = sentence.split(' ');
-
-    // Convertir la primera letra de cada palabra en minúscula y dejar el resto sin cambios
-    const capitalizedWords = words.map(word => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    });
-
-    // Unir las palabras nuevamente en un solo string
-    const result = capitalizedWords.join(' ');
-
-    return result;
-  }
 
   // Método que cancela la operacion y redirige hacia la ruta principal de categorías donde se encuentra la inserccion de nuevas zonas.
   public cancelar() {
@@ -74,16 +59,13 @@ export class EditZonaComponent {
   */
   public editZonaApi() {
 
-    // Capitalizar el nombre de la zona
-    const nombreEstandar = this.capitalizarPalabra(this.nombre);
-
     if (this.nombre.length === 0 ) {
       this.snackbar.open("Es obligatorio rellenar el nombre de la zona", "Cerrar",{duration: 2000,panelClass:['background']});
       return;
     }
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(nombreEstandar).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -95,18 +77,18 @@ export class EditZonaComponent {
         }else {
           const zonaEditada :ZonaApi = {
             id: this.zonaSeleccionada!.id,
-            nombre: nombreEstandar
+            nombre: this.nombre
           }
 
           this.establecimientosApi.updateZonaApi(zonaEditada).subscribe(
             (response) => {
               this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             },
             (error) => {
               this.snackbar.open("Ha ocurrido un error al actualizar la zona", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             }
           );

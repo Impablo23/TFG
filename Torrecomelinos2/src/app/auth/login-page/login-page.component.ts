@@ -71,7 +71,8 @@ export class LoginPageComponent{
               const registroNow: RegistroApi = {
                 id: 0,
                 id_usuario: userOk.id,
-                estado: 'Conectado'
+                estado: 'Conectado',
+                hora: this.authApi.obtenerFechaYHora(new Date().toISOString()),
               }
 
               this.authApi.addRegistroApi(registroNow).subscribe(

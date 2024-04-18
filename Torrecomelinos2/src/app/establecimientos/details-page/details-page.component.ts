@@ -147,8 +147,9 @@ export class DetailsPageComponent {
     this.establecimientoApi.addFavoritoApi(newFavorito).subscribe(
       repuesta => {
         this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-          window.location.reload();
-      });
+          // window.location.reload();
+        });
+        this.esFavorito = true;
       }
     );
   }
@@ -164,18 +165,19 @@ export class DetailsPageComponent {
           this.establecimientoApi.deleteFavoritoApi(fav.id).subscribe(
             (response) => {
               this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
+              this.esFavorito = false;
             },
             (error) => {
               this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             }
           );
         }else {
           this.snackbar.open("Error al eliminar el establecimiento a favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-            window.location.reload();
+            // window.location.reload();
           });
         }
       }

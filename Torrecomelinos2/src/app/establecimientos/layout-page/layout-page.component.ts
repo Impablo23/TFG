@@ -6,6 +6,7 @@ import { AuthApiService } from 'src/app/services/authApi.service';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { RegistroApi } from 'src/app/interfaces/registroApi.interface';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -22,6 +23,9 @@ export class LayoutPageComponent {
 
   // Variable para comprobar el num de favoritos de cada usuario
   public numFav : number = 0;
+
+  // Variable para almacenar el numero de establecimientos que hay en la página.
+  public numLocales : number = 0;
 
   // Constructor
   constructor(
@@ -41,7 +45,9 @@ export class LayoutPageComponent {
     this.id = localStorage.getItem('id')!;
 
     this.numFavoritosApi();
+
   }
+
 
   // Variable para guardar los datos de los botones de los usuarios.
   public sidebarItems = [
@@ -75,14 +81,15 @@ export class LayoutPageComponent {
     const registroLoGout: RegistroApi = {
       id: 0,
       id_usuario: parseInt(this.id,10),
-      estado: 'Desconectado'
+      estado: 'Desconectado',
+      hora: this.authApi.obtenerFechaYHora(new Date().toISOString()),
     }
 
     this.authApi.addRegistroApi(registroLoGout).subscribe(
       respuesta => {
+        localStorage.clear();
         this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
         this.router.navigate(['/auth']);
-        localStorage.clear();
       }
     );
 
@@ -105,5 +112,6 @@ export class LayoutPageComponent {
     }
     return ok;
   }
+
 
 }

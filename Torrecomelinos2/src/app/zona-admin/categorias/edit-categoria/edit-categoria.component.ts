@@ -100,12 +100,12 @@ export class EditCategoriaComponent {
           this.establecimientosApi.updateCategoriaApi(categoriaEditada).subscribe(
             (response) => {
               this.snackbar.open("Categoria actualizada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             },
             (error) => {
               this.snackbar.open("Ha ocurrido un error al actualizar la categoria.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             }
           );

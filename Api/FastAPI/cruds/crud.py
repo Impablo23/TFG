@@ -24,6 +24,7 @@ class Registro(BaseModel):
     id: int
     id_usuario: int
     estado: str
+    hora: str
     
 class Sugerencia(BaseModel):
     id: int
@@ -57,7 +58,7 @@ conexion = mysql.connector.connect(
     host="143.47.55.174",
     user="pablo",
     password="pablo",
-    database="tfg"
+    database="torrecomelinos"
 )
 
 #----------------------------------------------------------------------------------------------------------
@@ -261,7 +262,38 @@ async def addUser(usuario: Usuario):
         raise HTTPException(status_code=500, detail=f"Error al agregar el usuario: {error}")
 
 
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#---------------------------------------------REGISTROS----------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------
 
+def obtener_registros() -> List[Registro]:
+    # Crear cursor
+    cursor = conexion.cursor(dictionary=True)
+
+    # Consulta SQL para obtener los usuarios
+    consulta = "SELECT * FROM registro ORDER BY id DESC LIMIT 10"
+    
+    # Ejecutar la consulta
+    cursor.execute(consulta)
+    
+    # Obtener resultados
+    resultados = cursor.fetchall()
+
+    # Cerrar cursor y conexión
+    cursor.close()
+    # conexion.close()
+
+    # Lista para almacenar los usuarios
+    registros = []
+
+    # Iterar sobre los resultados y crear objetos Usuario
+    for resultado in resultados:
+        registro = Registro(**resultado)
+        registros.append(registro)
+
+    return registros
     
     
 #----------------------------------------------------------------------------------------------------------
@@ -363,7 +395,7 @@ def obtener_zonas() -> List[Zona]:
     cursor = conexion.cursor(dictionary=True)
 
     # Consulta SQL para obtener los usuarios
-    consulta = "SELECT * FROM zonas"
+    consulta = "SELECT * FROM zonas ORDER BY id ASC"
     
     # Ejecutar la consulta
     cursor.execute(consulta)
@@ -447,7 +479,7 @@ def obtener_categorias() -> List[Categoria]:
     cursor = conexion.cursor(dictionary=True)
 
     # Consulta SQL para obtener los usuarios
-    consulta = "SELECT * FROM categorias"
+    consulta = "SELECT * FROM categorias ORDER BY id ASC"
     
     # Ejecutar la consulta
     cursor.execute(consulta)

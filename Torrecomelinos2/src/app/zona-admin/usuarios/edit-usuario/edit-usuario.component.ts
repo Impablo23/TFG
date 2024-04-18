@@ -88,50 +88,44 @@ export class EditUsuarioComponent {
    this.authApi.getUserByEmail(this.email).subscribe(
      usuario => {
         const userOk = usuario[0];
-
-        if (userOk != undefined) {
-          this.snackbar.open("El usuario registrado ya existe", "Cerrar", { duration: 2000, panelClass: ['background'] });
-          this.router.navigate(['admin/usuarios']);
-          return;
-        }else{
-
-          let usuarioEditado: UsuarioApi;
-          if (this.usuarioSeleccionado.passwd === this.pass){
-            usuarioEditado = {
-              id: this.usuarioSeleccionado.id,
-              email: this.email,
-              nombreCompleto:this.nombreCompleto,
-              passwd:this.usuarioSeleccionado.passwd,
-              token:this.usuarioSeleccionado.token,
-              idRol:this.idRol
-            }
-          }else {
-            usuarioEditado = {
-              id: this.usuarioSeleccionado.id,
-              email: this.email,
-              idRol:this.idRol,
-              nombreCompleto:this.nombreCompleto,
-              passwd:this.calcularHashMD5(this.pass),
-              token:this.usuarioSeleccionado.token,
-            }
+        let usuarioEditado: UsuarioApi;
+        if (this.usuarioSeleccionado.passwd === this.pass){
+          usuarioEditado = {
+            id: this.usuarioSeleccionado.id,
+            email: this.email,
+            nombreCompleto:this.nombreCompleto,
+            passwd:this.usuarioSeleccionado.passwd,
+            token:this.usuarioSeleccionado.token,
+            idRol:this.idRol
           }
-
-          this.authApi.updateUserApi(usuarioEditado).subscribe(
-            (response) => {
-              this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
-              });
-            },
-            (error) => {
-              this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
-              });
-            }
-          );
+        }else {
+          usuarioEditado = {
+            id: this.usuarioSeleccionado.id,
+            email: this.email,
+            idRol:this.idRol,
+            nombreCompleto:this.nombreCompleto,
+            passwd:this.calcularHashMD5(this.pass),
+            token:this.usuarioSeleccionado.token,
+          }
         }
 
+        this.authApi.updateUserApi(usuarioEditado).subscribe(
+          (response) => {
+            this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 
+            });
+          },
+          (error) => {
+            this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+
+            });
+          }
+        );
+        this.router.navigate(['admin/usuarios/']);
       }
+
+
+
     );
 
   }

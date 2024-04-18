@@ -27,22 +27,6 @@ export class AddZonaComponent implements OnInit {
   ngOnInit() {
   }
 
-  // Función para capitalizar el primer carácter
-  public capitalizarPalabra(sentence: string): string {
-    // Separar el string en palabras individuales
-    const words = sentence.split(' ');
-
-    // Convertir la primera letra de cada palabra en minúscula y dejar el resto sin cambios
-    const capitalizedWords = words.map(word => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    });
-
-    // Unir las palabras nuevamente en un solo string
-    const result = capitalizedWords.join(' ');
-
-    return result;
-  }
-
   // Método que cancela la operacion eliminado los datos del campo nombre
   public cancelar() {
     this.nombre = '';
@@ -56,10 +40,10 @@ export class AddZonaComponent implements OnInit {
   public addZonaApi() {
 
     // Capitalizar el nombre de la zona
-    const nombreEstandar = this.capitalizarPalabra(this.nombre);
+    // const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(nombreEstandar).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -70,13 +54,13 @@ export class AddZonaComponent implements OnInit {
         }else {
           const zonaAdd :ZonaApi = {
             id: 0,
-            nombre: nombreEstandar
+            nombre: this.nombre
           }
 
           this.establecimientosApi.addZonaApi(zonaAdd).subscribe(
             repuesta => {
               this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-                window.location.reload();
+                // window.location.reload();
               });
             }
           );

@@ -59,13 +59,13 @@ export class DeleteUsuarioComponent {
     this.authApi.deleteUserApi(this.usuarioSeleccionado.id).subscribe(
       (response) => {
         this.snackbar.open( "Usuario eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+
         });
       },
 
       (error) => {
         this.snackbar.open("Ha ocurrido un error al eliminar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+
         });
       }
     );

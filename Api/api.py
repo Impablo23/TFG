@@ -135,10 +135,10 @@ async def UserByEmailAndPass(email:str, passwd: str):
 async def agregar_registro(registro: Registro):
     try:
         # Consulta SQL para insertar un nuevo usuario
-        consulta = "INSERT INTO registro (id_usuario, estado) VALUES (%s, %s)"
+        consulta = "INSERT INTO registro (id_usuario, estado,hora) VALUES (%s, %s, %s)"
 
         # Datos del nuevo usuario
-        datos_registro = (registro.id_usuario,registro.estado)
+        datos_registro = (registro.id_usuario,registro.estado,registro.hora)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_registro):
@@ -151,6 +151,11 @@ async def agregar_registro(registro: Registro):
         # Si ocurre un error inesperado, lanzar una excepción HTTP 500
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
 
+
+@api.get('/registros')
+async def registros():
+    registros_list = obtener_registros()
+    return registros_list
 
 
 #----------------------------------------------------------------------------------------------------------
@@ -185,9 +190,11 @@ async def agregar_zona(zona: Zona):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO zonas (nombre) VALUES (%s)"
+        
+        zona_minusculas = zona.nombre.lower()
 
         # Datos del nuevo usuario
-        datos_zonas = (zona.nombre,)
+        datos_zonas = (zona_minusculas,)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_zonas):
@@ -205,9 +212,11 @@ async def editar_zona(zona: Zona):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE zonas SET nombre = %s WHERE id = %s"
+        
+        zona_minusculas = zona.nombre.lower()
 
         # Datos actualizados del usuario
-        datos_zonas = (zona.nombre,zona.id)
+        datos_zonas = (zona_minusculas,zona.id)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_zonas):
@@ -273,9 +282,11 @@ async def agregar_categoria(categoria: Categoria):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO categorias (nombre) VALUES (%s)"
+        
+        categoria_minusculas = categoria.nombre.lower()
 
         # Datos del nuevo usuario
-        datos_categorias = (categoria.nombre,)
+        datos_categorias = (categoria_minusculas,)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_categorias):
@@ -293,9 +304,11 @@ async def editar_categoria(categoria: Categoria):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE categorias SET nombre = %s WHERE id = %s"
+        
+        categoria_minusculas = categoria.nombre.lower()
 
         # Datos actualizados del usuario
-        datos_categorias = (categoria.nombre,categoria.id)
+        datos_categorias = (categoria_minusculas,categoria.id)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_categorias):

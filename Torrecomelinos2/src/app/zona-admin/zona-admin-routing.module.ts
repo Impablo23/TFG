@@ -17,6 +17,7 @@ import { SugerenciasComponent } from './sugerencias/sugerencias.component';
 import { AddSugerenciaComponent } from './sugerencias/add-sugerencia/add-sugerencia.component';
 import { DeleteSugerenciaComponent } from './sugerencias/delete-sugerencia/delete-sugerencia.component';
 import { InfoSugerenciaComponent } from './sugerencias/info-sugerencia/info-sugerencia.component';
+import { RegistroComponent } from './registro/registro.component';
 
 const routes: Routes = [
   {
@@ -52,6 +53,7 @@ const routes: Routes = [
           { path: 'delete/:id', component: DeleteSugerenciaComponent }
         ]
       },
+      {path: 'registro', component: RegistroComponent},
       {path: '**', redirectTo: 'zonas'},
     ]
   }

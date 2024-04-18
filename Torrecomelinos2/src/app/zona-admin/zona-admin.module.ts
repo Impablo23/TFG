@@ -21,6 +21,7 @@ import { SugerenciasComponent } from './sugerencias/sugerencias.component';
 import { AddSugerenciaComponent } from './sugerencias/add-sugerencia/add-sugerencia.component';
 import { DeleteSugerenciaComponent } from './sugerencias/delete-sugerencia/delete-sugerencia.component';
 import { InfoSugerenciaComponent } from './sugerencias/info-sugerencia/info-sugerencia.component';
+import { RegistroComponent } from './registro/registro.component';
 
 
 @NgModule({
@@ -41,14 +42,15 @@ import { InfoSugerenciaComponent } from './sugerencias/info-sugerencia/info-suge
     SugerenciasComponent,
     AddSugerenciaComponent,
     DeleteSugerenciaComponent,
-    InfoSugerenciaComponent
+    InfoSugerenciaComponent,
+    RegistroComponent
   ],
   imports: [
     CommonModule,
     ZonaAdminRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ]
 })
 export class ZonaAdminModule { }
