@@ -2,6 +2,13 @@ from http.client import HTTPException
 from typing import List
 import mysql.connector
 from pydantic import BaseModel
+from fastapi import status
+
+class User(BaseModel):
+    username: str
+    email: str | None = None
+    full_name: str | None = None
+    disabled: bool | None = None
 
 class Usuario(BaseModel):
     id: int
@@ -127,6 +134,26 @@ def obtener_roles() -> List[Rol]:
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------
 
+# Método para autenticar y obtener un usuario
+def get_user_token(token: str):
+    cursor = conexion.cursor(dictionary=True)
+    query = "SELECT * FROM usuarios WHERE token = %s and idRol = 1"
+    cursor.execute(query, (token,))
+    resultado = cursor.fetchone()
+    cursor.close()
+    # conexion.close()
+
+    # Verificar si se encontró el usuario
+    if resultado:
+        # Crear un objeto Usuario con el resultado y devolverlo como lista
+        usuario = Usuario(**resultado)
+        return [usuario]
+    else:
+        # Si no se encuentra el usuario, devolver una lista vacía
+        return []
+
+    return Usuario(**user_data)
+
 # Método para obtener los usuarios de la base de datos y guardarlos en una lista de objetos Usuario
 def obtener_usuarios() -> List[Usuario]:
     # Crear cursor
@@ -143,7 +170,6 @@ def obtener_usuarios() -> List[Usuario]:
 
     # Cerrar cursor y conexión
     cursor.close()
-    # conexion.close()
 
     # Lista para almacenar los usuarios
     usuarios = []
@@ -153,6 +179,7 @@ def obtener_usuarios() -> List[Usuario]:
         usuario = Usuario(**resultado)
         usuarios.append(usuario)
 
+    # conexion.close()
     return usuarios
 
 

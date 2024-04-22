@@ -73,12 +73,12 @@ export class DeleteSugerenciaComponent {
     this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id).subscribe(
       (response) => {
         this.snackbar.open("Sugerencia eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       },
       (error) => {
         this.snackbar.open("Ha ocurrido un error al eliminar la sugerencia", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-          window.location.reload();
+          // window.location.reload();
         });
       }
     );

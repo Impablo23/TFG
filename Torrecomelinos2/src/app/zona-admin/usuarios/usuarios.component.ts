@@ -19,6 +19,7 @@ export class UsuariosComponent {
 
   public listadoUsuarios: UsuarioApi[] = [];
 
+  public token = 'token';
 
   constructor(
     public router: Router,
@@ -26,6 +27,7 @@ export class UsuariosComponent {
   ){}
 
   ngOnInit(){
+    this.token = localStorage.getItem('token')!;
     // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.usuariosSubscription = this.authApi.usuarios$.subscribe(usuarios => {
       this.listadoUsuarios = usuarios;

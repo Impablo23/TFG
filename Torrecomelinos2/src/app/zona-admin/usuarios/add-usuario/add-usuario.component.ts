@@ -95,6 +95,10 @@ export class AddUsuarioComponent {
             repuesta => {
               this.snackbar.open( "Usuario añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
               });
+              this.email = '';
+              this.pass = '';
+              this.nombreCompleto = '';
+              this.idRol = 0;
             }
           );
           this.router.navigate(['admin/usuarios/']);

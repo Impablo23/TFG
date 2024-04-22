@@ -248,17 +248,56 @@ export class EstablecimientosApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  getSugerenciasApi() : Observable<SugerenciaApi[]> {
-    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
+  private sugerenciasSubject = new BehaviorSubject<SugerenciaApi[]>([]);
+  public sugerencias$ = this.sugerenciasSubject.asObservable();
+
+  actualizarSugerencias(sugerencias: SugerenciaApi[]) {
+    this.sugerenciasSubject.next(sugerencias);
   }
+
+  getSugerenciasApi(): Observable<SugerenciaApi[]> {
+    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
+      .pipe(
+        catchError(error => {
+          console.error('Error al obtener las sugerencias:', error);
+          return of([]);
+        }),
+        map(sugerencias => {
+          // Actualiza el servicio compartido con las sugerencias obtenidas
+          this.actualizarSugerencias(sugerencias);
+          return sugerencias;
+        })
+      );
+  }
+
+  deleteSugerenciaApi(id: number): Observable<boolean> {
+    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`)
+      .pipe(
+        catchError(error => {
+          console.error('Error al eliminar la sugerencia:', error);
+          return of(false);
+        }),
+        map(response => {
+          // Al eliminar una categoría, actualiza la lista de sugerencias
+          this.getSugerenciasApi().subscribe();
+          return response;
+        })
+      );
+  }
+
+
+
+  // getSugerenciasApi() : Observable<SugerenciaApi[]> {
+  //   return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
+  // }
 
   getSugerenciaApiById(id: number): Observable<SugerenciaApi[]> {
     return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias/id/${id}`)
   }
 
-  deleteSugerenciaApi(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
-  }
+  // deleteSugerenciaApi(id: number): Observable<boolean> {
+  //   return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
+  // }
 
   addSugerenciaApi(sugerencia: SugerenciaApi) : Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/sugerencias/add`,sugerencia)

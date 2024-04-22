@@ -172,7 +172,5 @@ export class ListPageComponent {
   }
 
 }
-function type(zonaSeleccionada: number) {
-  throw new Error('Function not implemented.');
-}
+
 
