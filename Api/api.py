@@ -1,19 +1,19 @@
-from datetime import timedelta
-import datetime
-from typing import List
-from fastapi import APIRouter, FastAPI,Depends, status
+from typing import Union
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from jwt import PyJWTError
-import jwt
-from pydantic import BaseModel, MySQLDsn
-import mysql.connector
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from typing import Annotated
+from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from FastAPI.cruds.crud import *
+from datetime import datetime,timedelta, timezone
+from jose import jwt,JWTError
 
 api = FastAPI()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer("/token")
+
+SECRET_KEY = '92fbf1d09b41c2a4d5d8016c11650da1' #pablo11504
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+
 
 # Configurar los orígenes permitidos para CORS
 origins = [
@@ -30,91 +30,64 @@ api.add_middleware(
     allow_headers=["*"],
 )
 
-fake_users_db = {
-    "johndoe": {
-        "username": "johndoe",
-        "full_name": "John Doe",
-        "email": "johndoe@example.com",
-        "hashed_password": "fakehashedsecret",
-        "disabled": False,
-    },
-    "alice": {
-        "username": "alice",
-        "full_name": "Alice Wonderson",
-        "email": "alice@example.com",
-        "hashed_password": "fakehashedsecret2",
-        "disabled": True,
-    },
-}
-
-def fake_hash_password(password: str):
-    return "fakehashed" + password
-
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-class User(BaseModel):
-    username: str
-    email: str | None = None
-    full_name: str | None = None
-    disabled: bool | None = None
-
-
-class UserInDB(User):
-    hashed_password: str
-
-
-def get_user(db, username: str):
-    if username in db:
-        user_dict = db[username]
-        return UserInDB(**user_dict)
-
-
-def fake_decode_token(token):
-    # This doesn't provide any security at all
-    # Check the next version
-    user = get_user(fake_users_db, token)
-    return user
-
-
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
-    user = fake_decode_token(token)
+def autenticar_usuario(email: str, password: str):
+    user = obtenerUserByEmailAndPass(email,password)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise HTTPException(status_code=401, detail="Credenciales Inválidas", headers={"WWW-Authenticate": "Bearer"})
+
     return user
 
+def crear_token(data: dict, expires_delta: timedelta | None = None):
+    to_encode = data.copy()
+    if expires_delta:
+        expire = datetime.now(timezone.utc) + expires_delta
+    else:
+        expire = datetime.now(timezone.utc) + timedelta(minutes=15)
+        
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, ALGORITHM)
+    return encoded_jwt
 
-async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
-):
-    if current_user.disabled:
-        raise HTTPException(status_code=400, detail="Inactive user")
-    return current_user
 
+def obtener_usuario_actual(token : str = Depends(oauth2_scheme)):
+    try:
+        token_decode = jwt.decode(token, SECRET_KEY, ALGORITHM)
+        email = token_decode.get("sub")
+        
+        if email == None:
+            raise HTTPException(status_code=401, detail="Credenciales Inválidas", headers={"WWW-Authenticate": "Bearer"})
+    except:
+        raise HTTPException(status_code=401, detail="Credenciales Inválidas", headers={"WWW-Authenticate": "Bearer"})
 
-@api.post("/token")
-async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    user_dict = fake_users_db.get(form_data.username)
-    if not user_dict:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
-    user = UserInDB(**user_dict)
-    hashed_password = fake_hash_password(form_data.password)
-    if not hashed_password == user.hashed_password:
-        raise HTTPException(status_code=400, detail="Incorrect username or password")
+    user = obtenerUserByEmail(email)
+    
+    if not user:
+        raise HTTPException(status_code=401, detail="Credenciales Inválidas", headers={"WWW-Authenticate": "Bearer"})
+    
+    return user
 
-    return {"access_token": user.username, "token_type": "bearer"}
 
 
 @api.get("/users/me")
-async def read_users_me(
-    current_user: Annotated[User, Depends(get_current_active_user)],
-):
-    return current_user
+def user_me(user: Usuario = Depends(obtener_usuario_actual)):
+    return user
+
+
+@api.post("/token")
+def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    passwd = encriptar_md5(form_data.password)
+    usuario = autenticar_usuario(form_data.username, passwd)
+    if usuario:  # Verifica si el usuario fue autenticado correctamente
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token_jwt = crear_token({"sub": usuario[0].email}, access_token_expires)
+        return {
+            "access_token": access_token_jwt,
+            "token_type": "bearer"
+        }
+    else:
+        return {"error": "Credenciales inválidas"}
+
+        
 
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------
@@ -124,7 +97,7 @@ async def read_users_me(
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LOS USUARIOS
 @api.get("/users")
-async def users():
+async def users(user: Usuario = Depends(obtener_usuario_actual)):
     users_list = obtener_usuarios()
     return users_list
 
@@ -259,7 +232,7 @@ async def registros():
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS ZONAS Y CATEGORIAS
 @api.get("/zonas")
-async def zonas():
+async def zonas(user: Usuario = Depends(obtener_usuario_actual)):
     zonas_list = obtener_zonas()
     return zonas_list
 
@@ -352,7 +325,7 @@ async def eliminar_zona(id: int):
 #----------------------------------------------------------------------------------------------------------
 
 @api.get("/categorias")
-async def categorias():
+async def categorias(user: Usuario = Depends(obtener_usuario_actual)):
     categorias_list = obtener_categorias()
     return categorias_list
 
@@ -457,7 +430,7 @@ async def roles():
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LOS ESTABLECIMIENTOS
 @api.get("/establecimientos")
-async def establecimientos():
+async def establecimientos(user: Usuario = Depends(obtener_usuario_actual)):
     establecimientos_list = obtener_establecimientos()
     return establecimientos_list
 

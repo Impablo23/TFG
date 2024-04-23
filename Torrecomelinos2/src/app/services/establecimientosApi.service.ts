@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environmentsApi } from "environments/environments";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, catchError, map, noop, of, tap } from "rxjs";
 
 import { EstablecimientoApi } from '../interfaces/establecimientoApi.interface';
@@ -31,8 +31,9 @@ export class EstablecimientosApiService {
     this.zonasSubject.next(zonas);
   }
 
-  getZonasApi(): Observable<ZonaApi[]> {
-    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas`)
+  getZonasApi(token: string): Observable<ZonaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al obtener las zonas:', error);
@@ -46,7 +47,7 @@ export class EstablecimientosApiService {
       );
   }
 
-  addZonaApi(zona: ZonaApi): Observable<string> {
+  addZonaApi(zona: ZonaApi,token: string): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/zonas/add`, zona)
       .pipe(
         catchError(error => {
@@ -55,13 +56,13 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al agregar una zona, actualiza la lista de zonas
-          this.getZonasApi().subscribe();
+          this.getZonasApi(token).subscribe();
           return response;
         })
       );
   }
 
-  updateZonaApi(zona: ZonaApi): Observable<string> {
+  updateZonaApi(zona: ZonaApi,token: string): Observable<string> {
     return this.http.put<string>(`${this.baseUrl}/zonas/edit`, zona)
       .pipe(
         catchError(error => {
@@ -70,13 +71,13 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al actualizar una zona, actualiza la lista de zonas
-          this.getZonasApi().subscribe();
+          this.getZonasApi(token).subscribe();
           return response;
         })
       );
   }
 
-  deleteZonaApi(id: number): Observable<boolean> {
+  deleteZonaApi(id: number,token: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.baseUrl}/zonas/delete/${id}`)
       .pipe(
         catchError(error => {
@@ -85,7 +86,7 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al eliminar una zona, actualiza la lista de zonas
-          this.getZonasApi().subscribe();
+          this.getZonasApi(token).subscribe();
           return response;
         })
       );
@@ -112,8 +113,9 @@ export class EstablecimientosApiService {
     this.categoriasSubject.next(categorias);
   }
 
-  getCategoriasApi(): Observable<CategoriaApi[]> {
-    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias`)
+  getCategoriasApi(token: string): Observable<CategoriaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al obtener las categorías:', error);
@@ -127,7 +129,7 @@ export class EstablecimientosApiService {
       );
   }
 
-  addCategoriaApi(categoria: CategoriaApi): Observable<string> {
+  addCategoriaApi(categoria: CategoriaApi,token: string): Observable<string> {
     return this.http.post<string>(`${this.baseUrl}/categorias/add`, categoria)
       .pipe(
         catchError(error => {
@@ -136,13 +138,13 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al agregar una categoría, actualiza la lista de categorías
-          this.getCategoriasApi().subscribe();
+          this.getCategoriasApi(token).subscribe();
           return response;
         })
       );
   }
 
-  updateCategoriaApi(categoria: CategoriaApi): Observable<string> {
+  updateCategoriaApi(categoria: CategoriaApi,token: string): Observable<string> {
     return this.http.put<string>(`${this.baseUrl}/categorias/edit`, categoria)
       .pipe(
         catchError(error => {
@@ -151,13 +153,13 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al actualizar una categoría, actualiza la lista de categorías
-          this.getCategoriasApi().subscribe();
+          this.getCategoriasApi(token).subscribe();
           return response;
         })
       );
   }
 
-  deleteCategoriaApi(id: number): Observable<boolean> {
+  deleteCategoriaApi(id: number,token: string): Observable<boolean> {
     return this.http.delete<boolean>(`${this.baseUrl}/categorias/delete/${id}`)
       .pipe(
         catchError(error => {
@@ -166,7 +168,7 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al eliminar una categoría, actualiza la lista de categorías
-          this.getCategoriasApi().subscribe();
+          this.getCategoriasApi(token).subscribe();
           return response;
         })
       );
@@ -188,8 +190,9 @@ export class EstablecimientosApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  getEstablecimientosApi(): Observable<EstablecimientoApi[]> {
-    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos`)
+  getEstablecimientosApi(token: string): Observable<EstablecimientoApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos`, { headers })
   }
 
   addEstablecimientoApi( establecimiento : EstablecimientoApi): Observable<string> {

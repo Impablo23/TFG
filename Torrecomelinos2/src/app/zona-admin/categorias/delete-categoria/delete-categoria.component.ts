@@ -20,6 +20,9 @@ export class DeleteCategoriaComponent {
   // Variable que almacena la categoría específica
   public categoriaSeleccionada!: CategoriaApi;
 
+  public tokenApi : string = "";
+
+
   // Constructor
   constructor(
     private router: Router,
@@ -30,6 +33,8 @@ export class DeleteCategoriaComponent {
 
   // Método que al iniciar la página, busca la categoría específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getCategoriaApiById(id) )  ).subscribe(  categoria =>
       {
         if (!categoria) return this.router.navigate(['admin/categorias/']);
@@ -55,7 +60,7 @@ export class DeleteCategoriaComponent {
     Método que elimina la categoría seleccionada y muestra al usuario un mensaje de error o confirmación dependiendo de si se ha eliminado OK o NO OK
   */
   public deleteCategoriaApi() {
-    this.establecimientosApi.deleteCategoriaApi(this.categoriaSeleccionada.id).subscribe(
+    this.establecimientosApi.deleteCategoriaApi(this.categoriaSeleccionada.id,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open("Categoria eliminada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           // window.location.reload();

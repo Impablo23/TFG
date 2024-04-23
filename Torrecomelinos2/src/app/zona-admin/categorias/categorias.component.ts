@@ -18,6 +18,9 @@ export class CategoriasComponent {
   // Variable que almacena las categorías recogidas de la BBDD.
   public listadoCategorias: CategoriaApi[] = [];
 
+  public tokenApi : string = "";
+
+
   // Constructor
   constructor(
     public router: Router,
@@ -26,13 +29,15 @@ export class CategoriasComponent {
 
   // Método que al iniciar la página, se cargar las categorias.
   ngOnInit(){
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.categoriasSubscription = this.establecimientosApi.categorias$.subscribe(categorias => {
       this.listadoCategorias = categorias;
     });
 
     // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getCategoriasApi().subscribe();
+    this.establecimientosApi.getCategoriasApi(this.tokenApi).subscribe();
   }
 
   ngOnDestroy() {

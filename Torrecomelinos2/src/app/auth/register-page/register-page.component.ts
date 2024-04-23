@@ -84,7 +84,7 @@ export class RegisterPageComponent {
           }
 
 
-          this.authApi.addUserApi(nuevoUser).subscribe(
+          this.authApi.addUserApiRegister(nuevoUser).subscribe(
             repuesta => {
               this.snackbar.open("Usuario registrado correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
               this.router.navigate(['/auth']);

@@ -18,6 +18,8 @@ export class AddCategoriaComponent {
   // Variable para almacenar el estado de las categorías
   public numCategorias : number = 0;
 
+  public tokenApi : string = "";
+
   // Constructor
   constructor(
     private snackbar: MatSnackBar,
@@ -25,6 +27,8 @@ export class AddCategoriaComponent {
   ){}
 
   ngOnInit() {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre
@@ -55,7 +59,7 @@ export class AddCategoriaComponent {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.addCategoriaApi(zonaAdd).subscribe(
+          this.establecimientosApi.addCategoriaApi(zonaAdd,this.tokenApi).subscribe(
             repuesta => {
               this.snackbar.open( "Categoria añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

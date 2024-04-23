@@ -20,6 +20,7 @@ export class LayoutPageComponent {
   public idRol : string ='';
   public nombre : string ='';
   public id : string ='';
+  public tokenApi : string ='';
 
   // Variable para comprobar el num de favoritos de cada usuario
   public numFav : number = 0;
@@ -31,7 +32,6 @@ export class LayoutPageComponent {
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
-    private establecimientoApi: EstablecimientosApiService,
     private authApi: AuthApiService
   ){}
 
@@ -43,8 +43,8 @@ export class LayoutPageComponent {
     this.idRol = localStorage.getItem('idRol')!;
     this.nombre = localStorage.getItem('nombreCompleto')!;
     this.id = localStorage.getItem('id')!;
+    this.tokenApi = localStorage.getItem('tokenApi')!;
 
-    this.numFavoritosApi();
 
   }
 
@@ -95,23 +95,7 @@ export class LayoutPageComponent {
 
   }
 
-  // método que recoge de la BBDD el numero de favoritos que tiene un usuario específico.
-  public numFavoritosApi(): void {
-    this.establecimientoApi.getFavoritosByUserApi(parseInt(this.id,10)).subscribe(
-      favoritos => {
-        this.numFav = favoritos.length;
-      }
-    );
-  }
 
-  // Método que hará que se muestre o no el botón de favoritos.
-  public verificaFavoritos(): boolean {
-    let ok = false;
-    if (this.numFav>0){
-      ok = true;
-    }
-    return ok;
-  }
 
 
 }

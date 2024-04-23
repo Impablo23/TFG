@@ -29,6 +29,8 @@ export class EditUsuarioComponent {
   pass: string ='';
   idRol: number = 0;
 
+  public token : string = '';
+
   // Variables para almacenar los roles y el usuario seleccionado
   public usuarioSeleccionado! : UsuarioApi ;
   public listadoRoles: RolApi[] = [];
@@ -57,6 +59,7 @@ export class EditUsuarioComponent {
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
  ngOnInit(): void {
+    this.token = localStorage.getItem('tokenApi')!;
 
    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id) )  ).subscribe(  usuario =>
     {
@@ -109,7 +112,7 @@ export class EditUsuarioComponent {
           }
         }
 
-        this.authApi.updateUserApi(usuarioEditado).subscribe(
+        this.authApi.updateUserApi(usuarioEditado,this.token).subscribe(
           (response) => {
             this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 

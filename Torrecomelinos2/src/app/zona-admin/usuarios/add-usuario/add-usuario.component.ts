@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as CryptoJS from 'crypto-js';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './add-usuario.component.html',
   styleUrls: ['./add-usuario.component.css']
 })
-export class AddUsuarioComponent {
+export class AddUsuarioComponent implements OnInit {
 
   // Constructor
   constructor(
@@ -20,12 +20,17 @@ export class AddUsuarioComponent {
     private authApi: AuthApiService,
     private router: Router,
   ){}
+  ngOnInit(): void {
+    this.token = localStorage.getItem('tokenApi')!;
+  }
 
   // Variables del formulario de Register
   nombreCompleto: string ='';
   email: string ='';
   pass: string ='';
   idRol: number = 0;
+
+  public token : string = '';
 
   // Función para calcular el hash MD5 de una contraseña
   calcularHashMD5(password: string): string {
@@ -91,7 +96,7 @@ export class AddUsuarioComponent {
           }
 
 
-          this.authApi.addUserApi(nuevoUser).subscribe(
+          this.authApi.addUserApi(nuevoUser,this.token).subscribe(
             repuesta => {
               this.snackbar.open( "Usuario añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
               });

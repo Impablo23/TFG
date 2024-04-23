@@ -3,6 +3,7 @@ from typing import List
 import mysql.connector
 from pydantic import BaseModel
 from fastapi import status
+import hashlib
 
 class User(BaseModel):
     username: str
@@ -93,6 +94,22 @@ def ejecutar_consulta(consulta, datos):
     except mysql.connector.Error as error:
         # Si ocurre un error, devolver False
         return False
+    
+    
+def encriptar_md5(texto):
+    # Convertir el string a bytes
+    texto_bytes = texto.encode('utf-8')
+    
+    # Crear un objeto hash MD5
+    hash_md5 = hashlib.md5()
+    
+    # Actualizar el hash con los bytes del texto
+    hash_md5.update(texto_bytes)
+    
+    # Obtener la representación hexadecimal del hash
+    hash_encriptado = hash_md5.hexdigest()
+    
+    return hash_encriptado
 
 #----------------------------------------------------------------------------------------------------------
 #----------------------------------------------------------------------------------------------------------

@@ -20,6 +20,8 @@ export class EditZonaComponent {
   // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
 
+  public tokenApi : string = "";
+
   // Constructor
   constructor(
     private router: Router,
@@ -30,6 +32,8 @@ export class EditZonaComponent {
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zona/']);
@@ -80,7 +84,7 @@ export class EditZonaComponent {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.updateZonaApi(zonaEditada).subscribe(
+          this.establecimientosApi.updateZonaApi(zonaEditada,this.tokenApi).subscribe(
             (response) => {
               this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

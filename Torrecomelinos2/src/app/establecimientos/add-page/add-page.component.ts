@@ -34,6 +34,9 @@ export class AddPageComponent {
   public id_categoria: number = 0;
 
 
+  public tokenApi : string = "";
+
+
   // Constructor
   constructor(
     private router: Router,
@@ -52,7 +55,9 @@ export class AddPageComponent {
 
     También almacena en las listas de zonas y categoría los datos de estas de las BBDD.
   */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
 
       this.route.queryParams.subscribe(params => {
         this.idEstablecimientoSugerido = params['sugerenciaId'];
@@ -68,17 +73,13 @@ export class AddPageComponent {
         );
       }
 
-      this.establecimientoApi.getZonasApi().subscribe(
-        zonas => {
-          this.listadoZonas = zonas
-        }
-      );
+      // Obtener zonas
+      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+      this.listadoZonas = responseZonas!;
 
-      this.establecimientoApi.getCategoriasApi().subscribe(
-        categorias => {
-          this.listadoCategorias = categorias
-        }
-      );
+      // Obtener categorías
+      const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+      this.listadoCategorias = responseCategorias!;
 
 
   }

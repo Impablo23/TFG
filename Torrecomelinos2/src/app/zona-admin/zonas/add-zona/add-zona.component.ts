@@ -18,6 +18,8 @@ export class AddZonaComponent implements OnInit {
   // Variable para almacenar el estado de las zonas
   public numZonas : number = 0;
 
+  public tokenApi : string = "";
+
   // Constructor
   constructor(
     private snackbar: MatSnackBar,
@@ -25,6 +27,8 @@ export class AddZonaComponent implements OnInit {
   ){}
 
   ngOnInit() {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre
@@ -57,11 +61,12 @@ export class AddZonaComponent implements OnInit {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.addZonaApi(zonaAdd).subscribe(
+          this.establecimientosApi.addZonaApi(zonaAdd,this.tokenApi).subscribe(
             repuesta => {
               this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();
               });
+              this.nombre = '';
             }
           );
         }

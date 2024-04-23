@@ -12,6 +12,8 @@ export class RegistroComponent implements OnInit {
   public listadoRegistros: RegistroApi[] = [];
   public listadoNombresUsuarios: string[] = [];
 
+  public tokenApi: string = '';
+
 
   constructor(
     private authApi: AuthApiService
@@ -19,15 +21,14 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.tokenApi = localStorage.getItem('tokenApi')!;
+
     this.authApi.getRegistroApi().subscribe(
       registros => {
         this.listadoRegistros = registros;
         this.obtenerNombresUsuarios(this.listadoRegistros);
       }
     );
-
-
-
 
   }
 

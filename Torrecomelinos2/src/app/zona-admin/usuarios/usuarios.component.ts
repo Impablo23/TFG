@@ -27,14 +27,14 @@ export class UsuariosComponent {
   ){}
 
   ngOnInit(){
-    this.token = localStorage.getItem('token')!;
+    this.token = localStorage.getItem('tokenApi')!;
     // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.usuariosSubscription = this.authApi.usuarios$.subscribe(usuarios => {
       this.listadoUsuarios = usuarios;
     });
 
     // Obten las categorías al iniciar el componente
-    this.authApi.getUsersApi().subscribe();
+    this.authApi.getUsersApi(this.token).subscribe();
 
   }
 

@@ -1,14 +1,14 @@
-<div style="height: 200px;">
-  <div style="background-color: white;width: 70%;height: 100px; margin:auto;margin-top: 50px;border-radius: 30px;">
+<div style="height: 40%;">
+  <div style="background-color: white;width: 70%;height: 20%px; margin:auto;margin-top: 50px;border-radius: 30px;">
     <h1 style="text-align: center;font-size: 40px;font-family: monospace;padding: 30px;">Bienvenido a la zona de Administrador, {{nombrePublico}}</h1>
-    <div style="width: 20%;height: 45px;margin: auto;margin-top: 30px; ">
+    <div style="width: 20%;height: 45px;margin: auto;margin-top: 10%; ">
       <button mat-raised-button  style="width: 100%;font-family: monospace;border-radius: 5px;" (click)="goToApp()">Volver a la aplicación</button>
     </div>
   </div>
 </div>
 
 
-<div style="width: 50%;height: 15%;margin: auto; margin-bottom: 80px;">
+<div style="width: 50%;height: 25%;margin: auto; margin-bottom: 80px;">
 
   <div class="d-grid gap-2">
     <button *ngFor="let items of AdminItems" class="btn btn-primary" (click)="goToUrl(items.url)" type="button" style="font-family: monospace;">{{items.label}}</button>

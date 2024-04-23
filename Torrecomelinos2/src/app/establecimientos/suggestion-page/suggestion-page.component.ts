@@ -50,7 +50,7 @@ export class SuggestionPageComponent {
     const enlaceSugerencia: string = this.searchForm.get('enlace')!.value;
 
     if (nomSugerencia === '' || enlaceSugerencia === ''){
-      this.snackbar.open("No has rellenado todos los campos obligatorios", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+      this.snackbar.open("No has rellenado todos los campos obligatorios", "Cerrar",{duration: 500,panelClass:['background']}).afterDismissed().subscribe(() => {
       });
       return;
     }

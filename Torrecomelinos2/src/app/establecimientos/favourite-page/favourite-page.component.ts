@@ -20,6 +20,8 @@ export class FavouritePageComponent {
   // Variable que almacena el id del usuario
   public id : string = '';
 
+  public tokenApi : string = "";
+
   // Variables para almacenar los datos de los establecimientos favoritos del usuario
   public listadoFavoritos : FavoritoApi[] = [];
   public listadoFavoritosDetalles : EstablecimientoApi[] = [];
@@ -34,20 +36,18 @@ export class FavouritePageComponent {
   ){}
 
   // Método que al iniciar la pestaña, da valor a la variable id y guarda los datos en los listados con los datos recogidos por la BBDD
-  ngOnInit() {
+  async ngOnInit() {
     this.id = localStorage.getItem('id')!;
 
-    this.establecimientoApi.getZonasApi().subscribe(
-      zonas => {
-        this.listadoZonas = zonas
-      }
-    );
+    this.tokenApi = localStorage.getItem('tokenApi')!;
 
-    this.establecimientoApi.getCategoriasApi().subscribe(
-      categorias => {
-        this.listadoCategorias = categorias
-      }
-    );
+    // Obtener zonas
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+    this.listadoZonas = responseZonas!;
+
+    // Obtener categorías
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+    this.listadoCategorias = responseCategorias!;
 
     this.obtenerDatosEstablecimientosFavoritosApi();
 

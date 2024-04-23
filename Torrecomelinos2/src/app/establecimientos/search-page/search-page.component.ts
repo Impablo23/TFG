@@ -31,11 +31,14 @@ export class SearchPageComponent  implements OnInit {
     private establecimientoApi: EstablecimientosApiService
   ){}
 
+  public tokenApi : string = "";
   /*
     Aqui cargamos en el listado de los establecimientos de los nombres de los establecimientos que incluyen los caracteres que introduce el usuario
     para asi mostrarlos y cargamos las zonas.
   */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
 
     this.searchForm.get('searchInput')!.valueChanges
       .pipe(
@@ -50,11 +53,9 @@ export class SearchPageComponent  implements OnInit {
         this.cargarEstablecimientos(valor);
       });
 
-      this.establecimientoApi.getZonasApi().subscribe(
-        zonas => {
-          this.listadoZonas = zonas
-        }
-      );
+      // Obtener zonas
+      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+      this.listadoZonas = responseZonas!;
 
 
     this.obtenerEstablecimientos();
@@ -62,12 +63,11 @@ export class SearchPageComponent  implements OnInit {
   }
 
   // Método que recoge todos los establecimientos para hacer la busqueda de los solicitados
-  public obtenerEstablecimientos() {
-    this.establecimientoApi.getEstablecimientosApi().subscribe(
-      respuesta => {
-        this.establecimientos=respuesta;
-      }
-    );
+  public async obtenerEstablecimientos() {
+   // Obtener establecimientos
+    const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.tokenApi).toPromise();
+    this.establecimientos = responseEstablecimientos!;
+
   }
 
   // Formulario para el buscador de establecimientos

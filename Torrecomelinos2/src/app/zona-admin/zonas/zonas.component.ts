@@ -15,6 +15,8 @@ export class ZonasComponent {
 
   private zonasSubscription!: Subscription;
 
+  public tokenApi : string = "";
+
   // Variable para almacenar las zonas recogidad de la BBDD
   public listadoZonas: ZonaApi[] = [];
 
@@ -26,13 +28,15 @@ export class ZonasComponent {
 
   // Método que al iniciar la página, se cargar las zonas.
   ngOnInit(){
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     // Suscríbete al observable para obtener las actualizaciones del listado de zonas
     this.zonasSubscription = this.establecimientosApi.zonas$.subscribe(zonas => {
       this.listadoZonas = zonas;
     });
 
     // Obten las zonas al iniciar el componente
-    this.establecimientosApi.getZonasApi().subscribe();
+    this.establecimientosApi.getZonasApi(this.tokenApi).subscribe();
   }
 
   ngOnDestroy() {

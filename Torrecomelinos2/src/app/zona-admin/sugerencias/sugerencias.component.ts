@@ -29,7 +29,6 @@ export class SugerenciasComponent {
     // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.sugerenciasSubscription = this.establecimientosApi.sugerencias$.subscribe(sugerencias => {
       this.listadoSugerencias = sugerencias;
-      console.log(sugerencias);
     });
 
     // Obten las categorías al iniciar el componente

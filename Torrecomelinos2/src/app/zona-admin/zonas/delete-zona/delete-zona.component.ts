@@ -17,6 +17,8 @@ export class DeleteZonaComponent {
   // Variable para almacenar el nombre de la zona seleccionada
   public nombre: string = '';
 
+  public tokenApi : string = "";
+
   // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
 
@@ -30,6 +32,8 @@ export class DeleteZonaComponent {
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zonas']);
@@ -52,7 +56,7 @@ export class DeleteZonaComponent {
 
   // Método que elimina la zona de la BBDD y envia al usuario un mensaje de error o confirmacion dependiendo de lo que ha sucedido.
   public deleteZona() {
-    this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id).subscribe(
+    this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           // window.location.reload();

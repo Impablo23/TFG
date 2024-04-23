@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { environmentsApi } from "environments/environments";
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, catchError, map, of, tap } from "rxjs";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, catchError, delay, map, of, tap } from "rxjs";
 
 import { UsuarioApi } from "../interfaces/usuarioApi.interface";
 import { RolApi } from "../interfaces/rolApi.interface";
@@ -15,6 +15,13 @@ export class AuthApiService {
   private baseUrl: string = environmentsApi.baseUrl
 
   constructor(private http: HttpClient) { }
+
+  getToken(username: string, password: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    return this.http.post<any>('http://127.0.0.1:8000/token', formData);
+  }
 
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
@@ -40,8 +47,24 @@ export class AuthApiService {
     this.usuariosSubject.next(usuarios);
   }
 
-  getUsersApi(): Observable<UsuarioApi[]> {
-    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`)
+  // getUsersApi(): Observable<UsuarioApi[]> {
+  //   return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`)
+  //     .pipe(
+  //       catchError(error => {
+  //         console.error('Error al obtener los usuarios:', error);
+  //         return of([]);
+  //       }),
+  //       map(usuarios => {
+  //         // Actualiza el servicio compartido con las categorías obtenidas
+  //         this.actualizarUsuarios(usuarios);
+  //         return usuarios;
+  //       })
+  //     );
+  // }
+
+  getUsersApi(token: string): Observable<UsuarioApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al obtener los usuarios:', error);
@@ -55,7 +78,8 @@ export class AuthApiService {
       );
   }
 
-  addUserApi(usuario: UsuarioApi): Observable<string> {
+  addUserApi(usuario: UsuarioApi,token:string): Observable<string> {
+    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     return this.http.post<string>(`${this.baseUrl}/users/add`, usuario)
       .pipe(
         catchError(error => {
@@ -64,28 +88,31 @@ export class AuthApiService {
         }),
         map(response => {
           // Al agregar una categoría, actualiza la lista de categorías
-          this.getUsersApi().subscribe();
+          this.getUsersApi(token).subscribe();
           return response;
         })
       );
   }
 
-  updateUserApi(usuario: UsuarioApi): Observable<string> {
+  updateUserApi(usuario: UsuarioApi, token: string): Observable<string> {
     return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario)
       .pipe(
+        delay(1000), // Agrega un retraso de 2000 milisegundos (2 segundos)
         catchError(error => {
           console.error('Error al actualizar el usuario:', error);
           return of('');
         }),
         map(response => {
           // Al actualizar una categoría, actualiza la lista de categorías
-          this.getUsersApi().subscribe();
+          this.getUsersApi(token).subscribe();
           return response;
         })
       );
   }
 
-  deleteUserApi(id: number): Observable<boolean> {
+
+  deleteUserApi(id: number,token:string): Observable<boolean> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     return this.http.delete<boolean>(`${this.baseUrl}/users/delete/${id}`)
       .pipe(
         catchError(error => {
@@ -94,7 +121,23 @@ export class AuthApiService {
         }),
         map(response => {
           // Al eliminar una categoría, actualiza la lista de categorías
-          this.getUsersApi().subscribe();
+          this.getUsersApi(token).subscribe();
+          return response;
+        })
+      );
+  }
+
+  addUserApiRegister(usuario: UsuarioApi): Observable<string> {
+    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/users/add`, usuario)
+      .pipe(
+        catchError(error => {
+          console.error('Error al agregar el usuario:', error);
+          return of('');
+        }),
+        map(response => {
+          // Al agregar una categoría, actualiza la lista de categorías
+          // this.getUsersApi(token).subscribe();
           return response;
         })
       );
@@ -119,10 +162,12 @@ export class AuthApiService {
   //----------------------------------------------------------------------------------------------------------
 
   addRegistroApi(registro: RegistroApi): Observable<string> {
+    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     return this.http.post<string>(`${this.baseUrl}/registros/add`,registro)
   }
 
   getRegistroApi(): Observable<RegistroApi[]> {
+    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     return this.http.get<RegistroApi[]>(`${this.baseUrl}/registros`)
   }
 

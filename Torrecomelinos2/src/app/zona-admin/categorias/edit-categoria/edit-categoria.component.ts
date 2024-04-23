@@ -20,6 +20,8 @@ export class EditCategoriaComponent {
   // Variable que almacena la categoría específica
   public categoriaSeleccionada!: CategoriaApi;
 
+  public tokenApi : string = "";
+
   // Constructor
   constructor(
     private router: Router,
@@ -30,6 +32,8 @@ export class EditCategoriaComponent {
 
   // Método que al iniciar la página, busca la categoría específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getCategoriaApiById(id) )  ).subscribe(  categoria =>
       {
         if (!categoria) return this.router.navigate(['admin/categorias/']);
@@ -97,7 +101,7 @@ export class EditCategoriaComponent {
             nombre: this.nombre,
           }
 
-          this.establecimientosApi.updateCategoriaApi(categoriaEditada).subscribe(
+          this.establecimientosApi.updateCategoriaApi(categoriaEditada,this.tokenApi).subscribe(
             (response) => {
               this.snackbar.open("Categoria actualizada correctamente.", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

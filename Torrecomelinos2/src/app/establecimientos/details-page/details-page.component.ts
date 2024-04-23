@@ -18,7 +18,7 @@ import { FavoritoApi } from 'src/app/interfaces/favoritoApi.interface';
 export class DetailsPageComponent {
 
   // Variable para almacenar los datos del establecimiento seleccionado
-  public establecimientoDetalles?: EstablecimientoApi;
+  public establecimientoDetalles!: EstablecimientoApi;
 
   // Variables para almacenar los datos de las zonas y categorías de los establecimientos
   public listadoZonas: ZonaApi[] = [];
@@ -31,6 +31,8 @@ export class DetailsPageComponent {
   // Variables para almacenar si esta o no en favoritos y el numero de favoritos del usuario
   public esFavorito: boolean = false;
   public numFav: number = 0;
+
+  public tokenApi : string = "";
 
   // Constructor
   constructor(
@@ -51,32 +53,34 @@ export class DetailsPageComponent {
   }
 
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.idRol = localStorage.getItem('idRol')!;
     this.id = localStorage.getItem('id')!;
+    this.tokenApi = localStorage.getItem('tokenApi')!;
 
-      this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
-        {
-          if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
+    // Obtener zonas
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+    this.listadoZonas = responseZonas!;
 
-          this.establecimientoDetalles = establecimiento[0];
+    // Obtener categorías
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+    this.listadoCategorias = responseCategorias!;
 
-          this.verificarFavoritoApi(parseInt(this.id,10),this.establecimientoDetalles.id);
 
-          return;
-        });
+    console.log(this.tokenApi);
 
-        this.establecimientoApi.getZonasApi().subscribe(
-          zonas => {
-            this.listadoZonas = zonas
-          }
-        );
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
+      {
+        if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
-        this.establecimientoApi.getCategoriasApi().subscribe(
-          categorias => {
-            this.listadoCategorias = categorias
-          }
-        );
+        this.establecimientoDetalles = establecimiento[0];
+
+        this.verificarFavoritoApi(parseInt(this.id,10),this.establecimientoDetalles.id);
+
+        return;
+      }
+    );
+
 
   }
 

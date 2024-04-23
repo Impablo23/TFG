@@ -36,6 +36,8 @@ export class EditPageComponent {
   public id_zona: number = 0;
   public id_categoria: number = 0;
 
+  public tokenApi : string = "";
+
 
   // Constructor
   constructor(
@@ -49,7 +51,9 @@ export class EditPageComponent {
 
 
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.tokenApi = localStorage.getItem('tokenApi')!;
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
@@ -69,17 +73,13 @@ export class EditPageComponent {
         return;
       });
 
-      this.establecimientoApi.getZonasApi().subscribe(
-        zonas => {
-          this.listadoZonas = zonas
-        }
-      );
+      // Obtener zonas
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+    this.listadoZonas = responseZonas!;
 
-      this.establecimientoApi.getCategoriasApi().subscribe(
-        categorias => {
-          this.listadoCategorias = categorias
-        }
-      );
+    // Obtener categorías
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+    this.listadoCategorias = responseCategorias!;
 
   }
 
