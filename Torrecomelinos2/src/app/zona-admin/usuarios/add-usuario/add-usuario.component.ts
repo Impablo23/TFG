@@ -21,7 +21,7 @@ export class AddUsuarioComponent implements OnInit {
     private router: Router,
   ){}
   ngOnInit(): void {
-    this.token = localStorage.getItem('tokenApi')!;
+    this.token = this.authApi.getTokenUserConectado();
   }
 
   // Variables del formulario de Register
@@ -91,7 +91,7 @@ export class AddUsuarioComponent implements OnInit {
             email: this.email,
             passwd: this.calcularHashMD5(this.pass),
             nombreCompleto: this.nombreCompleto,
-            idRol: 2,
+            idRol: this.idRol,
             token: ''
           }
 

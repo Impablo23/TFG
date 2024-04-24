@@ -7,6 +7,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { ZonaApi } from '../../interfaces/zonaApi.interface';
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-add-page',
@@ -34,15 +35,15 @@ export class AddPageComponent {
   public id_categoria: number = 0;
 
 
-  public tokenApi : string = "";
-
+  public token : string = "";
 
   // Constructor
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
     private route: ActivatedRoute,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){
 
   }
@@ -57,29 +58,32 @@ export class AddPageComponent {
   */
   async ngOnInit(): Promise<void> {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+    const usuario = this.authApi.getUserConectado()!;
 
-      this.route.queryParams.subscribe(params => {
-        this.idEstablecimientoSugerido = params['sugerenciaId'];
-        // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
-      });
+    // Obtener token API
+    this.token = this.authApi.getTokenUserConectado();
 
-      if (this.idEstablecimientoSugerido !== undefined) {
-        this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido).subscribe(
-          sugerencias => {
-            this.nombre = sugerencias[0].nombre;
-            this.enlace = sugerencias[0].enlace;
-          }
-        );
-      }
+    this.route.queryParams.subscribe(params => {
+      this.idEstablecimientoSugerido = params['sugerenciaId'];
+      // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
+    });
 
-      // Obtener zonas
-      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
-      this.listadoZonas = responseZonas!;
+    if (this.idEstablecimientoSugerido !== undefined) {
+      this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.token).subscribe(
+        sugerencias => {
+          this.nombre = sugerencias[0].nombre;
+          this.enlace = sugerencias[0].enlace;
+        }
+      );
+    }
 
-      // Obtener categorías
-      const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
-      this.listadoCategorias = responseCategorias!;
+    // Obtener zonas
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
+    this.listadoZonas = responseZonas!;
+
+    // Obtener categorías
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
+    this.listadoCategorias = responseCategorias!;
 
 
   }

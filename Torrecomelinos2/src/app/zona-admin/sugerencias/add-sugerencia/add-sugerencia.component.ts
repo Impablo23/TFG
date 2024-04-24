@@ -24,6 +24,8 @@ export class AddSugerenciaComponent {
   public sugerenciaSeleccionada!: SugerenciaApi;
   public usuarioSeleccionado!: UsuarioApi;
 
+  public token: string = '';
+
   // Constructor
   constructor(
     private router: Router,
@@ -38,14 +40,18 @@ export class AddSugerenciaComponent {
     para mostrar luego el nombre del establecimiento sugerido y el email del usuario.
   */
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id) )  ).subscribe(  sugerencia =>
+
+    this.token = this.authApi.getTokenUserConectado();
+
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.token) )  ).subscribe(  sugerencia =>
       {
         if (!sugerencia) return this.router.navigate(['admin/sugerencias/']);
         this.sugerenciaSeleccionada = sugerencia[0];
         //Datos del formulario ya rellenos
         this.nombre  = this.sugerenciaSeleccionada.nombre;
 
-        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario).subscribe(
+        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario,this.token).subscribe(
           usuario => {
             this.usuarioSeleccionado = usuario[0];
 
@@ -74,6 +80,9 @@ export class AddSugerenciaComponent {
     Se le informa al usuario de lo que sucede al final.
   */
   public addSugerenciaApi() {
+
+
+
     // Navegar hacia la ruta de agregar establecimiento
     this.router.navigate(['establecimientos', 'add'], { queryParams: { sugerenciaId: this.sugerenciaSeleccionada.id } });
 
@@ -83,7 +92,7 @@ export class AddSugerenciaComponent {
         console.log(establecimientos);
         if (establecimientos[0] !== undefined) {
           // Si el establecimiento ya existe, eliminar la sugerencia
-          this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id).subscribe(
+          this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.token).subscribe(
             (response) => {
               console.log('Sugerencia eliminada');
             },

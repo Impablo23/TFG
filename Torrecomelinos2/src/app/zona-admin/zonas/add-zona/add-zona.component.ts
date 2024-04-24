@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-add-zona',
@@ -18,17 +19,19 @@ export class AddZonaComponent implements OnInit {
   // Variable para almacenar el estado de las zonas
   public numZonas : number = 0;
 
-  public tokenApi : string = "";
+  public token : string = "";
+
 
   // Constructor
   constructor(
     private snackbar: MatSnackBar,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
-  ngOnInit() {
+  async ngOnInit() {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+    this.token = this.authApi.getTokenUserConectado();
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre
@@ -47,7 +50,7 @@ export class AddZonaComponent implements OnInit {
     // const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(this.nombre).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre,this.token).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -61,7 +64,7 @@ export class AddZonaComponent implements OnInit {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.addZonaApi(zonaAdd,this.tokenApi).subscribe(
+          this.establecimientosApi.addZonaApi(zonaAdd,this.token).subscribe(
             repuesta => {
               this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

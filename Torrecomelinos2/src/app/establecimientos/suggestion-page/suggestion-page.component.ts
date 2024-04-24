@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { SugerenciaApi } from 'src/app/interfaces/sugerenciaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-suggestion-page',
@@ -17,17 +18,20 @@ export class SuggestionPageComponent {
   // variables para el id de la sugerencia y del usuario
   public numSugerencias: number = 0;
   public id : string = '';
+  public token : string = '';
 
   // Se guarda el id del localStorage en la variable id
   ngOnInit() {
     this.id = localStorage.getItem('id')!;
+    this.token = this.authApi.getTokenUserConectado();
   }
 
   // Constructor
   constructor(
     private router: Router,
     private snackbar: MatSnackBar,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Formulario de la sugerencia
@@ -62,7 +66,7 @@ export class SuggestionPageComponent {
       enlace: enlaceSugerencia
     }
 
-    this.establecimientoApi.addSugerenciaApi(newSugerencia).subscribe(
+    this.establecimientoApi.addSugerenciaApi(newSugerencia,this.token).subscribe(
         sugerencias => {
           this.snackbar.open("Sugerencia enviada correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
             this.router.navigate(['/establecimientos']);

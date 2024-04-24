@@ -5,6 +5,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 
 import { SugerenciaApi } from 'src/app/interfaces/sugerenciaApi.interface';
 import { Subscription } from 'rxjs';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-sugerencias',
@@ -18,21 +19,29 @@ export class SugerenciasComponent {
   // Variable que almacena las segurencias recogidad de la BBDD.
   public listadoSugerencias: SugerenciaApi[] = [];
 
+  public token: string = '';
+
   // Constructor
   constructor(
     public router: Router,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, almacena las sugerencias de la BBDD en el listado de sugerencias
-  ngOnInit(){
-    // Suscríbete al observable para obtener las actualizaciones del listado de categorías
-    this.sugerenciasSubscription = this.establecimientosApi.sugerencias$.subscribe(sugerencias => {
-      this.listadoSugerencias = sugerencias;
-    });
+  async ngOnInit(){
 
-    // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getSugerenciasApi().subscribe();
+    try {
+
+      this.token = this.authApi.getTokenUserConectado();
+
+      // Obten las zonas al iniciar el componente
+      await this.obtenerSugerencias();
+    } catch (error) {
+      console.error('Error en ngOnInit:', error);
+      // Manejar el error según sea necesario
+    }
+
   }
 
 
@@ -41,14 +50,24 @@ export class SugerenciasComponent {
     this.sugerenciasSubscription.unsubscribe();
   }
 
-  // Método que almacena las sugerencias recogidas de la BBDD y las guarda en el listado de sugerencias
-  public listarSugerencias(){
-    this.establecimientosApi.getSugerenciasApi().subscribe(
-      sugerencias => {
-        this.listadoSugerencias = sugerencias;
-      }
-    );
+  obtenerSugerencias() {
+    // Suscríbete al observable para obtener las actualizaciones del listado de categorías
+    this.sugerenciasSubscription = this.establecimientosApi.sugerencias$.subscribe(sugerencias => {
+      this.listadoSugerencias = sugerencias;
+    });
+
+    // Obten las categorías al iniciar el componente
+    this.establecimientosApi.getSugerenciasApi(this.token).subscribe();
   }
+
+  // Método que almacena las sugerencias recogidas de la BBDD y las guarda en el listado de sugerencias
+  // public listarSugerencias(){
+  //   this.establecimientosApi.getSugerenciasApi().subscribe(
+  //     sugerencias => {
+  //       this.listadoSugerencias = sugerencias;
+  //     }
+  //   );
+  // }
 
   // Método que redirige a la inserccion de sugerencia seleccionada
   public goToAddSugerencia(id: number) {

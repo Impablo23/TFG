@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, map } from 'rxjs';
 import { RegistroApi } from 'src/app/interfaces/registroApi.interface';
+import { UsuarioApi } from 'src/app/interfaces/usuarioApi.interface';
 import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
@@ -10,49 +12,40 @@ import { AuthApiService } from 'src/app/services/authApi.service';
 export class RegistroComponent implements OnInit {
 
   public listadoRegistros: RegistroApi[] = [];
-  public listadoNombresUsuarios: string[] = [];
+  public listadoNombresUsuarios: { [id: number]: string } = {}; // Objeto para almacenar los nombres de usuario por ID
 
-  public tokenApi: string = '';
+  public token: string = '';
 
+  constructor(private authApi: AuthApiService) {}
 
-  constructor(
-    private authApi: AuthApiService
-  ){}
+  async ngOnInit(): Promise<void> {
 
-  ngOnInit(): void {
-
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+    // Obtener token API
+    const response = await this.authApi.getToken(this.authApi.getEmailUserConectado(), this.authApi.getPassUserConectado()).toPromise();
+    this.token = response.access_token;
 
     this.authApi.getRegistroApi().subscribe(
       registros => {
         this.listadoRegistros = registros;
-        this.obtenerNombresUsuarios(this.listadoRegistros);
+        this.cargarNombresUsuarios(); // Llamar a la función para cargar los nombres de usuario
       }
     );
-
   }
 
-  obtenerNombresUsuarios(registros: RegistroApi[]): void {
-    // this.listadoNombresUsuarios = []; // Limpiar el array antes de agregar nuevos nombres
-
-    registros.forEach(registro => {
-      // Obtener el nombre de usuario para cada registro
-      this.authApi.getUsersApiById(registro.id_usuario).subscribe(
-        usuarios => {
-          if (usuarios.length > 0) {
-            const nombreUsuario = usuarios[0].email; // Suponiendo que 'nombreCompleto' es el nombre del usuario
-            this.listadoNombresUsuarios.push(nombreUsuario);
-          }
-        },
-        error => {
-          console.error('Error al obtener el nombre del usuario:', error);
+  cargarNombresUsuarios(): void {
+    for (const registro of this.listadoRegistros) {
+      this.obtenerNombreUser(registro.id_usuario).subscribe(
+        nombre => {
+          this.listadoNombresUsuarios[registro.id_usuario] = nombre;
+           // Almacenar el nombre en el objeto usando el ID como clave
         }
       );
-    });
+    }
   }
 
-
-
-
-
+  obtenerNombreUser(id: number): Observable<string> {
+    return this.authApi.getUsersApiById(id,this.token).pipe(
+      map(usuarios => usuarios[0].email)
+    );
+  }
 }

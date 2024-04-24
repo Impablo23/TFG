@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-delete-categoria',
@@ -28,14 +29,16 @@ export class DeleteCategoriaComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, busca la categoría específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getCategoriaApiById(id) )  ).subscribe(  categoria =>
+    this.tokenApi = this.authApi.getTokenUserConectado();
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getCategoriaApiById(id,this.tokenApi) )  ).subscribe(  categoria =>
       {
         if (!categoria) return this.router.navigate(['admin/categorias/']);
         this.categoriaSeleccionada = categoria[0];

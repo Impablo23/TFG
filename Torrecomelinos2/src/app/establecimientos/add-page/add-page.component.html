@@ -12,8 +12,8 @@
     <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
       <label for="zona" style="text-align: left; margin-top: 10px; margin-right: 10px;">Zona:</label>
       <select class="form-control" id="zona" [(ngModel)]="id_zona" name="zona">
-        <option value="0" disabled selected hidden>Selecciona una zona*</option>
-        <option *ngFor="let zona of listadoZonas" [value]="zona.id">{{ zona.nombre }}</option>
+        <option value=0 disabled selected hidden>Selecciona una zona*</option>
+        <option *ngFor="let zona of listadoZonas" [value]=zona.id>{{ zona.nombre }}</option>
       </select>
     </form>
   </div>
@@ -88,7 +88,7 @@
           <img class="postcard__img" src="{{evitarErrorEnFoto(foto)}}" alt="{{foto}}" />
         </a>
         <div class="postcard__text">
-          <h1 class="postcard__title blue"><a>{{nombre}} ({{obtenerNombreZona((id_zona))}}) <span style="font-size: 15px;">Reseñas: {{numResenas}}</span></a></h1>
+          <h1 class="postcard__title blue"><a>{{nombre}} ({{obtenerNombreZona(id_zona)}}) <span style="font-size: 15px;">Reseñas: {{numResenas}}</span></a></h1>
           <div class="postcard__subtitle small">
             <time datetime="2020-05-25 12:00:00">
               <i class="fas fa-calendar-alt mr-2"></i>Categoría: {{obtenerNombreCategoria((id_categoria))}}

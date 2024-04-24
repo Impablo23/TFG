@@ -39,6 +39,45 @@ export class AuthApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
+  private emailUserConectado: string = '';
+  private passUserConectado: string = '';
+
+  private usuarioConectado: UsuarioApi | null = null;
+
+  private tokenUsuarioConectado: string = '';
+
+  // Método para establecer el usuario conectado
+  async setUsuarioConectado(usuario: UsuarioApi,token: string): Promise<void> {
+    this.emailUserConectado = usuario.email;
+    this.passUserConectado = usuario.passwd;
+    this.usuarioConectado = usuario;
+
+    this.tokenUsuarioConectado = token;
+  }
+
+  getEmailUserConectado(): string {
+    return this.emailUserConectado;
+  }
+
+  getPassUserConectado(): string {
+    return this.passUserConectado;
+  }
+
+  getTokenUserConectado(): string {
+    return this.tokenUsuarioConectado;
+  }
+
+  getUserConectado(): UsuarioApi | null {
+    return this.usuarioConectado;
+  }
+
+  // Método para limpiar el usuario conectado
+  limpiarUsuarioConectado(): void {
+    this.emailUserConectado = '';
+    this.passUserConectado = '';
+    this.usuarioConectado = null;
+    this.tokenUsuarioConectado = '';
+  }
 
   private usuariosSubject = new BehaviorSubject<UsuarioApi[]>([]);
   public usuarios$ = this.usuariosSubject.asObservable();
@@ -46,21 +85,6 @@ export class AuthApiService {
   actualizarUsuarios(usuarios: UsuarioApi[]) {
     this.usuariosSubject.next(usuarios);
   }
-
-  // getUsersApi(): Observable<UsuarioApi[]> {
-  //   return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users`)
-  //     .pipe(
-  //       catchError(error => {
-  //         console.error('Error al obtener los usuarios:', error);
-  //         return of([]);
-  //       }),
-  //       map(usuarios => {
-  //         // Actualiza el servicio compartido con las categorías obtenidas
-  //         this.actualizarUsuarios(usuarios);
-  //         return usuarios;
-  //       })
-  //     );
-  // }
 
   getUsersApi(token: string): Observable<UsuarioApi[]> {
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
@@ -110,7 +134,6 @@ export class AuthApiService {
       );
   }
 
-
   deleteUserApi(id: number,token:string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
     return this.http.delete<boolean>(`${this.baseUrl}/users/delete/${id}`)
@@ -143,8 +166,26 @@ export class AuthApiService {
       );
   }
 
-  getUsersApiById(id: number): Observable<UsuarioApi[]> {
-    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/id/${id}`)
+  updateUserApiLogin(usuario: UsuarioApi, token: string): Observable<string> {
+    return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario)
+      .pipe(
+        delay(1000), // Agrega un retraso de 2000 milisegundos (2 segundos)
+        catchError(error => {
+          console.error('Error al actualizar el usuario:', error);
+          return of('');
+        }),
+        map(response => {
+          // Al actualizar una categoría, actualiza la lista de categorías
+          // this.getUsersApi(token).subscribe();
+          return response;
+        })
+      );
+  }
+
+
+  getUsersApiById(id: number,token: string): Observable<UsuarioApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/id/${id}`, { headers })
   }
 
   getUserByEmailAndPass(email: string, passwd: string): Observable<UsuarioApi[]> {

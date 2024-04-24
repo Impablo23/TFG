@@ -48,7 +48,8 @@ export class EstablecimientosApiService {
   }
 
   addZonaApi(zona: ZonaApi,token: string): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/zonas/add`, zona)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/zonas/add`, zona, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al agregar la zona:', error);
@@ -63,7 +64,8 @@ export class EstablecimientosApiService {
   }
 
   updateZonaApi(zona: ZonaApi,token: string): Observable<string> {
-    return this.http.put<string>(`${this.baseUrl}/zonas/edit`, zona)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${this.baseUrl}/zonas/edit`, zona, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al actualizar la zona:', error);
@@ -78,7 +80,8 @@ export class EstablecimientosApiService {
   }
 
   deleteZonaApi(id: number,token: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}/zonas/delete/${id}`)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete<boolean>(`${this.baseUrl}/zonas/delete/${id}`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al eliminar la zona:', error);
@@ -92,12 +95,14 @@ export class EstablecimientosApiService {
       );
   }
 
-  getZonaByNameApi(name: string): Observable<ZonaApi[]> {
-    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas/nombre/${name}`)
+  getZonaByNameApi(name: string,token: string): Observable<ZonaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas/nombre/${name}`, { headers })
   }
 
-  getZonaApiById(id: number): Observable<ZonaApi[]> {
-    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas/id/${id}`)
+  getZonaApiById(id: number,token: string): Observable<ZonaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<ZonaApi[]>(`${this.baseUrl}/zonas/id/${id}`, { headers })
   }
 
   //----------------------------------------------------------------------------------------------------------
@@ -130,7 +135,8 @@ export class EstablecimientosApiService {
   }
 
   addCategoriaApi(categoria: CategoriaApi,token: string): Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/categorias/add`, categoria)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/categorias/add`, categoria, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al agregar la categoría:', error);
@@ -145,7 +151,8 @@ export class EstablecimientosApiService {
   }
 
   updateCategoriaApi(categoria: CategoriaApi,token: string): Observable<string> {
-    return this.http.put<string>(`${this.baseUrl}/categorias/edit`, categoria)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${this.baseUrl}/categorias/edit`, categoria, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al actualizar la categoría:', error);
@@ -160,7 +167,8 @@ export class EstablecimientosApiService {
   }
 
   deleteCategoriaApi(id: number,token: string): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}/categorias/delete/${id}`)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete<boolean>(`${this.baseUrl}/categorias/delete/${id}`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al eliminar la categoría:', error);
@@ -175,12 +183,14 @@ export class EstablecimientosApiService {
   }
 
 
-  getCategoriaByNameApi(name: string): Observable<CategoriaApi[]> {
-    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias/nombre/${name}`)
+  getCategoriaByNameApi(name: string,token: string): Observable<CategoriaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias/nombre/${name}`, { headers })
   }
 
-  getCategoriaApiById(id: number): Observable<CategoriaApi[]> {
-    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias/id/${id}`)
+  getCategoriaApiById(id: number,token: string): Observable<CategoriaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<CategoriaApi[]>(`${this.baseUrl}/categorias/id/${id}`, { headers })
   }
 
 
@@ -211,8 +221,9 @@ export class EstablecimientosApiService {
     return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/nombre/${name}`)
   }
 
-  getEstablecimientoApiById(id: number): Observable<EstablecimientoApi[]> {
-    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/id/${id}`)
+  getEstablecimientoApiById(id: number,token: string): Observable<EstablecimientoApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/id/${id}`, { headers })
   }
 
 
@@ -224,24 +235,28 @@ export class EstablecimientosApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  getFavoritosByUserApi(id_usuario:number) : Observable<FavoritoApi[]> {
-    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}`)
+  getFavoritosByUserApi(id_usuario:number,token:string) : Observable<FavoritoApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}`, { headers })
   }
 
-  getFavoritosApi() : Observable<FavoritoApi[]> {
-    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos`)
+  // getFavoritosApi() : Observable<FavoritoApi[]> {
+  //   return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos`)
+  // }
+
+  getFavoritoByUserByNameApi(id_usuario:number, id_establecimiento:number,token:string) : Observable<FavoritoApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}/id_establecimiento/${id_establecimiento}`, { headers })
   }
 
-  getFavoritoByUserByNameApi(id_usuario:number, id_establecimiento:number) : Observable<FavoritoApi[]> {
-    return this.http.get<FavoritoApi[]>(`${this.baseUrl}/favoritos/id_usuario/${id_usuario}/id_establecimiento/${id_establecimiento}`)
+  deleteFavoritoApi(id: number,token:string): Observable<boolean> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete(`${this.baseUrl}/favoritos/delete/${id}`, { headers }).pipe(map( response => true),catchError(error => of(false)))
   }
 
-  deleteFavoritoApi(id: number): Observable<boolean> {
-    return this.http.delete(`${this.baseUrl}/favoritos/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
-  }
-
-  addFavoritoApi(favorito: FavoritoApi) : Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/favoritos/add`,favorito)
+  addFavoritoApi(favorito: FavoritoApi,token:string) : Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/favoritos/add`,favorito, { headers })
   }
 
 
@@ -258,8 +273,9 @@ export class EstablecimientosApiService {
     this.sugerenciasSubject.next(sugerencias);
   }
 
-  getSugerenciasApi(): Observable<SugerenciaApi[]> {
-    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
+  getSugerenciasApi(token: string): Observable<SugerenciaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al obtener las sugerencias:', error);
@@ -273,8 +289,9 @@ export class EstablecimientosApiService {
       );
   }
 
-  deleteSugerenciaApi(id: number): Observable<boolean> {
-    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`)
+  deleteSugerenciaApi(id: number,token: string): Observable<boolean> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al eliminar la sugerencia:', error);
@@ -282,7 +299,7 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al eliminar una categoría, actualiza la lista de sugerencias
-          this.getSugerenciasApi().subscribe();
+          this.getSugerenciasApi(token).subscribe();
           return response;
         })
       );
@@ -294,16 +311,18 @@ export class EstablecimientosApiService {
   //   return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias`)
   // }
 
-  getSugerenciaApiById(id: number): Observable<SugerenciaApi[]> {
-    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias/id/${id}`)
+  getSugerenciaApiById(id: number,token: string): Observable<SugerenciaApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<SugerenciaApi[]>(`${this.baseUrl}/sugerencias/id/${id}`, { headers })
   }
 
   // deleteSugerenciaApi(id: number): Observable<boolean> {
   //   return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
   // }
 
-  addSugerenciaApi(sugerencia: SugerenciaApi) : Observable<string> {
-    return this.http.post<string>(`${this.baseUrl}/sugerencias/add`,sugerencia)
+  addSugerenciaApi(sugerencia: SugerenciaApi,token: string) : Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/sugerencias/add`,sugerencia, { headers })
   }
 
 

@@ -238,21 +238,21 @@ async def zonas(user: Usuario = Depends(obtener_usuario_actual)):
 
 
 @api.get("/zonas/id/{id}")
-async def zonasById(id: int):
+async def zonasById(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     zonas_list_by_id = obtenerZonaById(id)
     
     return zonas_list_by_id
 
 @api.get("/zonas/nombre/{nombre}")
-async def zonasByName(nombre: str):
+async def zonasByName(nombre: str,user: Usuario = Depends(obtener_usuario_actual)):
     
     zonas_list_by_name = obtenerZonaByName(nombre)
     
     return zonas_list_by_name
 
 @api.post("/zonas/add")
-async def agregar_zona(zona: Zona):
+async def agregar_zona(zona: Zona,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO zonas (nombre) VALUES (%s)"
@@ -274,7 +274,7 @@ async def agregar_zona(zona: Zona):
         raise HTTPException(500, "Error al agregar la zona")
     
 @api.put("/zonas/edit")   
-async def editar_zona(zona: Zona):
+async def editar_zona(zona: Zona,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE zonas SET nombre = %s WHERE id = %s"
@@ -298,7 +298,7 @@ async def editar_zona(zona: Zona):
     
 @api.delete("/zonas/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_zona(id: int):
+async def eliminar_zona(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM zonas WHERE id = %s"
@@ -330,21 +330,21 @@ async def categorias(user: Usuario = Depends(obtener_usuario_actual)):
     return categorias_list
 
 @api.get("/categorias/id/{id}")
-async def categoriasById(id: int):
+async def categoriasById(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     categorias_list_by_id = obtenerCategoriaById(id)
     
     return categorias_list_by_id
 
 @api.get("/categorias/nombre/{nombre}")
-async def categoriasByName(nombre: str):
+async def categoriasByName(nombre: str,user: Usuario = Depends(obtener_usuario_actual)):
     
     categorias_list_by_name = obtenerCategoriaByName(nombre)
     
     return categorias_list_by_name
 
 @api.post("/categorias/add")
-async def agregar_categoria(categoria: Categoria):
+async def agregar_categoria(categoria: Categoria,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO categorias (nombre) VALUES (%s)"
@@ -366,7 +366,7 @@ async def agregar_categoria(categoria: Categoria):
         raise HTTPException(500, "Error al agregar la zona")
     
 @api.put("/categorias/edit")   
-async def editar_categoria(categoria: Categoria):
+async def editar_categoria(categoria: Categoria,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE categorias SET nombre = %s WHERE id = %s"
@@ -390,7 +390,7 @@ async def editar_categoria(categoria: Categoria):
     
 @api.delete("/categorias/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_categoria(id: int):
+async def eliminar_categoria(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM categorias WHERE id = %s"
@@ -521,12 +521,12 @@ async def eliminar_establecimiento(id: int):
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS SUGERENCIAS
 @api.get("/sugerencias")
-async def sugerencias():
+async def sugerencias(user: Usuario = Depends(obtener_usuario_actual)):
     sugerencias_list = obtener_sugerencias()
     return sugerencias_list
 
 @api.get("/sugerencias/id/{id}")
-async def sugerenciasById(id: int):
+async def sugerenciasById(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     sugerencias_list_by_id = obtenerSugerenciaById(id)
     
@@ -534,7 +534,7 @@ async def sugerenciasById(id: int):
 
 @api.delete("/sugerencias/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_sugerencia(id: int):
+async def eliminar_sugerencia(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM sugerencias WHERE id = %s"
@@ -555,7 +555,7 @@ async def eliminar_sugerencia(id: int):
     
     
 @api.post("/sugerencias/add")
-async def agregar_sugerencia(sugerencia: Sugerencia):
+async def agregar_sugerencia(sugerencia: Sugerencia,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO sugerencias (id_usuario,nombre,enlace) VALUES (%s,%s,%s)"
@@ -584,27 +584,27 @@ async def agregar_sugerencia(sugerencia: Sugerencia):
 
 # APARTADO PARA OBTENER TODOS LOS DATOS DE LA BBDD DE LAS SUGERENCIAS
 @api.get("/favoritos")
-async def favoritos():
+async def favoritos(user: Usuario = Depends(obtener_usuario_actual)):
     favoritos_list = obtener_favoritos()
     return favoritos_list
 
 
 @api.get("/favoritos/id_usuario/{id}")
-async def favoritossByIdUser(id: int):
+async def favoritossByIdUser(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     favoritos_list_by_id = obtenerFavoritosByIdUser(id)
     
     return favoritos_list_by_id
 
 @api.get("/favoritos/id_usuario/{id_usuario}/id_establecimiento/{id_establecimiento}")
-async def favoritossByIdUserAndName(id_usuario: int,id_establecimiento: int):
+async def favoritossByIdUserAndName(id_usuario: int,id_establecimiento: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     favoritos_list_by_id = obtenerFavoritosByIdUserAndName(id_usuario,id_establecimiento)
     
     return favoritos_list_by_id
 
 @api.post("/favoritos/add")
-async def agregar_favorito(favorito: Favorito):
+async def agregar_favorito(favorito: Favorito,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO favoritos (id_usuario,id_establecimiento) VALUES (%s,%s)"
@@ -626,7 +626,7 @@ async def agregar_favorito(favorito: Favorito):
     
 @api.delete("/favoritos/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_favorito(id: int):
+async def eliminar_favorito(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM favoritos WHERE id = %s"

@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-delete-page',
@@ -21,12 +22,15 @@ export class DeletePageComponent {
   public idEstablecimiento: number = 0;
   public nombreEstablecimiento: string = '';
 
+  public token : string = "";
+
   // Constructor
   constructor(
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método para redirigir hacia el listado de establecimientos
@@ -36,7 +40,10 @@ export class DeletePageComponent {
 
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
+
+    this.token = this.authApi.getTokenUserConectado();
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.token) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 

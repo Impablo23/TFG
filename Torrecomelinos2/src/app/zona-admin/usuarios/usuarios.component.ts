@@ -26,21 +26,31 @@ export class UsuariosComponent {
     private authApi: AuthApiService
   ){}
 
-  ngOnInit(){
-    this.token = localStorage.getItem('tokenApi')!;
-    // Suscríbete al observable para obtener las actualizaciones del listado de categorías
-    this.usuariosSubscription = this.authApi.usuarios$.subscribe(usuarios => {
-      this.listadoUsuarios = usuarios;
-    });
+  async ngOnInit(){
+    this.token = this.authApi.getTokenUserConectado();
 
-    // Obten las categorías al iniciar el componente
-    this.authApi.getUsersApi(this.token).subscribe();
+    await this.obtenerUsuarios();
 
   }
 
   ngOnDestroy() {
     // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
     this.usuariosSubscription.unsubscribe();
+  }
+
+  async obtenerUsuarios() {
+    try {
+      // Suscríbete al observable para obtener las actualizaciones del listado de categorías
+      this.usuariosSubscription = this.authApi.usuarios$.subscribe(usuarios => {
+        this.listadoUsuarios = usuarios;
+      });
+
+      // Obten las categorías al iniciar el componente
+      this.authApi.getUsersApi(this.token).subscribe();
+    } catch (error) {
+      console.error('Error al obtener zonas:', error);
+      // Manejar el error según sea necesario
+    }
   }
 
 

@@ -36,8 +36,8 @@ export class DeleteUsuarioComponent {
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
   ngOnInit(): void {
-    this.token = localStorage.getItem('tokenApi')!;
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id) )  ).subscribe(  usuario =>
+    this.token = this.authApi.getTokenUserConectado();
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.token) )  ).subscribe(  usuario =>
       {
         if (!usuario) return this.router.navigate(['/usuarios']);
 

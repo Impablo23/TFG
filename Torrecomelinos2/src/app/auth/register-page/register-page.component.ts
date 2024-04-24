@@ -26,6 +26,8 @@ export class RegisterPageComponent {
   email: string ='';
   pass: string ='';
 
+  public token: string = '';
+
 
   // Método para redirigir hacia el Login
   public navigateToLogin() :void {
@@ -42,7 +44,7 @@ export class RegisterPageComponent {
     procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el token vacío y si está NO OK
     le notifica que el usuario está ya registrado
   */
-  public registrarApi(): void {
+  public async registrarApi(): Promise<void> {
 
     // Verificamos que no estén los datos vacíos
     if (this.email === '' || this.pass === '' || this.nombreCompleto === '') {

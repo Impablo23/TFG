@@ -7,6 +7,7 @@ import { EstablecimientoApi } from '../../interfaces/establecimientoApi.interfac
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-list-page',
@@ -20,6 +21,7 @@ export class ListPageComponent {
     private router: Router,
     private establecimientoApi: EstablecimientosApiService,
     private snackbar: MatSnackBar,
+    private authApi: AuthApiService
   )
   {}
 
@@ -35,31 +37,43 @@ export class ListPageComponent {
   public zonaSeleccionada: number = 0;
   public categoriaSeleccionada: number = 0;
 
-  public tokenApi : string = "";
+  public token : string = "";
 
   // Variable para almacenar el id del rol del usuario
-  public idRol : string = '';
+  public idRol : number = 0;
 
   // Método para guardar en las listas todos los datos necesarios de la BBDD y se da valor al idRol.
   async ngOnInit(): Promise<void> {
-    this.tokenApi = localStorage.getItem('tokenApi')!;
 
-    try {
+    const usuario = this.authApi.getUserConectado()!;
+
+    // Obtener el token antes de continuar
+    this.token = this.authApi.getTokenUserConectado();
+
+    // Obtener ID de rol
+    this.idRol = usuario.idRol;
+
+    await this.obtenerDatos();
+
+
+
+  }
+
+  async obtenerDatos() {
+    try{
+      // Ahora que se tiene el token, continuar con la obtención de datos
       // Obtener establecimientos
-      const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.tokenApi).toPromise();
-      this.listadoEstablecimientos = responseEstablecimientos!
+      const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.token).toPromise();
+      this.listadoEstablecimientos = responseEstablecimientos!;
       this.establecimientosFiltrados = this.listadoEstablecimientos;
 
       // Obtener zonas
-      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+      const responseZonas = await this.establecimientoApi.getZonasApi(this.token).toPromise();
       this.listadoZonas = responseZonas!;
 
       // Obtener categorías
-      const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+      const responseCategorias = await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
       this.listadoCategorias = responseCategorias!;
-
-      // Obtener ID de rol
-      this.idRol = localStorage.getItem('idRol')!;
     } catch (error) {
       console.error('Error en la inicialización:', error);
       // Manejar errores aquí, si es necesario

@@ -5,6 +5,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { Subscription } from 'rxjs';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-categorias',
@@ -18,31 +19,44 @@ export class CategoriasComponent {
   // Variable que almacena las categorías recogidas de la BBDD.
   public listadoCategorias: CategoriaApi[] = [];
 
-  public tokenApi : string = "";
+  public token : string = "";
 
 
   // Constructor
   constructor(
     public router: Router,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, se cargar las categorias.
-  ngOnInit(){
+  async ngOnInit(){
+    try {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+      this.token = this.authApi.getTokenUserConectado();
+
+      // Obten las zonas al iniciar el componente
+      await this.obtenerCategorias();
+    } catch (error) {
+      console.error('Error en ngOnInit:', error);
+      // Manejar el error según sea necesario
+    }
+
+  }
+
+  ngOnDestroy() {
+    // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
+    this.categoriasSubscription.unsubscribe();
+  }
+
+  obtenerCategorias() {
     // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.categoriasSubscription = this.establecimientosApi.categorias$.subscribe(categorias => {
       this.listadoCategorias = categorias;
     });
 
     // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getCategoriasApi(this.tokenApi).subscribe();
-  }
-
-  ngOnDestroy() {
-    // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
-    this.categoriasSubscription.unsubscribe();
+    this.establecimientosApi.getCategoriasApi(this.token).subscribe();
   }
 
   // Método que redirige hacia la edición de una zona en específica

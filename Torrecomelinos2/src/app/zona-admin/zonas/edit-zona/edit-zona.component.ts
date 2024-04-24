@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-edit-zona',
@@ -20,21 +21,23 @@ export class EditZonaComponent {
   // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
 
-  public tokenApi : string = "";
+  public token : string = "";
 
   // Constructor
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
+    this.token = this.authApi.getTokenUserConectado();
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.token) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zona/']);
         this.zonaSeleccionada = zona[0];
@@ -69,7 +72,7 @@ export class EditZonaComponent {
     }
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(this.nombre).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre,this.token).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -84,7 +87,7 @@ export class EditZonaComponent {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.updateZonaApi(zonaEditada,this.tokenApi).subscribe(
+          this.establecimientosApi.updateZonaApi(zonaEditada,this.token).subscribe(
             (response) => {
               this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

@@ -5,6 +5,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
 import { Subscription } from 'rxjs';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-zonas',
@@ -15,7 +16,7 @@ export class ZonasComponent {
 
   private zonasSubscription!: Subscription;
 
-  public tokenApi : string = "";
+  public token : string = "";
 
   // Variable para almacenar las zonas recogidad de la BBDD
   public listadoZonas: ZonaApi[] = [];
@@ -23,25 +24,43 @@ export class ZonasComponent {
   // Constructor
   constructor(
     public router: Router,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, se cargar las zonas.
-  ngOnInit(){
+  async ngOnInit() {
+    try {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
-    // Suscríbete al observable para obtener las actualizaciones del listado de zonas
-    this.zonasSubscription = this.establecimientosApi.zonas$.subscribe(zonas => {
-      this.listadoZonas = zonas;
-    });
+      this.token = this.authApi.getTokenUserConectado();
 
-    // Obten las zonas al iniciar el componente
-    this.establecimientosApi.getZonasApi(this.tokenApi).subscribe();
+      // Obten las zonas al iniciar el componente
+      await this.obtenerZonas();
+    } catch (error) {
+      console.error('Error en ngOnInit:', error);
+      // Manejar el error según sea necesario
+    }
   }
+
 
   ngOnDestroy() {
     // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
     this.zonasSubscription.unsubscribe();
+  }
+
+  async obtenerZonas() {
+    try {
+      // Obtener zonas
+      const zonas = await this.establecimientosApi.getZonasApi(this.token).toPromise();
+      this.listadoZonas = zonas!;
+      // Suscribirse al observable para obtener las actualizaciones del listado de zonas
+      this.zonasSubscription = this.establecimientosApi.zonas$.subscribe(zonas => {
+        this.listadoZonas = zonas;
+      });
+    } catch (error) {
+      console.error('Error al obtener zonas:', error);
+      // Manejar el error según sea necesario
+    }
   }
 
   // Método que redirige hacia la edición de una zona en específica

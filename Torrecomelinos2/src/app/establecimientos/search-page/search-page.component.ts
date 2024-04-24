@@ -8,6 +8,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-search-page',
@@ -28,17 +29,20 @@ export class SearchPageComponent  implements OnInit {
   constructor(
     private snackbar: MatSnackBar,
     private router: Router,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
-  public tokenApi : string = "";
+  public token : string = "";
   /*
     Aqui cargamos en el listado de los establecimientos de los nombres de los establecimientos que incluyen los caracteres que introduce el usuario
     para asi mostrarlos y cargamos las zonas.
   */
   async ngOnInit(): Promise<void> {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+    const usuario = this.authApi.getUserConectado()!;
+
+    this.token = this.authApi.getTokenUserConectado();
 
     this.searchForm.get('searchInput')!.valueChanges
       .pipe(
@@ -54,7 +58,7 @@ export class SearchPageComponent  implements OnInit {
       });
 
       // Obtener zonas
-      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+      const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
       this.listadoZonas = responseZonas!;
 
 
@@ -65,7 +69,7 @@ export class SearchPageComponent  implements OnInit {
   // Método que recoge todos los establecimientos para hacer la busqueda de los solicitados
   public async obtenerEstablecimientos() {
    // Obtener establecimientos
-    const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.tokenApi).toPromise();
+    const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.token).toPromise();
     this.establecimientos = responseEstablecimientos!;
 
   }

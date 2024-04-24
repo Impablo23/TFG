@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-add-categoria',
@@ -23,12 +24,13 @@ export class AddCategoriaComponent {
   // Constructor
   constructor(
     private snackbar: MatSnackBar,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   ngOnInit() {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+    this.tokenApi = this.authApi.getTokenUserConectado();
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre
@@ -45,7 +47,7 @@ export class AddCategoriaComponent {
   public addCategoriaApi() {
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getCategoriaByNameApi(this.nombre).subscribe(
+    this.establecimientosApi.getCategoriaByNameApi(this.nombre,this.tokenApi).subscribe(
       zonas => {
         const categoriaExistente = zonas[0];
 

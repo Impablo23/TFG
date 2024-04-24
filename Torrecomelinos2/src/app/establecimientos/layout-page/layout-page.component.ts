@@ -17,16 +17,10 @@ import { Subscription } from 'rxjs';
 export class LayoutPageComponent {
 
   // Variables para almacenar el id del rol, nombre e id del usuario
-  public idRol : string ='';
+  public idRol : number =0;
   public nombre : string ='';
-  public id : string ='';
-  public tokenApi : string ='';
-
-  // Variable para comprobar el num de favoritos de cada usuario
-  public numFav : number = 0;
-
-  // Variable para almacenar el numero de establecimientos que hay en la página.
-  public numLocales : number = 0;
+  public id : number =0;
+  public token : string ='';
 
   // Constructor
   constructor(
@@ -39,11 +33,15 @@ export class LayoutPageComponent {
     Método para cuando inicie la página se les den valores a las variables del usuario y al metodo que
     verifica se hay favoritos para mostrar o no el botón para acceder a la página de favoritos.
   */
-  ngOnInit() {
-    this.idRol = localStorage.getItem('idRol')!;
-    this.nombre = localStorage.getItem('nombreCompleto')!;
-    this.id = localStorage.getItem('id')!;
-    this.tokenApi = localStorage.getItem('tokenApi')!;
+  async ngOnInit() {
+
+    const usuario = this.authApi.getUserConectado()!;
+
+    console.log(usuario);
+
+    this.idRol = usuario.idRol;
+    this.nombre = usuario.nombreCompleto;
+    this.id = usuario.id;
 
 
   }
@@ -80,10 +78,11 @@ export class LayoutPageComponent {
 
     const registroLoGout: RegistroApi = {
       id: 0,
-      id_usuario: parseInt(this.id,10),
+      id_usuario: this.id,
       estado: 'Desconectado',
       hora: this.authApi.obtenerFechaYHora(new Date().toISOString()),
     }
+
 
     this.authApi.addRegistroApi(registroLoGout).subscribe(
       respuesta => {
@@ -92,6 +91,8 @@ export class LayoutPageComponent {
         this.router.navigate(['/auth']);
       }
     );
+
+    this.authApi.limpiarUsuarioConectado();
 
   }
 

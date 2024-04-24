@@ -6,6 +6,7 @@ import { switchMap } from 'rxjs';
 import { EstablecimientosApiService } from 'src/app/services/establecimientosApi.service';
 
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 @Component({
   selector: 'app-delete-zona',
@@ -17,7 +18,7 @@ export class DeleteZonaComponent {
   // Variable para almacenar el nombre de la zona seleccionada
   public nombre: string = '';
 
-  public tokenApi : string = "";
+  public token : string = "";
 
   // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
@@ -27,14 +28,16 @@ export class DeleteZonaComponent {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private snackbar: MatSnackBar,
-    private establecimientosApi: EstablecimientosApiService
+    private establecimientosApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){}
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id) )  ).subscribe(  zona =>
+    this.token = this.authApi.getTokenUserConectado();
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.token) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zonas']);
         this.zonaSeleccionada = zona[0];
@@ -56,7 +59,7 @@ export class DeleteZonaComponent {
 
   // Método que elimina la zona de la BBDD y envia al usuario un mensaje de error o confirmacion dependiendo de lo que ha sucedido.
   public deleteZona() {
-    this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id,this.tokenApi).subscribe(
+    this.establecimientosApi.deleteZonaApi(this.zonaSeleccionada.id,this.token).subscribe(
       (response) => {
         this.snackbar.open("Zona eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           // window.location.reload();

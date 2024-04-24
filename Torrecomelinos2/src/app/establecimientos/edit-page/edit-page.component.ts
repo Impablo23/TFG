@@ -8,6 +8,7 @@ import { EstablecimientosApiService } from 'src/app/services/establecimientosApi
 import { CategoriaApi } from 'src/app/interfaces/categoriaApi.interface';
 import { EstablecimientoApi } from 'src/app/interfaces/establecimientoApi.interface';
 import { ZonaApi } from 'src/app/interfaces/zonaApi.interface';
+import { AuthApiService } from 'src/app/services/authApi.service';
 
 
 @Component({
@@ -36,7 +37,7 @@ export class EditPageComponent {
   public id_zona: number = 0;
   public id_categoria: number = 0;
 
-  public tokenApi : string = "";
+  public token : string = "";
 
 
   // Constructor
@@ -44,7 +45,8 @@ export class EditPageComponent {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar,
-    private establecimientoApi: EstablecimientosApiService
+    private establecimientoApi: EstablecimientosApiService,
+    private authApi: AuthApiService
   ){
 
   }
@@ -53,8 +55,13 @@ export class EditPageComponent {
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   async ngOnInit(): Promise<void> {
 
-    this.tokenApi = localStorage.getItem('tokenApi')!;
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id) )  ).subscribe(  establecimiento =>
+    const usuario = this.authApi.getUserConectado()!;
+
+    // Obtener token API
+    this.token = this.authApi.getTokenUserConectado();
+
+
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.token) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
@@ -74,11 +81,11 @@ export class EditPageComponent {
       });
 
       // Obtener zonas
-    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
     this.listadoZonas = responseZonas!;
 
     // Obtener categorías
-    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
     this.listadoCategorias = responseCategorias!;
 
   }
