@@ -18,12 +18,12 @@ export class SuggestionPageComponent {
   // variables para el id de la sugerencia y del usuario
   public numSugerencias: number = 0;
   public id : string = '';
-  public token : string = '';
+  public tokenApi : string = '';
 
   // Se guarda el id del localStorage en la variable id
   ngOnInit() {
-    this.id = localStorage.getItem('id')!;
-    this.token = this.authApi.getTokenUserConectado();
+    this.id = sessionStorage.getItem('id')!;
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
   }
 
   // Constructor
@@ -66,11 +66,11 @@ export class SuggestionPageComponent {
       enlace: enlaceSugerencia
     }
 
-    this.establecimientoApi.addSugerenciaApi(newSugerencia,this.token).subscribe(
+    this.establecimientoApi.addSugerenciaApi(newSugerencia,this.tokenApi).subscribe(
         sugerencias => {
           this.snackbar.open("Sugerencia enviada correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
-            this.router.navigate(['/establecimientos']);
           });
+          this.router.navigate(['/establecimientos']);
         }
     );
   }

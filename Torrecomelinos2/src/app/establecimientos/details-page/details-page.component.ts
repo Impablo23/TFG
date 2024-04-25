@@ -26,14 +26,14 @@ export class DetailsPageComponent {
   public listadoCategorias: CategoriaApi[] = [];
 
   // Variables para almacenar los datos del rol e id del usuario
-  public idRol : number = 0;
-  public id : number = 0;
+  public idRol : string = '';
+  public id : string = '';
 
   // Variables para almacenar si esta o no en favoritos y el numero de favoritos del usuario
   public esFavorito: boolean = false;
   public numFav: number = 0;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Constructor
   constructor(
@@ -56,30 +56,29 @@ export class DetailsPageComponent {
 
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   async ngOnInit(): Promise<void> {
-    const usuario = this.authApi.getUserConectado()!;
 
     // Obtener token API
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.id = usuario.id;
-    this.idRol = usuario.idRol;
+    this.id = sessionStorage.getItem('id')!;
+    this.idRol = sessionStorage.getItem('idRol')!;
 
     // Obtener zonas
-    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
     this.listadoZonas = responseZonas!;
 
     // Obtener categorías
-    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
     this.listadoCategorias = responseCategorias!;
 
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.token) )  ).subscribe(  establecimiento =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.tokenApi) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
         this.establecimientoDetalles = establecimiento[0];
 
-        this.verificarFavoritoApi(this.id,this.establecimientoDetalles.id);
+        this.verificarFavoritoApi(parseInt(this.id),this.establecimientoDetalles.id);
 
         return;
       }
@@ -130,7 +129,7 @@ export class DetailsPageComponent {
   // Método para alternar el corazon en rojo o gris dependiendo de si está el establecimiento seleccionado en los favoritos del usuario
   public verificarFavoritoApi(id_usuario: number, id_establecimiento: number) {
 
-    this.establecimientoApi.getFavoritoByUserByNameApi(id_usuario,id_establecimiento,this.token).subscribe(
+    this.establecimientoApi.getFavoritoByUserByNameApi(id_usuario,id_establecimiento,this.tokenApi).subscribe(
       favoritos => {
         const favorito: FavoritoApi = favoritos[0];
 
@@ -148,11 +147,11 @@ export class DetailsPageComponent {
 
     const newFavorito: FavoritoApi = {
       id: 0,
-      id_usuario: this.id,
+      id_usuario: parseInt(this.id),
       id_establecimiento: id_establecimiento
     }
 
-    this.establecimientoApi.addFavoritoApi(newFavorito,this.token).subscribe(
+    this.establecimientoApi.addFavoritoApi(newFavorito,this.tokenApi).subscribe(
       repuesta => {
         this.snackbar.open("Establecimiento añadido de favoritos", "Cerrar", { duration: 2000, panelClass: ['background'] }).afterDismissed().subscribe(() => {
           // window.location.reload();
@@ -165,12 +164,12 @@ export class DetailsPageComponent {
   // Método que verifica que el favorito que se va a eliminar exista y si es asi se elimina de la BBDD notificando al usuario de la confirmacion de la eliminacion
   public eliminaFavoritoApi(id_establecimiento: number) {
 
-    this.establecimientoApi.getFavoritoByUserByNameApi(this.id,id_establecimiento,this.token).subscribe(
+    this.establecimientoApi.getFavoritoByUserByNameApi(parseInt(this.id),id_establecimiento,this.tokenApi).subscribe(
       favorito => {
         const fav = favorito[0];
 
         if (fav != undefined){
-          this.establecimientoApi.deleteFavoritoApi(fav.id,this.token).subscribe(
+          this.establecimientoApi.deleteFavoritoApi(fav.id,this.tokenApi).subscribe(
             (response) => {
               this.snackbar.open("Establecimiento eliminado de favoritos", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

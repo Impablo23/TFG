@@ -9,7 +9,7 @@ export class AuthGuardService implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (token) {
       return true;
@@ -29,7 +29,7 @@ export class HomeGuardService implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
 
     if (token) {
       this.router.navigate(['/establecimientos']);
@@ -49,8 +49,8 @@ export class AdminGuard implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token = localStorage.getItem('token');
-    const idRol = localStorage.getItem('idRol');
+    const token = sessionStorage.getItem('token');
+    const idRol = sessionStorage.getItem('idRol');
 
     if (!token || !idRol) {
       // Si el usuario no tiene un token o idRol, significa que no está autenticado

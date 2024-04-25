@@ -29,7 +29,7 @@ export class EditUsuarioComponent {
   pass: string ='';
   idRol: number = 0;
 
-  public token : string = '';
+  public tokenApi : string = '';
 
   // Variables para almacenar los roles y el usuario seleccionado
   public usuarioSeleccionado! : UsuarioApi ;
@@ -58,10 +58,10 @@ export class EditUsuarioComponent {
   Método que cuando inicie la página, se buscara el usuario con el id seleccionado para almacenar en la variable anterioir los datos y
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
- ngOnInit(): void {
-  this.token = this.authApi.getTokenUserConectado();
+ async ngOnInit(): Promise<void> {
+   this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-   this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.token) )  ).subscribe(  usuario =>
+   this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.tokenApi) )  ).subscribe(  usuario =>
     {
       if (!usuario) return this.router.navigate(['/usuarios']);
       this.usuarioSeleccionado = usuario[0];
@@ -74,62 +74,102 @@ export class EditUsuarioComponent {
       return;
     });
 
-    this.authApi.getRoles().subscribe(
-      roles => {
-        this.listadoRoles = roles
-      }
-    );
+    const response = await this.authApi.getRoles().toPromise();
+    this.listadoRoles = response!;
   }
 
   /*
   Método para editar el usuario en comprueba de que el email no exista en la BBDD y que estén todos los campos rellenos y si eso esta OK
-  procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el token vacío y si está NO OK
+  procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el tokenApi vacío y si está NO OK
   le notifica que el usuario está ya registrado
   */
- public editUsuarioApi() {
+  //  public editUsuarioApi() {
 
-   this.authApi.getUserByEmail(this.email).subscribe(
-     usuario => {
-        const userOk = usuario[0];
-        let usuarioEditado: UsuarioApi;
-        if (this.usuarioSeleccionado.passwd === this.pass){
-          usuarioEditado = {
-            id: this.usuarioSeleccionado.id,
-            email: this.email,
-            nombreCompleto:this.nombreCompleto,
-            passwd:this.usuarioSeleccionado.passwd,
-            token:this.usuarioSeleccionado.token,
-            idRol:this.idRol
-          }
-        }else {
-          usuarioEditado = {
-            id: this.usuarioSeleccionado.id,
-            email: this.email,
-            idRol:this.idRol,
-            nombreCompleto:this.nombreCompleto,
-            passwd:this.calcularHashMD5(this.pass),
-            token:this.usuarioSeleccionado.token,
-          }
-        }
+  //    this.authApi.getUserByEmail(this.email).subscribe(
+  //      usuario => {
+  //         const userOk = usuario[0];
+  //         let usuarioEditado: UsuarioApi;
+  //         if (this.usuarioSeleccionado.passwd === this.pass){
+  //           usuarioEditado = {
+  //             id: this.usuarioSeleccionado.id,
+  //             email: this.email,
+  //             nombreCompleto:this.nombreCompleto,
+  //             passwd:this.usuarioSeleccionado.passwd,
+  //             token:this.usuarioSeleccionado.token,
+  //             idRol:this.idRol
+  //           }
+  //         }else {
+  //           usuarioEditado = {
+  //             id: this.usuarioSeleccionado.id,
+  //             email: this.email,
+  //             idRol:this.idRol,
+  //             nombreCompleto:this.nombreCompleto,
+  //             passwd:this.calcularHashMD5(this.pass),
+  //             token:this.usuarioSeleccionado.token,
+  //           }
+  //         }
 
-        this.authApi.updateUserApi(usuarioEditado,this.token).subscribe(
-          (response) => {
-            this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+  //         this.authApi.updateUserApi(usuarioEditado,this.tokenApi).subscribe(
+  //           (response) => {
+  //             this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 
-            });
-          },
-          (error) => {
-            this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
+  //             });
+  //           },
+  //           (error) => {
+  //             this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 
-            });
-          }
-        );
-        this.router.navigate(['admin/usuarios/']);
+  //             });
+  //           }
+  //         );
+  //         this.router.navigate(['admin/usuarios/']);
+  //       }
+
+
+
+  //     );
+
+  //   }
+
+
+  public async editUsuarioApi() {
+
+    const response1 = await this.authApi.getUserByEmail(this.email).toPromise();
+    let user = response1![0];
+
+    if (this.usuarioSeleccionado.passwd === this.pass){
+      user = {
+        id: this.usuarioSeleccionado.id,
+        email: this.email,
+        nombreCompleto:this.nombreCompleto,
+        passwd:this.usuarioSeleccionado.passwd,
+        token:this.usuarioSeleccionado.token,
+        idRol:this.idRol
       }
+    }else {
+      user = {
+        id: this.usuarioSeleccionado.id,
+        email: this.email,
+        idRol:this.idRol,
+        nombreCompleto:this.nombreCompleto,
+        passwd:this.calcularHashMD5(this.pass),
+        token:this.usuarioSeleccionado.token,
+      }
+    }
 
+    this.authApi.updateUserApi(user,this.tokenApi).subscribe(
+      (response) => {
+        this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 
+        });
+      },
+      (error) => {
+        this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 
+        });
+      }
     );
+    this.router.navigate(['admin/usuarios/']);
+
 
   }
 

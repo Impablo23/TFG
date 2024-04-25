@@ -24,7 +24,7 @@ export class DeleteSugerenciaComponent {
   public sugerenciaSeleccionada!: SugerenciaApi;
   public usuarioSeleccionado!: UsuarioApi;
 
-  public token: string = '';
+  public tokenApi: string = '';
 
   // Constructor
   constructor(
@@ -41,16 +41,16 @@ export class DeleteSugerenciaComponent {
   */
   ngOnInit(): void {
 
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.token) )  ).subscribe(  sugerencia =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.tokenApi) )  ).subscribe(  sugerencia =>
       {
         if (!sugerencia) return this.router.navigate(['admin/sugerencias/']);
         this.sugerenciaSeleccionada = sugerencia[0];
         //Datos del formulario ya rellenos
         this.nombre  = this.sugerenciaSeleccionada.nombre;
 
-        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario,this.token).subscribe(
+        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario,this.tokenApi).subscribe(
           usuario => {
             this.usuarioSeleccionado = usuario[0];
 
@@ -75,7 +75,7 @@ export class DeleteSugerenciaComponent {
 
   // Método que elimina la sugerencia de la BBDD e informa al usuario de lo que ha sucedido.
   public deleteSugerenciaApi() {
-    this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.token).subscribe(
+    this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open("Sugerencia eliminada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
           // window.location.reload();

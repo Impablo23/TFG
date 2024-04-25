@@ -33,16 +33,14 @@ export class SearchPageComponent  implements OnInit {
     private authApi: AuthApiService
   ){}
 
-  public token : string = "";
+  public tokenApi : string = "";
   /*
     Aqui cargamos en el listado de los establecimientos de los nombres de los establecimientos que incluyen los caracteres que introduce el usuario
     para asi mostrarlos y cargamos las zonas.
   */
   async ngOnInit(): Promise<void> {
 
-    const usuario = this.authApi.getUserConectado()!;
-
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
     this.searchForm.get('searchInput')!.valueChanges
       .pipe(
@@ -58,7 +56,7 @@ export class SearchPageComponent  implements OnInit {
       });
 
       // Obtener zonas
-      const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
+      const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
       this.listadoZonas = responseZonas!;
 
 
@@ -69,7 +67,7 @@ export class SearchPageComponent  implements OnInit {
   // Método que recoge todos los establecimientos para hacer la busqueda de los solicitados
   public async obtenerEstablecimientos() {
    // Obtener establecimientos
-    const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.token).toPromise();
+    const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.tokenApi).toPromise();
     this.establecimientos = responseEstablecimientos!;
 
   }

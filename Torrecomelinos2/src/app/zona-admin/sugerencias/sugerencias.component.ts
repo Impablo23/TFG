@@ -19,7 +19,7 @@ export class SugerenciasComponent {
   // Variable que almacena las segurencias recogidad de la BBDD.
   public listadoSugerencias: SugerenciaApi[] = [];
 
-  public token: string = '';
+  public tokenApi: string = '';
 
   // Constructor
   constructor(
@@ -33,7 +33,7 @@ export class SugerenciasComponent {
 
     try {
 
-      this.token = this.authApi.getTokenUserConectado();
+      this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
       // Obten las zonas al iniciar el componente
       await this.obtenerSugerencias();
@@ -57,7 +57,7 @@ export class SugerenciasComponent {
     });
 
     // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getSugerenciasApi(this.token).subscribe();
+    this.establecimientosApi.getSugerenciasApi(this.tokenApi).subscribe();
   }
 
   // Método que almacena las sugerencias recogidas de la BBDD y las guarda en el listado de sugerencias

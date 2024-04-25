@@ -19,9 +19,9 @@ import { AuthApiService } from 'src/app/services/authApi.service';
 export class FavouritePageComponent {
 
   // Variable que almacena el id del usuario
-  public id : number = 0;
+  public id : string = '';
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Variables para almacenar los datos de los establecimientos favoritos del usuario
   public listadoFavoritos : FavoritoApi[] = [];
@@ -40,19 +40,19 @@ export class FavouritePageComponent {
   // Método que al iniciar la pestaña, da valor a la variable id y guarda los datos en los listados con los datos recogidos por la BBDD
   async ngOnInit() {
 
-    const usuario = this.authApi.getUserConectado()!;
-
-    this.id = usuario.id;
+    this.id = sessionStorage.getItem('idRol')!;
 
     // Obtener token API
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    console.log(this.tokenApi);
 
     // Obtener zonas
-    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
     this.listadoZonas = responseZonas!;
 
     // Obtener categorías
-    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
     this.listadoCategorias = responseCategorias!;
 
     this.obtenerDatosEstablecimientosFavoritosApi();
@@ -108,25 +108,46 @@ export class FavouritePageComponent {
     Método que almacena en el listado de favoritos los datos recogidos de favoritos de la BBDD y a su vez guarda en el listado de los detalles de los establecimientos
     los datos de cada establecimiento favorito mediante el id para así mostrarlos en la página.
   */
-  public obtenerDatosEstablecimientosFavoritosApi(){
-    this.establecimientoApi.getFavoritosByUserApi(this.id,this.token).subscribe(
-      favoritos => {
-        this.listadoFavoritos = favoritos;
-        for (let i = 0; i < this.listadoFavoritos.length;i++) {
-          this.establecimientoApi.getEstablecimientoApiById(this.listadoFavoritos[i].id_establecimiento,this.token).subscribe(
-            establecimientos => {
+  // public obtenerDatosEstablecimientosFavoritosApi(){
+  //   this.establecimientoApi.getFavoritosByUserApi(parseInt(this.id),this.tokenApi).subscribe(
+  //     favoritos => {
+  //       this.listadoFavoritos = favoritos;
+  //       for (let i = 0; i < this.listadoFavoritos.length;i++) {
+  //         this.establecimientoApi.getEstablecimientoApiById(this.listadoFavoritos[i].id_establecimiento,this.tokenApi).subscribe(
+  //           establecimientos => {
 
+  //             const establecimiento: EstablecimientoApi = establecimientos[0];
+  //             this.listadoFavoritosDetalles.push(establecimiento);
+
+  //             return;
+  //           }
+  //         );
+  //       }
+  //     }
+  //   );
+
+  // }
+
+  public async obtenerDatosEstablecimientosFavoritosApi(){
+    const response = await this.establecimientoApi.getFavoritosByUserApi(parseInt(this.id),this.tokenApi).toPromise();
+    this.listadoFavoritos = response!;
+
+    for (let i = 0; i < this.listadoFavoritos.length; i++) {
+        try {
+            const establecimientos = await this.establecimientoApi.getEstablecimientoApiById(this.listadoFavoritos[i].id_establecimiento, this.tokenApi).toPromise();
+            if (establecimientos !== undefined && establecimientos.length > 0) {
               const establecimiento: EstablecimientoApi = establecimientos[0];
               this.listadoFavoritosDetalles.push(establecimiento);
-
-              return;
-            }
-          );
+          } else {
+              console.error("La respuesta de getEstablecimientoApiById es undefined o vacía.");
+          }
+        } catch (error) {
+            console.error("Error al obtener establecimiento:", error);
         }
-      }
-    );
+    }
+}
 
-  }
+
 
   /*
     Método que cuando pulsas el corazón, eliminas el establecimiento favorito del listado de favoritos y el de los datos de los establecimientos
@@ -136,12 +157,14 @@ export class FavouritePageComponent {
       que no tiene favoritos asignados y un boton para volver al listado
     --ANOTACIÓN--
   */
-  public deleteFavoritoApi(id_establecimiento: number) {
+  public eliminaFavoritoApi(id_establecimiento: number) {
     // Buscar el favorito por id_usuario e id_establecimiento y guardar el id del favorito
-    const favoritoEncontrado = this.listadoFavoritos.find(favorito => favorito.id_usuario === this.id && favorito.id_establecimiento === id_establecimiento);
-
+    console.log(this.listadoFavoritos);
+    const favoritoEncontrado = this.listadoFavoritos.find(favorito => favorito.id_usuario === parseInt(this.id) && favorito.id_establecimiento === id_establecimiento);
+    console.log(favoritoEncontrado);
+    console.log(favoritoEncontrado?.id);
     if (favoritoEncontrado) {
-      this.establecimientoApi.deleteFavoritoApi(favoritoEncontrado.id, this.token).subscribe(
+      this.establecimientoApi.deleteFavoritoApi(favoritoEncontrado.id, this.tokenApi).subscribe(
         (response) => {
           // Eliminar el establecimiento de listadoFavoritosDetalles
           const establecimientoIndex = this.listadoFavoritosDetalles.findIndex(establecimiento => establecimiento.id === id_establecimiento);

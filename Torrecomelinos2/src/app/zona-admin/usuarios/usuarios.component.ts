@@ -19,7 +19,7 @@ export class UsuariosComponent {
 
   public listadoUsuarios: UsuarioApi[] = [];
 
-  public token = 'token';
+  public tokenApi : string = "";
 
   constructor(
     public router: Router,
@@ -27,7 +27,7 @@ export class UsuariosComponent {
   ){}
 
   async ngOnInit(){
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
     await this.obtenerUsuarios();
 
@@ -46,7 +46,7 @@ export class UsuariosComponent {
       });
 
       // Obten las categorías al iniciar el componente
-      this.authApi.getUsersApi(this.token).subscribe();
+      this.authApi.getUsersApi(this.tokenApi).subscribe();
     } catch (error) {
       console.error('Error al obtener zonas:', error);
       // Manejar el error según sea necesario

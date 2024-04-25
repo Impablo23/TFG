@@ -17,9 +17,9 @@ import { Subscription } from 'rxjs';
 export class LayoutPageComponent {
 
   // Variables para almacenar el id del rol, nombre e id del usuario
-  public idRol : number =0;
+  public idRol : string ='';
   public nombre : string ='';
-  public id : number =0;
+  public id : string ='';
   public token : string ='';
 
   // Constructor
@@ -35,13 +35,11 @@ export class LayoutPageComponent {
   */
   async ngOnInit() {
 
-    const usuario = this.authApi.getUserConectado()!;
+    this.token = sessionStorage.getItem('tokenApi')!;
 
-    console.log(usuario);
-
-    this.idRol = usuario.idRol;
-    this.nombre = usuario.nombreCompleto;
-    this.id = usuario.id;
+    this.id = sessionStorage.getItem('id')!;
+    this.nombre = sessionStorage.getItem('nombreCompleto')!;
+    this.idRol = sessionStorage.getItem('idRol')!;
 
 
   }
@@ -78,21 +76,28 @@ export class LayoutPageComponent {
 
     const registroLoGout: RegistroApi = {
       id: 0,
-      id_usuario: this.id,
+      id_usuario: parseInt(this.id),
       estado: 'Desconectado',
       hora: this.authApi.obtenerFechaYHora(new Date().toISOString()),
     }
 
 
-    this.authApi.addRegistroApi(registroLoGout).subscribe(
+    this.authApi.addRegistroApi(registroLoGout, this.token).subscribe(
       respuesta => {
-        localStorage.clear();
-        this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
-        this.router.navigate(['/auth']);
+          // Se ejecuta después de que se agrega el registro
+          sessionStorage.clear();
+          this.snackbar.open("Se ha Cerrado Sesión correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+          this.router.navigate(['/auth']);
+      },
+      error => {
+          console.error("Error al agregar el registro:", error);
+          // Si ocurre un error al agregar el registro, también limpiamos sessionStorage y redirigimos al usuario
+          // sessionStorage.clear();
+          this.snackbar.open("Se ha producido un error al cerrar sesión", "Cerrar", { duration: 2000, panelClass: ['background'] });
+          // this.router.navigate(['/auth']);
       }
     );
 
-    this.authApi.limpiarUsuarioConectado();
 
   }
 

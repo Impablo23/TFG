@@ -37,25 +37,21 @@ export class ListPageComponent {
   public zonaSeleccionada: number = 0;
   public categoriaSeleccionada: number = 0;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Variable para almacenar el id del rol del usuario
-  public idRol : number = 0;
+  public idRol : string = '';
 
   // Método para guardar en las listas todos los datos necesarios de la BBDD y se da valor al idRol.
   async ngOnInit(): Promise<void> {
 
-    const usuario = this.authApi.getUserConectado()!;
-
     // Obtener el token antes de continuar
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
     // Obtener ID de rol
-    this.idRol = usuario.idRol;
+    this.idRol = sessionStorage.getItem('idRol')!;
 
     await this.obtenerDatos();
-
-
 
   }
 
@@ -63,16 +59,16 @@ export class ListPageComponent {
     try{
       // Ahora que se tiene el token, continuar con la obtención de datos
       // Obtener establecimientos
-      const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.token).toPromise();
+      const responseEstablecimientos = await this.establecimientoApi.getEstablecimientosApi(this.tokenApi).toPromise();
       this.listadoEstablecimientos = responseEstablecimientos!;
       this.establecimientosFiltrados = this.listadoEstablecimientos;
 
       // Obtener zonas
-      const responseZonas = await this.establecimientoApi.getZonasApi(this.token).toPromise();
+      const responseZonas = await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
       this.listadoZonas = responseZonas!;
 
       // Obtener categorías
-      const responseCategorias = await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
+      const responseCategorias = await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
       this.listadoCategorias = responseCategorias!;
     } catch (error) {
       console.error('Error en la inicialización:', error);

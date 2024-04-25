@@ -21,7 +21,7 @@ export class EditZonaComponent {
   // Variable para almacenar la zona específica
   public zonaSeleccionada!: ZonaApi;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Constructor
   constructor(
@@ -35,9 +35,9 @@ export class EditZonaComponent {
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   async ngOnInit(): Promise<void> {
 
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.token) )  ).subscribe(  zona =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.tokenApi) )  ).subscribe(  zona =>
       {
         if (!zona) return this.router.navigate(['admin/zona/']);
         this.zonaSeleccionada = zona[0];
@@ -72,7 +72,7 @@ export class EditZonaComponent {
     }
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(this.nombre,this.token).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre,this.tokenApi).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -87,7 +87,7 @@ export class EditZonaComponent {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.updateZonaApi(zonaEditada,this.token).subscribe(
+          this.establecimientosApi.updateZonaApi(zonaEditada,this.tokenApi).subscribe(
             (response) => {
               this.snackbar.open("Zona actualizada correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

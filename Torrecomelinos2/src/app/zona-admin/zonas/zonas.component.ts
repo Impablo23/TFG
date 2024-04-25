@@ -16,7 +16,7 @@ export class ZonasComponent {
 
   private zonasSubscription!: Subscription;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Variable para almacenar las zonas recogidad de la BBDD
   public listadoZonas: ZonaApi[] = [];
@@ -32,7 +32,7 @@ export class ZonasComponent {
   async ngOnInit() {
     try {
 
-      this.token = this.authApi.getTokenUserConectado();
+      this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
       // Obten las zonas al iniciar el componente
       await this.obtenerZonas();
@@ -51,7 +51,7 @@ export class ZonasComponent {
   async obtenerZonas() {
     try {
       // Obtener zonas
-      const zonas = await this.establecimientosApi.getZonasApi(this.token).toPromise();
+      const zonas = await this.establecimientosApi.getZonasApi(this.tokenApi).toPromise();
       this.listadoZonas = zonas!;
       // Suscribirse al observable para obtener las actualizaciones del listado de zonas
       this.zonasSubscription = this.establecimientosApi.zonas$.subscribe(zonas => {

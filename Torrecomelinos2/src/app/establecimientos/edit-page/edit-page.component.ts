@@ -37,7 +37,7 @@ export class EditPageComponent {
   public id_zona: number = 0;
   public id_categoria: number = 0;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
 
   // Constructor
@@ -53,42 +53,47 @@ export class EditPageComponent {
 
 
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
-  async ngOnInit(): Promise<void> {
+  async ngOnInit(){
 
-    const usuario = this.authApi.getUserConectado()!;
+    // Obtener tokenApi API
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    // Obtener token API
-    this.token = this.authApi.getTokenUserConectado();
+    await this.obtenerEstablecimiento();
 
+  }
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.token) )  ).subscribe(  establecimiento =>
-      {
+  async obtenerEstablecimiento() {
+
+    // Obtener zonas
+    const responseZonas = await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
+    this.listadoZonas = responseZonas!;
+
+    // Obtener categorías
+    const responseCategorias = await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
+    this.listadoCategorias = responseCategorias!;
+
+    this.activatedRoute.params.pipe(switchMap(({ id }) => this.establecimientoApi.getEstablecimientoApiById(id, this.tokenApi))).subscribe(establecimiento => {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
         this.establecimientoDetalles = establecimiento[0];
         //Datos del formulario ya rellenos
-        this.nombre  = this.establecimientoDetalles!.nombre;
-        this.descripcion  = this.establecimientoDetalles!.descripcion;
-        this.direccion  = this.establecimientoDetalles!.direccion;
-        this.telefono  = this.establecimientoDetalles!.telefono;
-        this.foto  = this.establecimientoDetalles!.foto;
-        this.enlace  = this.establecimientoDetalles!.enlace;
-        this.numResenas  = this.establecimientoDetalles!.numResenas;
+        this.nombre = this.establecimientoDetalles!.nombre;
+        this.descripcion = this.establecimientoDetalles!.descripcion;
+        this.direccion = this.establecimientoDetalles!.direccion;
+        this.telefono = this.establecimientoDetalles!.telefono;
+        this.foto = this.establecimientoDetalles!.foto;
+        this.enlace = this.establecimientoDetalles!.enlace;
+        this.numResenas = this.establecimientoDetalles!.numResenas;
         this.id_zona = this.establecimientoDetalles!.id_zona;
         this.id_categoria = this.establecimientoDetalles!.id_categoria;
 
         return;
-      });
+    });
 
-      // Obtener zonas
-    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
-    this.listadoZonas = responseZonas!;
 
-    // Obtener categorías
-    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
-    this.listadoCategorias = responseCategorias!;
+}
 
-  }
+
 
   // Método que redirige hacia la pagina de los detalles del establecimiento seleccionado
   public goToDetails(id: number){
@@ -160,7 +165,7 @@ export class EditPageComponent {
       return;
     }
 
-    this.establecimientoApi.updateEstablecimientoApi(establecimientoEditado).subscribe(
+    this.establecimientoApi.updateEstablecimientoApi(establecimientoEditado,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open("Establecimiento actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
         this.router.navigate([`/establecimientos/details/${establecimientoEditado.id}`])

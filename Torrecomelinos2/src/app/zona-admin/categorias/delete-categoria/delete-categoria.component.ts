@@ -36,7 +36,7 @@ export class DeleteCategoriaComponent {
   // Método que al iniciar la página, busca la categoría específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   ngOnInit(): void {
 
-    this.tokenApi = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getCategoriaApiById(id,this.tokenApi) )  ).subscribe(  categoria =>
       {

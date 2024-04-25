@@ -24,7 +24,7 @@ export class AddSugerenciaComponent {
   public sugerenciaSeleccionada!: SugerenciaApi;
   public usuarioSeleccionado!: UsuarioApi;
 
-  public token: string = '';
+  public tokenApi: string = '';
 
   // Constructor
   constructor(
@@ -41,17 +41,17 @@ export class AddSugerenciaComponent {
   */
   ngOnInit(): void {
 
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.token) )  ).subscribe(  sugerencia =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.tokenApi) )  ).subscribe(  sugerencia =>
       {
         if (!sugerencia) return this.router.navigate(['admin/sugerencias/']);
         this.sugerenciaSeleccionada = sugerencia[0];
         //Datos del formulario ya rellenos
         this.nombre  = this.sugerenciaSeleccionada.nombre;
 
-        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario,this.token).subscribe(
+        this.authApi.getUsersApiById(this.sugerenciaSeleccionada.id_usuario,this.tokenApi).subscribe(
           usuario => {
             this.usuarioSeleccionado = usuario[0];
 
@@ -87,12 +87,12 @@ export class AddSugerenciaComponent {
     this.router.navigate(['establecimientos', 'add'], { queryParams: { sugerenciaId: this.sugerenciaSeleccionada.id } });
 
     // Realizar una verificación inicial si el establecimiento ya existe antes de agregarlo
-    this.establecimientosApi.getEstablecimientosApiByName(this.sugerenciaSeleccionada.nombre).subscribe(
+    this.establecimientosApi.getEstablecimientosApiByName(this.sugerenciaSeleccionada.nombre,this.tokenApi).subscribe(
       establecimientos => {
         console.log(establecimientos);
         if (establecimientos[0] !== undefined) {
           // Si el establecimiento ya existe, eliminar la sugerencia
-          this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.token).subscribe(
+          this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.tokenApi).subscribe(
             (response) => {
               console.log('Sugerencia eliminada');
             },

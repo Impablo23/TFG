@@ -10,7 +10,7 @@ api = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer("/token")
 
-SECRET_KEY = '92fbf1d09b41c2a4d5d8016c11650da1' #pablo11504
+SECRET_KEY = '92fbf1d09b41c2a4d5d8016c11650da1' #pablo11504  # HAY QUE PONER ESTO COMO VARIABLES DE ENTORNO
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -102,7 +102,7 @@ async def users(user: Usuario = Depends(obtener_usuario_actual)):
     return users_list
 
 @api.get("/users/id/{id}")
-async def userById(id: int):
+async def userById(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     users_list_by_id = obtener_usuario_por_id(id)
     
@@ -142,7 +142,7 @@ async def agregar_usuario(usuario: Usuario):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
      
 @api.put("/users/edit")   
-async def editar_usuario(usuario: Usuario):
+async def editar_usuario(usuario: Usuario,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE usuarios SET email = %s, passwd = %s, nombreCompleto = %s, idRol = %s, token = %s WHERE id = %s"
@@ -163,7 +163,7 @@ async def editar_usuario(usuario: Usuario):
 
 @api.delete("/users/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_usuario(id: int):
+async def eliminar_usuario(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM usuarios WHERE id = %s"
@@ -183,7 +183,7 @@ async def eliminar_usuario(id: int):
         raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
      
 @api.get("/users/{email}/{passwd}")
-async def UserByEmailAndPass(email:str, passwd: str):
+async def UserByEmailAndPass(email:str, passwd: str,user: Usuario = Depends(obtener_usuario_actual)):
     
     user_by_email_passwd = obtenerUserByEmailAndPass(email,passwd)
     
@@ -198,7 +198,7 @@ async def UserByEmailAndPass(email:str, passwd: str):
 
 
 @api.post("/registros/add")
-async def agregar_registro(registro: Registro):
+async def agregar_registro(registro: Registro,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO registro (id_usuario, estado,hora) VALUES (%s, %s, %s)"
@@ -219,7 +219,7 @@ async def agregar_registro(registro: Registro):
 
 
 @api.get('/registros')
-async def registros():
+async def registros(user: Usuario = Depends(obtener_usuario_actual)):
     registros_list = obtener_registros()
     return registros_list
 
@@ -436,21 +436,21 @@ async def establecimientos(user: Usuario = Depends(obtener_usuario_actual)):
 
 
 @api.get("/establecimientos/id/{id}")
-async def establecimientosById(id: int):
+async def establecimientosById(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     
     establecimientos_list_by_id = obtener_establecimiento_por_id(id)
     
     return establecimientos_list_by_id
 
 @api.get("/establecimientos/name/{name}")
-async def establecimientosById(name:str):
+async def establecimientosById(name:str,user: Usuario = Depends(obtener_usuario_actual)):
     
     establecimientos_list_by_name = obtener_establecimiento_por_nombre(name)
     
     return establecimientos_list_by_name
 
 @api.post("/establecimientos/add")
-async def agregar_establecimiento(establecimiento: Establecimiento):
+async def agregar_establecimiento(establecimiento: Establecimiento,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para insertar un nuevo usuario
         consulta = "INSERT INTO establecimientos (id_categoria, id_zona, nombre, descripcion, numResenas, direccion, telefono, foto, enlace) VALUES(%s, %s, %s, %s, %s,%s, %s, %s, %s)"
@@ -471,7 +471,7 @@ async def agregar_establecimiento(establecimiento: Establecimiento):
 
 
 @api.put("/establecimientos/edit")   
-async def editar_establecimiento(establecimiento: Establecimiento):
+async def editar_establecimiento(establecimiento: Establecimiento,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para editar un usuario existente
         consulta = "UPDATE establecimientos SET id_categoria = %s, id_zona = %s, nombre = %s, descripcion = %s, numResenas = %s, direccion = %s, telefono = %s, foto = %s, enlace = %s WHERE id = %s;"
@@ -492,7 +492,7 @@ async def editar_establecimiento(establecimiento: Establecimiento):
     
 @api.delete("/establecimientos/delete/{id}")   
 # Función para eliminar un usuario
-async def eliminar_establecimiento(id: int):
+async def eliminar_establecimiento(id: int,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para eliminar un usuario por su ID
         consulta = "DELETE FROM establecimientos WHERE id = %s"

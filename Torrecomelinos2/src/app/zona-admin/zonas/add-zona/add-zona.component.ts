@@ -19,7 +19,7 @@ export class AddZonaComponent implements OnInit {
   // Variable para almacenar el estado de las zonas
   public numZonas : number = 0;
 
-  public token : string = "";
+  public tokenApi : string = "";
 
 
   // Constructor
@@ -31,7 +31,7 @@ export class AddZonaComponent implements OnInit {
 
   async ngOnInit() {
 
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre
@@ -50,7 +50,7 @@ export class AddZonaComponent implements OnInit {
     // const nombreEstandar = this.capitalizarPalabra(this.nombre);
 
     // LLamada a la BBDD para comprobar si lo que se ha insertado existe o no.
-    this.establecimientosApi.getZonaByNameApi(this.nombre,this.token).subscribe(
+    this.establecimientosApi.getZonaByNameApi(this.nombre,this.tokenApi).subscribe(
       zonas => {
         const zonaExistente = zonas[0];
 
@@ -64,7 +64,7 @@ export class AddZonaComponent implements OnInit {
             nombre: this.nombre
           }
 
-          this.establecimientosApi.addZonaApi(zonaAdd,this.token).subscribe(
+          this.establecimientosApi.addZonaApi(zonaAdd,this.tokenApi).subscribe(
             repuesta => {
               this.snackbar.open( "Zona añadida correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
                 // window.location.reload();

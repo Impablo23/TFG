@@ -47,14 +47,15 @@ export class LoginPageComponent implements OnInit {
     }
 
     try {
-      const usuario = await this.authApi.getUserByEmailAndPass(this.email, this.calcularHashMD5(this.pass)).toPromise();
+
+      // Obtener token API solo si el usuario es válido
+      const response = await this.authApi.getToken(this.email, this.pass).toPromise();
+      this.token = response.access_token;
+
+      const usuario = await this.authApi.getUserByEmailAndPass(this.email, this.calcularHashMD5(this.pass),this.token).toPromise();
       const userOk = usuario![0];
 
       if (userOk != undefined) {
-
-        // Obtener token API solo si el usuario es válido
-        const response = await this.authApi.getToken(this.email, this.pass).toPromise();
-        this.token = response.access_token;
 
         const userUpdate: UsuarioApi = {
           id: userOk.id,
@@ -65,6 +66,8 @@ export class LoginPageComponent implements OnInit {
           token: uuidv4()
         }
 
+        await this.authApi.updateUser(userUpdate, this.token).toPromise();
+
         const registroLogin: RegistroApi = {
           id: 0,
           id_usuario: userUpdate.id,
@@ -72,30 +75,17 @@ export class LoginPageComponent implements OnInit {
           hora: this.authApi.obtenerFechaYHora(new Date().toISOString()),
         }
 
-        await this.authApi.addRegistroApi(registroLogin).toPromise();
+        await this.authApi.addRegistroApi(registroLogin,this.token).toPromise();
 
         // Actualizar usuario y obtener usuarios después de la actualización
-        await this.authApi.updateUserApiLogin(userUpdate, this.token);
 
-        // Almacenar datos de usuario en el localStorage
-        localStorage.setItem('id', userUpdate.id.toString());
-        localStorage.setItem('email', userUpdate.email);
-        localStorage.setItem('nombreCompleto', userUpdate.nombreCompleto);
-        localStorage.setItem('idRol', userUpdate.idRol.toString());
-        localStorage.setItem('token', userUpdate.token);
-        localStorage.setItem('tokenApi', this.token);
-
-        const userOnLine: UsuarioApi = {
-          id: userOk.id,
-          email: userOk.email,
-          passwd: this.pass,
-          nombreCompleto: userOk.nombreCompleto,
-          idRol: userOk.idRol,
-          token: uuidv4()
-        }
-
-        this.authApi.setUsuarioConectado(userOnLine,this.token);
-
+        // Almacenar datos de usuario en el sessionStorage
+        sessionStorage.setItem('id', userUpdate.id.toString());
+        sessionStorage.setItem('email', userUpdate.email);
+        sessionStorage.setItem('nombreCompleto', userUpdate.nombreCompleto);
+        sessionStorage.setItem('idRol', userUpdate.idRol.toString());
+        sessionStorage.setItem('token', userUpdate.token);
+        sessionStorage.setItem('tokenApi', this.token);
 
         // console.log('Inicio de sesión exitoso');
         this.snackbar.open("Inicio de Sesión Correcto", "Cerrar",{duration: 2000,panelClass:['background']});

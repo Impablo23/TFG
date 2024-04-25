@@ -30,7 +30,7 @@ export class AddCategoriaComponent {
 
   ngOnInit() {
 
-    this.tokenApi = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
   }
 
   // Método que cancela la operacion eliminado los datos del campo nombre

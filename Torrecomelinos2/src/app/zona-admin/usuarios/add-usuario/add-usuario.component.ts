@@ -21,7 +21,7 @@ export class AddUsuarioComponent implements OnInit {
     private router: Router,
   ){}
   ngOnInit(): void {
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
   }
 
   // Variables del formulario de Register
@@ -30,7 +30,7 @@ export class AddUsuarioComponent implements OnInit {
   pass: string ='';
   idRol: number = 0;
 
-  public token : string = '';
+  public tokenApi : string = '';
 
   // Función para calcular el hash MD5 de una contraseña
   calcularHashMD5(password: string): string {
@@ -57,7 +57,7 @@ export class AddUsuarioComponent implements OnInit {
 
   /*
     Método para registrar usuario en comprueba de que el email no exista en la BBDD y que estén todos los campos rellenos y si eso esta OK
-    procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el token vacío y si está NO OK
+    procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el tokenApi vacío y si está NO OK
     le notifica que el usuario está ya registrado
   */
   public registrarApi(): void {
@@ -96,7 +96,7 @@ export class AddUsuarioComponent implements OnInit {
           }
 
 
-          this.authApi.addUserApi(nuevoUser,this.token).subscribe(
+          this.authApi.addUserApi(nuevoUser,this.tokenApi).subscribe(
             repuesta => {
               this.snackbar.open( "Usuario añadido correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
               });

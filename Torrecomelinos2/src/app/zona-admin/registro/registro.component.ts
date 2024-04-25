@@ -14,38 +14,35 @@ export class RegistroComponent implements OnInit {
   public listadoRegistros: RegistroApi[] = [];
   public listadoNombresUsuarios: { [id: number]: string } = {}; // Objeto para almacenar los nombres de usuario por ID
 
-  public token: string = '';
+  public tokenApi: string = '';
 
   constructor(private authApi: AuthApiService) {}
 
   async ngOnInit(): Promise<void> {
 
-    // Obtener token API
-    const response = await this.authApi.getToken(this.authApi.getEmailUserConectado(), this.authApi.getPassUserConectado()).toPromise();
-    this.token = response.access_token;
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.authApi.getRegistroApi().subscribe(
-      registros => {
-        this.listadoRegistros = registros;
-        this.cargarNombresUsuarios(); // Llamar a la función para cargar los nombres de usuario
-      }
-    );
+    const response = await this.authApi.getRegistroApi(this.tokenApi).toPromise();
+    this.listadoRegistros = response!;
+
+    this.cargarNombresUsuarios();
   }
 
-  cargarNombresUsuarios(): void {
-    for (const registro of this.listadoRegistros) {
-      this.obtenerNombreUser(registro.id_usuario).subscribe(
-        nombre => {
-          this.listadoNombresUsuarios[registro.id_usuario] = nombre;
-           // Almacenar el nombre en el objeto usando el ID como clave
-        }
-      );
+  async cargarNombresUsuarios(): Promise<void> {
+    try {
+      for (const registro of this.listadoRegistros) {
+        const nombre = await this.obtenerNombreUser(registro.id_usuario).toPromise();
+        this.listadoNombresUsuarios[registro.id_usuario] = nombre!;
+      }
+    } catch (error) {
+      console.error('Error al cargar nombres de usuarios:', error);
     }
   }
 
   obtenerNombreUser(id: number): Observable<string> {
-    return this.authApi.getUsersApiById(id,this.token).pipe(
+    return this.authApi.getUsersApiById(id, this.tokenApi).pipe(
       map(usuarios => usuarios[0].email)
     );
   }
+
 }

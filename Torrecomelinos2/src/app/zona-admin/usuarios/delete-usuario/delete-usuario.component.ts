@@ -21,7 +21,7 @@ export class DeleteUsuarioComponent {
   // Variable para almacenar el usuario seleccionado
   public usuarioSeleccionado!: UsuarioApi;
 
-  public token : string = '' ;
+  public tokenApi : string = '' ;
 
   // Constructor
   constructor(
@@ -36,8 +36,8 @@ export class DeleteUsuarioComponent {
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
   ngOnInit(): void {
-    this.token = this.authApi.getTokenUserConectado();
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.token) )  ).subscribe(  usuario =>
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.tokenApi) )  ).subscribe(  usuario =>
       {
         if (!usuario) return this.router.navigate(['/usuarios']);
 
@@ -59,7 +59,7 @@ export class DeleteUsuarioComponent {
 
   // Método que elimina el usuario de la BBDD y avisa al usuario de los que ha sucedido con un mensaje.
   public deleteUsuarioApi() {
-    this.authApi.deleteUserApi(this.usuarioSeleccionado.id,this.token).subscribe(
+    this.authApi.deleteUserApi(this.usuarioSeleccionado.id,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open( "Usuario eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
 

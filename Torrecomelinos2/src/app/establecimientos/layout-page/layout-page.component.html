@@ -9,7 +9,7 @@
 
     <mat-nav-list>
 
-      <ng-container *ngIf="idRol === 1">
+      <ng-container *ngIf="idRol === '1'">
         <mat-list-item *ngFor="let iconos of AdminItems" routerLink="{{iconos.url}}" (click)="sidenav.toggle()">
           <mat-icon matListItemIcon>{{iconos.icon}}</mat-icon>
           {{iconos.label}}

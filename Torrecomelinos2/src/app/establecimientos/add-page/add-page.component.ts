@@ -35,7 +35,7 @@ export class AddPageComponent {
   public id_categoria: number = 0;
 
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Constructor
   constructor(
@@ -56,12 +56,9 @@ export class AddPageComponent {
 
     También almacena en las listas de zonas y categoría los datos de estas de las BBDD.
   */
-  async ngOnInit(): Promise<void> {
-
-    const usuario = this.authApi.getUserConectado()!;
-
-    // Obtener token API
-    this.token = this.authApi.getTokenUserConectado();
+  async ngOnInit(){
+    // Obtener tokenApi API
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
     this.route.queryParams.subscribe(params => {
       this.idEstablecimientoSugerido = params['sugerenciaId'];
@@ -69,7 +66,7 @@ export class AddPageComponent {
     });
 
     if (this.idEstablecimientoSugerido !== undefined) {
-      this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.token).subscribe(
+      this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.tokenApi).subscribe(
         sugerencias => {
           this.nombre = sugerencias[0].nombre;
           this.enlace = sugerencias[0].enlace;
@@ -78,11 +75,11 @@ export class AddPageComponent {
     }
 
     // Obtener zonas
-    const responseZonas= await this.establecimientoApi.getZonasApi(this.token).toPromise();
+    const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
     this.listadoZonas = responseZonas!;
 
     // Obtener categorías
-    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.token).toPromise();
+    const responseCategorias= await this.establecimientoApi.getCategoriasApi(this.tokenApi).toPromise();
     this.listadoCategorias = responseCategorias!;
 
 
@@ -157,7 +154,7 @@ export class AddPageComponent {
     };
 
     // Aplicar la llamada al servicio para añadir un establecimiento
-    this.establecimientoApi.addEstablecimientoApi(establecimientoAdd).subscribe(
+    this.establecimientoApi.addEstablecimientoApi(establecimientoAdd,this.tokenApi).subscribe(
       repuesta => {
         this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
         this.router.navigate(['/establecimientos']);

@@ -13,7 +13,7 @@
       <tbody *ngFor="let registro of listadoRegistros">
         <tr>
           <td class="td">
-            Usuario: {{ listadoNombresUsuarios[registro.id_usuario] || 'Cargando...' }}
+            {{ listadoNombresUsuarios[registro.id_usuario] || 'Cargando...' }}
           </td>
           <td class="td">
             {{registro.estado}}

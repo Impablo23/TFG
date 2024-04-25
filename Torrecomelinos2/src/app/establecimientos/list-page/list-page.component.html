@@ -1,7 +1,7 @@
 <div style="padding: 40px;">
   <h1 style="text-align: center;font-size: 40px;font-family: monospace;">Listado de Establecimientos</h1>
   <div style="float: left;margin-bottom: 20px;">
-    <button style="margin-right: 20px;" *ngIf="idRol === 1" type="button" (click)="navigateToAdd()" class="btn btn-outline-success">Añadir Establecimiento</button>
+    <button style="margin-right: 20px;" *ngIf="idRol === '1'" type="button" (click)="navigateToAdd()" class="btn btn-outline-success">Añadir Establecimiento</button>
     <button type="button" (click)="navigateToSuggestion()" class="btn btn-outline-success">Añadir Sugerencia</button>
   </div>
   <div style="width: 300px;">
@@ -29,7 +29,7 @@
       <p class="card__title">{{establecimiento.nombre}} ({{ obtenerNombreZona((establecimiento.id_zona)) }})</p>
       <a href="{{establecimiento.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="margin-top: 10px;margin-left: 30px;margin-top: 30px;">Sitio web</a>
       <a type="button" class="btn btn-outline-secondary" style="margin-top: 10px;margin-left: 10px;margin-top: 30px;" (click)="navigateToDetails(establecimiento.id)">Detalles</a>
-      <a *ngIf="idRol === 1" type="button" class="btn btn-outline-danger" style="margin-top: 10px;margin-left: 105px;" (click)="navigateToDelete(establecimiento.id)"><mat-icon>delete</mat-icon></a>
+      <a *ngIf="idRol === '1'" type="button" class="btn btn-outline-danger" style="margin-top: 10px;margin-left: 105px;" (click)="navigateToDelete(establecimiento.id)"><mat-icon>delete</mat-icon></a>
     </div>
   </div>
 </div>

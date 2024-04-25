@@ -119,9 +119,9 @@ export class AuthApiService {
   }
 
   updateUserApi(usuario: UsuarioApi, token: string): Observable<string> {
-    return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario, { headers })
       .pipe(
-        delay(1000), // Agrega un retraso de 2000 milisegundos (2 segundos)
         catchError(error => {
           console.error('Error al actualizar el usuario:', error);
           return of('');
@@ -136,7 +136,7 @@ export class AuthApiService {
 
   deleteUserApi(id: number,token:string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.delete<boolean>(`${this.baseUrl}/users/delete/${id}`)
+    return this.http.delete<boolean>(`${this.baseUrl}/users/delete/${id}`, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al eliminar el usuario:', error);
@@ -167,9 +167,9 @@ export class AuthApiService {
   }
 
   updateUserApiLogin(usuario: UsuarioApi, token: string): Observable<string> {
-    return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${this.baseUrl}/users/edit`, usuario, { headers })
       .pipe(
-        delay(1000), // Agrega un retraso de 2000 milisegundos (2 segundos)
         catchError(error => {
           console.error('Error al actualizar el usuario:', error);
           return of('');
@@ -188,12 +188,18 @@ export class AuthApiService {
     return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/id/${id}`, { headers })
   }
 
-  getUserByEmailAndPass(email: string, passwd: string): Observable<UsuarioApi[]> {
-    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/${email}/${passwd}`)
+  getUserByEmailAndPass(email: string, passwd: string,token: string): Observable<UsuarioApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/${email}/${passwd}`, { headers })
   }
 
   getUserByEmail(email: string): Observable<UsuarioApi[]> {
     return this.http.get<UsuarioApi[]>(`${this.baseUrl}/users/email/${email}`)
+  }
+
+  updateUser( usuario: UsuarioApi, token: string): Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${ this.baseUrl }/users/edit`, usuario, { headers })
   }
 
   //----------------------------------------------------------------------------------------------------------
@@ -202,14 +208,14 @@ export class AuthApiService {
   //----------------------------------------------------------------------------------------------------------
   //----------------------------------------------------------------------------------------------------------
 
-  addRegistroApi(registro: RegistroApi): Observable<string> {
-    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.post<string>(`${this.baseUrl}/registros/add`,registro)
+  addRegistroApi(registro: RegistroApi,token: string): Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/registros/add`,registro, { headers })
   }
 
-  getRegistroApi(): Observable<RegistroApi[]> {
-    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.get<RegistroApi[]>(`${this.baseUrl}/registros`)
+  getRegistroApi(token: string): Observable<RegistroApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<RegistroApi[]>(`${this.baseUrl}/registros`, { headers })
   }
 
 

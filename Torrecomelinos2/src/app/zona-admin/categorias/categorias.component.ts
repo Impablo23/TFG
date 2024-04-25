@@ -19,7 +19,7 @@ export class CategoriasComponent {
   // Variable que almacena las categorías recogidas de la BBDD.
   public listadoCategorias: CategoriaApi[] = [];
 
-  public token : string = "";
+  public tokenApi : string = "";
 
 
   // Constructor
@@ -33,7 +33,7 @@ export class CategoriasComponent {
   async ngOnInit(){
     try {
 
-      this.token = this.authApi.getTokenUserConectado();
+      this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
       // Obten las zonas al iniciar el componente
       await this.obtenerCategorias();
@@ -56,7 +56,7 @@ export class CategoriasComponent {
     });
 
     // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getCategoriasApi(this.token).subscribe();
+    this.establecimientosApi.getCategoriasApi(this.tokenApi).subscribe();
   }
 
   // Método que redirige hacia la edición de una zona en específica

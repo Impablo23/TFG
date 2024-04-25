@@ -22,7 +22,7 @@ export class DeletePageComponent {
   public idEstablecimiento: number = 0;
   public nombreEstablecimiento: string = '';
 
-  public token : string = "";
+  public tokenApi : string = "";
 
   // Constructor
   constructor(
@@ -41,9 +41,9 @@ export class DeletePageComponent {
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   ngOnInit(): void {
 
-    this.token = this.authApi.getTokenUserConectado();
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.token) )  ).subscribe(  establecimiento =>
+    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientoApi.getEstablecimientoApiById(id,this.tokenApi) )  ).subscribe(  establecimiento =>
       {
         if (!establecimiento) return this.router.navigate(['/establecimientos/list']);
 
@@ -60,7 +60,7 @@ export class DeletePageComponent {
   // Método que elimina el establecimiento de la BBDD enviando un mensaje de confirmación o denegación a la eliminación
   public deleteEstablecimientoApi(id: number) {
 
-    this.establecimientoApi.deleteEstablecimientoApi(id).subscribe(
+    this.establecimientoApi.deleteEstablecimientoApi(id,this.tokenApi).subscribe(
       (response) => {
         this.snackbar.open("Establecimiento eliminado correctamente", "Cerrar",{duration: 2000,panelClass:['background']});
         this.router.navigate([`/establecimientos/list`])

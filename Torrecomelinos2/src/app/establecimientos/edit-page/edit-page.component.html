@@ -12,6 +12,7 @@
     <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
       <label for="zona" style="text-align: left; margin-top: 10px; margin-right: 10px;">Zona:</label>
       <select class="form-control" id="zona" [(ngModel)]="id_zona" name="zona">
+        <option value=0 disabled selected hidden>Selecciona una zona*</option>
         <option *ngFor="let zona of listadoZonas" [value]="zona.id">{{ zona.nombre }}</option>
       </select>
     </form>
@@ -28,6 +29,7 @@
     <form class="input-group flex-nowrap" style="width: 100%;margin: auto;padding: 10px;">
       <label for="zona" style="text-align: left; margin-top: 10px; margin-right: 10px;">Categoría:</label>
       <select class="form-control" id="caterogia" [(ngModel)]="id_categoria" name="zona">
+        <option value=0 disabled selected hidden>Selecciona una zona*</option>
         <option *ngFor="let caterogia of listadoCategorias" [value]="caterogia.id">{{ caterogia.nombre }}</option>
       </select>
     </form>

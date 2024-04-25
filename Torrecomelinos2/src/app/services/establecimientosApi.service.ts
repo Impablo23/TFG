@@ -205,20 +205,24 @@ export class EstablecimientosApiService {
     return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos`, { headers })
   }
 
-  addEstablecimientoApi( establecimiento : EstablecimientoApi): Observable<string> {
-    return this.http.post<string>(`${ this.baseUrl }/establecimientos/add`,establecimiento)
+  addEstablecimientoApi( establecimiento : EstablecimientoApi,token: string): Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${ this.baseUrl }/establecimientos/add`,establecimiento, { headers })
   }
 
-  updateEstablecimientoApi( establecimiento : EstablecimientoApi): Observable<string> {
-    return this.http.put<string>(`${ this.baseUrl }/establecimientos/edit`, establecimiento)
+  updateEstablecimientoApi( establecimiento : EstablecimientoApi,token: string): Observable<string> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.put<string>(`${ this.baseUrl }/establecimientos/edit`, establecimiento, { headers })
   }
 
-  deleteEstablecimientoApi(id : number): Observable<boolean> {
-    return this.http.delete<boolean>(`${ this.baseUrl }/establecimientos/delete/${id}`).pipe(map( response => true),catchError(error => of(false)))
+  deleteEstablecimientoApi(id : number,token: string): Observable<boolean> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete<boolean>(`${ this.baseUrl }/establecimientos/delete/${id}`, { headers }).pipe(map( response => true),catchError(error => of(false)))
   }
 
-  getEstablecimientosApiByName(name: string): Observable<EstablecimientoApi[]> {
-    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/nombre/${name}`)
+  getEstablecimientosApiByName(name: string,token: string): Observable<EstablecimientoApi[]> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.get<EstablecimientoApi[]>(`${this.baseUrl}/establecimientos/nombre/${name}`, { headers })
   }
 
   getEstablecimientoApiById(id: number,token: string): Observable<EstablecimientoApi[]> {
@@ -251,7 +255,7 @@ export class EstablecimientosApiService {
 
   deleteFavoritoApi(id: number,token:string): Observable<boolean> {
     const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.delete(`${this.baseUrl}/favoritos/delete/${id}`, { headers }).pipe(map( response => true),catchError(error => of(false)))
+    return this.http.delete<boolean>(`${this.baseUrl}/favoritos/delete/${id}`, { headers }).pipe(map( response => true),catchError(error => of(false)))
   }
 
   addFavoritoApi(favorito: FavoritoApi,token:string) : Observable<string> {
