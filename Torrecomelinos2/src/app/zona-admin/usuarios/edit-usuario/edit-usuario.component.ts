@@ -61,6 +61,9 @@ export class EditUsuarioComponent {
  async ngOnInit(): Promise<void> {
    this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
+    const response = await this.authApi.getRoles().toPromise();
+    this.listadoRoles = response!;
+
    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.tokenApi) )  ).subscribe(  usuario =>
     {
       if (!usuario) return this.router.navigate(['/usuarios']);
@@ -74,8 +77,7 @@ export class EditUsuarioComponent {
       return;
     });
 
-    const response = await this.authApi.getRoles().toPromise();
-    this.listadoRoles = response!;
+
   }
 
   /*

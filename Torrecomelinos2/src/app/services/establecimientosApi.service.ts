@@ -303,7 +303,7 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al eliminar una categoría, actualiza la lista de sugerencias
-          this.getSugerenciasApi(token).subscribe();
+          // this.getSugerenciasApi(token).subscribe();
           return response;
         })
       );

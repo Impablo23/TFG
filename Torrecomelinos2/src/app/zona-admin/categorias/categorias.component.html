@@ -1,9 +1,15 @@
-<h1 style="text-align: center;font-size: 40px;font-family: monospace;padding: 30px;">Gestión de Categorías</h1>
+<h1 style="text-align: center;font-size: 40px;font-family: monospace;">Gestión de Categorías</h1>
 
-<div style="height: 100%; width: 60%;float: left;">
+<div style="height: 100%; width: 100%;">
 
   <div>
-    <table style="width: 60%;margin: auto;">
+
+    <div style="height: 50%; width: 50%; margin: auto; margin-bottom: 150px;">
+      <router-outlet></router-outlet>
+    </div>
+
+
+    <table style="width: 50%;margin: auto;">
       <thead>
         <tr style="width: 100%;">
           <th class="th" colspan="2" *ngIf="listadoCategorias.length > 0">Categorías</th>
@@ -32,6 +38,4 @@
 </div>
 
 
-<div style="height: 100%; width: 40%;float: right;">
-  <router-outlet></router-outlet>
-</div>
+

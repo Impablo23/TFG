@@ -39,7 +39,7 @@ export class AddSugerenciaComponent {
     Método que cuando inicia la página, busca ka sugerencia seleccionada por el id proporcionado y busca tambien el usuario
     para mostrar luego el nombre del establecimiento sugerido y el email del usuario.
   */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
@@ -65,7 +65,11 @@ export class AddSugerenciaComponent {
       });
 
 
+
+
   }
+
+
 
   // Método para cancelar la operación y redirige hacia la pestaña principal.
   public cancelar() {
@@ -81,30 +85,9 @@ export class AddSugerenciaComponent {
   */
   public addSugerenciaApi() {
 
-
-
     // Navegar hacia la ruta de agregar establecimiento
     this.router.navigate(['establecimientos', 'add'], { queryParams: { sugerenciaId: this.sugerenciaSeleccionada.id } });
 
-    // Realizar una verificación inicial si el establecimiento ya existe antes de agregarlo
-    this.establecimientosApi.getEstablecimientosApiByName(this.sugerenciaSeleccionada.nombre,this.tokenApi).subscribe(
-      establecimientos => {
-        console.log(establecimientos);
-        if (establecimientos[0] !== undefined) {
-          // Si el establecimiento ya existe, eliminar la sugerencia
-          this.establecimientosApi.deleteSugerenciaApi(this.sugerenciaSeleccionada.id,this.tokenApi).subscribe(
-            (response) => {
-              console.log('Sugerencia eliminada');
-            },
-            (error) => {
-              console.log('Error al eliminar la sugerencia');
-            }
-          );
-        } else {
-          console.log('El establecimiento aún no existe'); // Esto puede ser útil para depurar
-        }
-      }
-    );
   }
 
 

@@ -13,7 +13,7 @@ export class LayoutAdminComponent implements OnInit  {
 
   // Método para cuando se inicie la página, se de valor al nombrePublico el nombre del Administrador.
   ngOnInit(): void {
-    this.nombrePublico = localStorage.getItem('nombreCompleto')!;
+    this.nombrePublico = sessionStorage.getItem('nombreCompleto')!;
   }
 
   // Variable para almacenar el nombre y ruta de las diferentes opciones de gestión que tiene el Administrador.

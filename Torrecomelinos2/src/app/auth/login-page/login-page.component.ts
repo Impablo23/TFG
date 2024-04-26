@@ -97,6 +97,8 @@ export class LoginPageComponent implements OnInit {
       }
     } catch (error) {
       this.snackbar.open("Inicio de Sesión Incorrecto", "Cerrar",{duration: 2000,panelClass:['background']});
+      this.email = '';
+      this.pass = '';
       // Maneja el error según sea necesario
     }
   }

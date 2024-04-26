@@ -65,13 +65,12 @@ export class AddPageComponent {
       // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
     });
 
-    if (this.idEstablecimientoSugerido !== undefined) {
-      this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.tokenApi).subscribe(
-        sugerencias => {
-          this.nombre = sugerencias[0].nombre;
-          this.enlace = sugerencias[0].enlace;
-        }
-      );
+    console.log("Id sugerencia: "+this.idEstablecimientoSugerido);
+
+    if(this.idEstablecimientoSugerido != undefined) {
+      const responseSugerencias = await this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.tokenApi).toPromise();
+      this.nombre = responseSugerencias![0].nombre;
+      this.enlace = responseSugerencias![0].enlace;
     }
 
     // Obtener zonas
@@ -131,7 +130,7 @@ export class AddPageComponent {
 
 
   // Método que inserta el establecimiento si he rellenado los campos mínimos obligatorios y si esta OK o NO OK, se le notifica al usuario con un mensaje de error o de confirmación
-  public addEstablecimientoApi(): void {
+  public async addEstablecimientoApi(): Promise<void> {
 
     // Verificar que se haya proporcionado un nombre para el establecimiento
     if (this.nombre.length === 0 || this.id_zona === 0 || this.id_categoria === 0) {
@@ -153,13 +152,24 @@ export class AddPageComponent {
       enlace: this.enlace,
     };
 
-    // Aplicar la llamada al servicio para añadir un establecimiento
-    this.establecimientoApi.addEstablecimientoApi(establecimientoAdd,this.tokenApi).subscribe(
-      repuesta => {
-        this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
-        this.router.navigate(['/establecimientos']);
-      }
-    );
+
+    if (this.idEstablecimientoSugerido != undefined){
+
+      // Aplicar la llamada al servicio para añadir un establecimiento
+      await this.establecimientoApi.addEstablecimientoApi(establecimientoAdd,this.tokenApi).toPromise();
+
+
+      await this.establecimientoApi.deleteSugerenciaApi(this.idEstablecimientoSugerido,this.tokenApi).toPromise();
+      this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      this.router.navigate(['/establecimientos']);
+
+    }else {
+      // Aplicar la llamada al servicio para añadir un establecimiento
+      await this.establecimientoApi.addEstablecimientoApi(establecimientoAdd,this.tokenApi).toPromise();
+
+      this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      this.router.navigate(['/establecimientos']);
+    }
 
   }
 

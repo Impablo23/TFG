@@ -45,10 +45,12 @@ export class EditCategoriaComponent {
         this.nombre  = this.categoriaSeleccionada!.nombre;
 
         return;
-      });
-
+      }
+    );
 
   }
+
+
 
   // Función para capitalizar el primer carácter
   public capitalizarPalabra(sentence: string): string {
