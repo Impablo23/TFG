@@ -14,11 +14,12 @@
   </form>
 </div>
 
-<div style="margin: auto;width: 30%;margin-top: 20px;font-family: monospace;">
+<div style="margin: auto;width: 40%;margin-top: 20px;font-family: monospace;">
   <a href="{{sugerenciaSeleccionada.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="width: 100%;">Sitio web</a>
 </div>
 
-<div style="font-family: monospace;width: 40%;margin: auto;margin-top: 30px;">
-  <button *ngIf="nombre.length>0" type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="addSugerenciaApi()">Aceptar</button>
-  <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
+<div style="font-family: monospace;width: 100%;margin-top: 30px;">
+  <button *ngIf="nombre.length>0" type="button" class="btn btn-outline-success" style="float: left;" (click)="addSugerenciaApi()">Aceptar</button>
+  <button  type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
 </div>
+

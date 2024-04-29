@@ -33,9 +33,11 @@ export class DeleteZonaComponent {
   ){}
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    await this.establecimientosApi.getZonasApi(this.tokenApi).toPromise();
 
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.tokenApi) )  ).subscribe(  zona =>
       {

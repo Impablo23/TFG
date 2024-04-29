@@ -82,13 +82,14 @@ export class RegisterPageComponent {
             passwd: this.calcularHashMD5(this.pass),
             nombreCompleto: this.nombreCompleto,
             idRol: 2,
-            token: ''
+            token: '',
+            verificado: 0
           }
 
 
           this.authApi.addUserApiRegister(nuevoUser).subscribe(
             repuesta => {
-              this.snackbar.open("Usuario registrado correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
+              this.snackbar.open("Registro completado, Espera a la verificación del administrador", "Cerrar", { duration: 2000, panelClass: ['background'] });
               this.router.navigate(['/auth']);
             }
           );

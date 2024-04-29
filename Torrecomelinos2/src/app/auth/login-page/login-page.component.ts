@@ -46,6 +46,7 @@ export class LoginPageComponent implements OnInit {
       return;
     }
 
+
     try {
 
       // Obtener token API solo si el usuario es válido
@@ -63,7 +64,8 @@ export class LoginPageComponent implements OnInit {
           passwd: userOk.passwd,
           nombreCompleto: userOk.nombreCompleto,
           idRol: userOk.idRol,
-          token: uuidv4()
+          token: uuidv4(),
+          verificado: 1
         }
 
         await this.authApi.updateUser(userUpdate, this.token).toPromise();

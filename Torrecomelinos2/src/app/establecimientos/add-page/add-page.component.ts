@@ -94,7 +94,7 @@ export class AddPageComponent {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
 
-      if (zona.id === idZona) {
+      if (zona.id == idZona) {
         nombre = zona.nombre
       }
       if (idZona === 0) {
@@ -159,7 +159,7 @@ export class AddPageComponent {
       await this.establecimientoApi.addEstablecimientoApi(establecimientoAdd,this.tokenApi).toPromise();
 
 
-      await this.establecimientoApi.deleteSugerenciaApi(this.idEstablecimientoSugerido,this.tokenApi).toPromise();
+      await this.establecimientoApi.deleteSugerenciaApiAddPage(this.idEstablecimientoSugerido,this.tokenApi).toPromise();
       this.snackbar.open("Establecimiento añadido correctamente", "Cerrar", { duration: 2000, panelClass: ['background'] });
       this.router.navigate(['/establecimientos']);
 

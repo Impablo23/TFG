@@ -28,6 +28,7 @@ export class EditUsuarioComponent {
   email: string ='';
   pass: string ='';
   idRol: number = 0;
+  verificado: number = 0;
 
   public tokenApi : string = '';
 
@@ -59,10 +60,14 @@ export class EditUsuarioComponent {
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
  async ngOnInit(): Promise<void> {
-   this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    await this.authApi.getUsersApi(this.tokenApi).toPromise();
 
     const response = await this.authApi.getRoles().toPromise();
     this.listadoRoles = response!;
+
 
    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.tokenApi) )  ).subscribe(  usuario =>
     {
@@ -74,10 +79,20 @@ export class EditUsuarioComponent {
       this.nombreCompleto = this.usuarioSeleccionado.nombreCompleto;
       this.pass = this.usuarioSeleccionado.passwd;
       this.idRol = this.usuarioSeleccionado.idRol;
+      this.verificado = this.usuarioSeleccionado.verificado;
       return;
     });
 
 
+  }
+
+
+  verificar() {
+    this.verificado = 1;
+  }
+
+  noVerificar() {
+    this.verificado = 0;
   }
 
   /*
@@ -85,55 +100,17 @@ export class EditUsuarioComponent {
   procede a añadir el usuario a la BBDD dándole los valores que ha introducido el usuario mas el idRol = 2 y el tokenApi vacío y si está NO OK
   le notifica que el usuario está ya registrado
   */
-  //  public editUsuarioApi() {
-
-  //    this.authApi.getUserByEmail(this.email).subscribe(
-  //      usuario => {
-  //         const userOk = usuario[0];
-  //         let usuarioEditado: UsuarioApi;
-  //         if (this.usuarioSeleccionado.passwd === this.pass){
-  //           usuarioEditado = {
-  //             id: this.usuarioSeleccionado.id,
-  //             email: this.email,
-  //             nombreCompleto:this.nombreCompleto,
-  //             passwd:this.usuarioSeleccionado.passwd,
-  //             token:this.usuarioSeleccionado.token,
-  //             idRol:this.idRol
-  //           }
-  //         }else {
-  //           usuarioEditado = {
-  //             id: this.usuarioSeleccionado.id,
-  //             email: this.email,
-  //             idRol:this.idRol,
-  //             nombreCompleto:this.nombreCompleto,
-  //             passwd:this.calcularHashMD5(this.pass),
-  //             token:this.usuarioSeleccionado.token,
-  //           }
-  //         }
-
-  //         this.authApi.updateUserApi(usuarioEditado,this.tokenApi).subscribe(
-  //           (response) => {
-  //             this.snackbar.open("Usuario actualizado correctamente", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-
-  //             });
-  //           },
-  //           (error) => {
-  //             this.snackbar.open("Ha ocurrido un error al actualizar el usuario", "Cerrar",{duration: 2000,panelClass:['background']}).afterDismissed().subscribe(() => {
-
-  //             });
-  //           }
-  //         );
-  //         this.router.navigate(['admin/usuarios/']);
-  //       }
-
-
-
-  //     );
-
-  //   }
-
-
   public async editUsuarioApi() {
+
+    if (this.nombreCompleto.length<5){
+      this.snackbar.open("El nombre debe tener un mínimo de 5 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
+
+    if (this.pass.length < 8) {
+      this.snackbar.open("La contraseña debe tener un mínimo de 8 caracteres", "Cerrar", { duration: 2000, panelClass: ['background'] });
+      return;
+    }
 
     const response1 = await this.authApi.getUserByEmail(this.email).toPromise();
     let user = response1![0];
@@ -145,7 +122,8 @@ export class EditUsuarioComponent {
         nombreCompleto:this.nombreCompleto,
         passwd:this.usuarioSeleccionado.passwd,
         token:this.usuarioSeleccionado.token,
-        idRol:this.idRol
+        idRol:this.idRol,
+        verificado: this.verificado
       }
     }else {
       user = {
@@ -155,6 +133,7 @@ export class EditUsuarioComponent {
         nombreCompleto:this.nombreCompleto,
         passwd:this.calcularHashMD5(this.pass),
         token:this.usuarioSeleccionado.token,
+        verificado: this.verificado
       }
     }
 

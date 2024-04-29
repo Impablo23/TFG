@@ -39,9 +39,11 @@ export class DeleteSugerenciaComponent {
     Método que cuando inicia la página, busca ka sugerencia seleccionada por el id proporcionado y busca tambien el usuario
     para mostrar luego el nombre del establecimiento sugerido y el email del usuario.
   */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    await this.establecimientosApi.getSugerenciasApi(this.tokenApi).toPromise();
 
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.tokenApi) )  ).subscribe(  sugerencia =>
       {

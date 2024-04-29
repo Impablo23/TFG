@@ -50,24 +50,19 @@ export class SugerenciasComponent {
     this.sugerenciasSubscription.unsubscribe();
   }
 
-  obtenerSugerencias() {
-    // Suscríbete al observable para obtener las actualizaciones del listado de categorías
+  async obtenerSugerencias() {
+    try{
+      // Obtener zonas
+      const sugerencias = await this.establecimientosApi.getSugerenciasApi(this.tokenApi).toPromise();
+      this.listadoSugerencias = sugerencias!;
+       // Suscríbete al observable para obtener las actualizaciones del listado de categorías
     this.sugerenciasSubscription = this.establecimientosApi.sugerencias$.subscribe(sugerencias => {
       this.listadoSugerencias = sugerencias;
     });
-
-    // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getSugerenciasApi(this.tokenApi).subscribe();
+    }catch (error) {
+      console.error('Error al obtener zonas:', error);
+    }
   }
-
-  // Método que almacena las sugerencias recogidas de la BBDD y las guarda en el listado de sugerencias
-  // public listarSugerencias(){
-  //   this.establecimientosApi.getSugerenciasApi().subscribe(
-  //     sugerencias => {
-  //       this.listadoSugerencias = sugerencias;
-  //     }
-  //   );
-  // }
 
   // Método que redirige a la inserccion de sugerencia seleccionada
   public goToAddSugerencia(id: number) {

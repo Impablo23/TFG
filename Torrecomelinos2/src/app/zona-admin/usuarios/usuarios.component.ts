@@ -27,9 +27,16 @@ export class UsuariosComponent {
   ){}
 
   async ngOnInit(){
-    this.tokenApi = sessionStorage.getItem('tokenApi')!;
+    try {
 
-    await this.obtenerUsuarios();
+      this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+      // Obten las zonas al iniciar el componente
+      await this.obtenerUsuarios();
+    } catch (error) {
+      console.error('Error en ngOnInit:', error);
+      // Manejar el error según sea necesario
+    }
 
   }
 
@@ -40,13 +47,14 @@ export class UsuariosComponent {
 
   async obtenerUsuarios() {
     try {
+
+      const usuarios = await this.authApi.getUsersApi(this.tokenApi).toPromise();
+      this.listadoUsuarios = usuarios!;
       // Suscríbete al observable para obtener las actualizaciones del listado de categorías
       this.usuariosSubscription = this.authApi.usuarios$.subscribe(usuarios => {
         this.listadoUsuarios = usuarios;
       });
 
-      // Obten las categorías al iniciar el componente
-      this.authApi.getUsersApi(this.tokenApi).subscribe();
     } catch (error) {
       console.error('Error al obtener zonas:', error);
       // Manejar el error según sea necesario

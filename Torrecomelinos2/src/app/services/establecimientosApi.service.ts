@@ -303,6 +303,22 @@ export class EstablecimientosApiService {
         }),
         map(response => {
           // Al eliminar una categoría, actualiza la lista de sugerencias
+          this.getSugerenciasApi(token).subscribe();
+          return response;
+        })
+      );
+  }
+
+  deleteSugerenciaApiAddPage(id: number,token: string): Observable<boolean> {
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.delete<boolean>(`${this.baseUrl}/sugerencias/delete/${id}`, { headers })
+      .pipe(
+        catchError(error => {
+          console.error('Error al eliminar la sugerencia:', error);
+          return of(false);
+        }),
+        map(response => {
+          // Al eliminar una categoría, actualiza la lista de sugerencias
           // this.getSugerenciasApi(token).subscribe();
           return response;
         })

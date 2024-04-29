@@ -5,4 +5,5 @@ export interface UsuarioApi {
   nombreCompleto: string;
   idRol: number;
   token: string;
+  verificado: number;
 }

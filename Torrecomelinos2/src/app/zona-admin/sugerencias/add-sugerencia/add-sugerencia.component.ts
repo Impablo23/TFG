@@ -43,6 +43,7 @@ export class AddSugerenciaComponent {
 
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
+    await this.establecimientosApi.getSugerenciasApi(this.tokenApi).toPromise();
 
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getSugerenciaApiById(id,this.tokenApi) )  ).subscribe(  sugerencia =>
       {

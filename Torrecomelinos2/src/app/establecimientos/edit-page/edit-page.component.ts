@@ -91,7 +91,7 @@ export class EditPageComponent {
     });
 
 
-}
+  }
 
 
 
@@ -105,7 +105,7 @@ export class EditPageComponent {
     let nombre:string = '';
     for (const zona of this.listadoZonas) {
 
-      if (zona.id === idZona) {
+      if (zona.id == idZona) {
         nombre = zona.nombre
       }
       if (idZona === 0) {

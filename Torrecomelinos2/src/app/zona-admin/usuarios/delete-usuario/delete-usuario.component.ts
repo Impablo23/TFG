@@ -35,8 +35,11 @@ export class DeleteUsuarioComponent {
   Método que cuando inicie la página, se buscara el usuario con el id seleccionado para almacenar en la variable anterioir los datos y
   mostrarlos en el formulario y recoge los datos sobre los roles de la BBDD y los guarda en la lista
   */
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
+
+    await this.authApi.getUsersApi(this.tokenApi).toPromise();
+
     this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.authApi.getUsersApiById(id,this.tokenApi) )  ).subscribe(  usuario =>
       {
         if (!usuario) return this.router.navigate(['/usuarios']);

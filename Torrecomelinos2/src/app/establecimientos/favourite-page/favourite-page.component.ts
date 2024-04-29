@@ -40,7 +40,7 @@ export class FavouritePageComponent {
   // Método que al iniciar la pestaña, da valor a la variable id y guarda los datos en los listados con los datos recogidos por la BBDD
   async ngOnInit() {
 
-    this.id = sessionStorage.getItem('idRol')!;
+    this.id = sessionStorage.getItem('id')!;
 
     // Obtener token API
     this.tokenApi = sessionStorage.getItem('tokenApi')!;

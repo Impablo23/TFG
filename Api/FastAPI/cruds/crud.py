@@ -18,6 +18,7 @@ class Usuario(BaseModel):
     nombreCompleto: str
     idRol: int
     token: str
+    verificado: int
     
 class Rol(BaseModel):
     id: int
@@ -233,7 +234,7 @@ def obtenerUserByEmailAndPass(email: str, passwd: str) -> List[Usuario]:
     cursor = conexion.cursor(dictionary=True)
 
     # Consulta SQL para obtener el usuario con el email y la contraseña especificados
-    consulta = "SELECT * FROM usuarios WHERE email = %s AND passwd = %s"
+    consulta = "SELECT * FROM usuarios WHERE email = %s AND passwd = %s and verificado = 1"
 
     # Ejecutar la consulta con el email y la contraseña como parámetros
     cursor.execute(consulta, (email, passwd))

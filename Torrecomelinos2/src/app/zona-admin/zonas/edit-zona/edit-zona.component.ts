@@ -15,6 +15,7 @@ import { AuthApiService } from 'src/app/services/authApi.service';
 })
 export class EditZonaComponent {
 
+
   // Variable para almacenar el nombre de la zona seleccionada
   public nombre: string = '';
 
@@ -23,6 +24,8 @@ export class EditZonaComponent {
 
   public tokenApi : string = "";
 
+  public editingInProgress: boolean = false;
+
   // Constructor
   constructor(
     private router: Router,
@@ -30,27 +33,32 @@ export class EditZonaComponent {
     private snackbar: MatSnackBar,
     private establecimientosApi: EstablecimientosApiService,
     private authApi: AuthApiService
-  ){}
+  ){
+  }
 
   // Método que al iniciar la página, busca la zona específica según el id seleccionado y guardamos la categoría y el nombre en las variables anteriores.
   async ngOnInit(): Promise<void> {
 
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.tokenApi) )  ).subscribe(  zona =>
-      {
-        if (!zona) return this.router.navigate(['admin/zona/']);
-        this.zonaSeleccionada = zona[0];
-        // Datos del formulario ya rellenos
-        this.nombre  = this.zonaSeleccionada!.nombre;
+    await this.establecimientosApi.getZonasApi(this.tokenApi).toPromise();
+
+    if (!this.zonaSeleccionada){
+      this.activatedRoute.params.pipe(switchMap(  ( {id}) => this.establecimientosApi.getZonaApiById(id,this.tokenApi) )  ).subscribe(  zona =>
+        {
+          if (!zona) return this.router.navigate(['admin/zona/']);
+          this.zonaSeleccionada = zona[0];
+          // Datos del formulario ya rellenos
+          this.nombre  = this.zonaSeleccionada!.nombre;
 
 
-        return;
-      });
+          return;
+        });
+    }
+
 
 
   }
-
 
   // Método que cancela la operacion y redirige hacia la ruta principal de categorías donde se encuentra la inserccion de nuevas zonas.
   public cancelar() {

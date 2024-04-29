@@ -28,7 +28,9 @@
         </mat-list-item>
       </ng-container>
 
+      <button style="width: 100%;font-family: monospace;margin-top: 30px;" type="button" class="btn btn-outline-danger" (click)="logout()">Cerrar Sesión</button>
     </mat-nav-list>
+
 
 
   </mat-sidenav>
@@ -39,8 +41,8 @@
     <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
     <p style="margin-top: 14px;margin-right: 30px;font-size: 25px;font-family: monospace;margin-left: 30px;">Torrecomelinos</p>
     <span class="spacer"></span>
-    <p style="margin-top: 14px;margin-right: 30px;font-family: monospace;">{{nombre}}</p>
-    <button style="margin:auto;font-family: monospace;" type="button" class="btn btn-outline-danger" (click)="logout()">Cerrar Sesión</button>
+    <!-- <p style="margin-top: 14px;margin-right: 30px;font-family: monospace;">{{nombre}}</p> -->
+    <button style="margin:auto;font-family: monospace;" type="button" class="btn btn-outline-danger" (click)="logout()"><mat-icon>logout</mat-icon></button>
   </mat-toolbar>
 
   <div style="background-color: rgb(124 124 252);height: 100%;">

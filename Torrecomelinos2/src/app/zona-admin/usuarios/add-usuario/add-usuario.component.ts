@@ -92,7 +92,8 @@ export class AddUsuarioComponent implements OnInit {
             passwd: this.calcularHashMD5(this.pass),
             nombreCompleto: this.nombreCompleto,
             idRol: this.idRol,
-            token: ''
+            token: '',
+            verificado: 1
           }
 
 

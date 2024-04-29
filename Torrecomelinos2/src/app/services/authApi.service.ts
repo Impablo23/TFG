@@ -103,8 +103,8 @@ export class AuthApiService {
   }
 
   addUserApi(usuario: UsuarioApi,token:string): Observable<string> {
-    // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.post<string>(`${this.baseUrl}/users/add`, usuario)
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+    return this.http.post<string>(`${this.baseUrl}/users/add`, usuario, { headers })
       .pipe(
         catchError(error => {
           console.error('Error al agregar el usuario:', error);
@@ -152,7 +152,7 @@ export class AuthApiService {
 
   addUserApiRegister(usuario: UsuarioApi): Observable<string> {
     // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
-    return this.http.post<string>(`${this.baseUrl}/users/add`, usuario)
+    return this.http.post<string>(`${this.baseUrl}/users/register`, usuario)
       .pipe(
         catchError(error => {
           console.error('Error al agregar el usuario:', error);

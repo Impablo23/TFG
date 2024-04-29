@@ -120,12 +120,33 @@ async def UserByEmail(email: str):
     else:
         # Si no se encuentra el usuario, devolver un mensaje de error
         return {"mensaje": "Usuario no encontrado"}
-      
-@api.post("/users/add")
-async def agregar_usuario(usuario: Usuario):
+    
+    
+@api.post("/users/register")
+async def registrar(usuario: Usuario):
     try:
         # Consulta SQL para insertar un nuevo usuario
-        consulta = "INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token) VALUES (%s, %s, %s, %s, %s)"
+        consulta = "INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token,verificado) VALUES (%s, %s, %s, %s, %s,0)"
+
+        # Datos del nuevo usuario
+        datos_usuario = (usuario.email, usuario.passwd, usuario.nombreCompleto, usuario.idRol, usuario.token)
+
+        # Ejecutar la consulta
+        if ejecutar_consulta(consulta, datos_usuario):
+            # Devolver un diccionario con la información del usuario recién agregado
+            return {"mensaje": "Usuario agregado correctamente"}
+        else:
+            # Si ocurrió un error al ejecutar la consulta, lanzar una excepción HTTP 500
+            raise HTTPException(status_code=500, detail="Error al agregar el usuario")
+    except Exception as e:
+        # Si ocurre un error inesperado, lanzar una excepción HTTP 500
+        raise HTTPException(status_code=500, detail=f"Error inesperado: {str(e)}")
+      
+@api.post("/users/add")
+async def agregar_usuario(usuario: Usuario,user: Usuario = Depends(obtener_usuario_actual)):
+    try:
+        # Consulta SQL para insertar un nuevo usuario
+        consulta = "INSERT INTO usuarios (email, passwd, nombreCompleto, idRol, token,verificado) VALUES (%s, %s, %s, %s, %s,1)"
 
         # Datos del nuevo usuario
         datos_usuario = (usuario.email, usuario.passwd, usuario.nombreCompleto, usuario.idRol, usuario.token)
@@ -145,10 +166,10 @@ async def agregar_usuario(usuario: Usuario):
 async def editar_usuario(usuario: Usuario,user: Usuario = Depends(obtener_usuario_actual)):
     try:
         # Consulta SQL para editar un usuario existente
-        consulta = "UPDATE usuarios SET email = %s, passwd = %s, nombreCompleto = %s, idRol = %s, token = %s WHERE id = %s"
+        consulta = "UPDATE usuarios SET email = %s, passwd = %s, nombreCompleto = %s, idRol = %s, token = %s, verificado = %s WHERE id = %s"
 
         # Datos actualizados del usuario
-        datos_usuario = (usuario.email, usuario.passwd, usuario.nombreCompleto, usuario.idRol, usuario.token, usuario.id)
+        datos_usuario = (usuario.email, usuario.passwd, usuario.nombreCompleto, usuario.idRol, usuario.token,usuario.verificado, usuario.id)
 
         # Ejecutar la consulta
         if ejecutar_consulta(consulta, datos_usuario):

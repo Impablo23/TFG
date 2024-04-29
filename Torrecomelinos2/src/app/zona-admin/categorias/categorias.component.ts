@@ -45,18 +45,24 @@ export class CategoriasComponent {
   }
 
   ngOnDestroy() {
-    // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
-    this.categoriasSubscription.unsubscribe();
+    // Desuscribirse del observable al salir del componente para evitar posibles fugas de memoria
+    if (this.categoriasSubscription) {
+      this.categoriasSubscription.unsubscribe();
+    }
   }
 
-  obtenerCategorias() {
-    // Suscríbete al observable para obtener las actualizaciones del listado de categorías
-    this.categoriasSubscription = this.establecimientosApi.categorias$.subscribe(categorias => {
-      this.listadoCategorias = categorias;
-    });
-
-    // Obten las categorías al iniciar el componente
-    this.establecimientosApi.getCategoriasApi(this.tokenApi).subscribe();
+  async obtenerCategorias() {
+    try{
+      // Obtener zonas
+      const categorias = await this.establecimientosApi.getCategoriasApi(this.tokenApi).toPromise();
+      this.listadoCategorias = categorias!;
+      // Suscribirse al observable para obtener las actualizaciones del listado de zonas
+      this.categoriasSubscription = this.establecimientosApi.categorias$.subscribe(categorias => {
+        this.listadoCategorias = categorias;
+      });
+    }catch (error) {
+      console.error('Error al obtener zonas:', error);
+    }
   }
 
   // Método que redirige hacia la edición de una zona en específica

@@ -45,7 +45,9 @@ export class ZonasComponent {
 
   ngOnDestroy() {
     // Desuscribe la suscripción al salir del componente para evitar posibles fugas de memoria
-    this.zonasSubscription.unsubscribe();
+    if (this.zonasSubscription) {
+      this.zonasSubscription.unsubscribe();
+    }
   }
 
   async obtenerZonas() {
