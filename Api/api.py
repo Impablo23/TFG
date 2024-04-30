@@ -19,6 +19,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 origins = [
     "http://localhost",
     "http://localhost:4200",
+    "http://143.47.34.198"
 ]
 
 # Habilitar CORS
