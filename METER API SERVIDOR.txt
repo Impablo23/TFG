@@ -1,0 +1,35 @@
+METER API SERVIDOR
+
+1. DESCARGAR PYTHON Y PIP
+2. DESCARGAR FASAPI Y UVICORN
+3. ABRIR PUERTO 8000
+4. ARRANCAR API (COMANDO NORMAL O  ~/.local/bin/uvicorn api:api --host 0.0.0.0 --port 8000 --reload)
+
+
+
+CARGAR API SEGUNDO PLANO:
+
+1. HACER JS:
+const { spawn } = require('child_process');
+const fs = require('fs');
+
+// Comando para ejecutar uvicorn con las opciones deseadas
+const command = '/home/tu_usuario/.local/bin/uvicorn';
+const args = ['api:api', '--host', '0.0.0.0', '--port', '8000', '--reload'];
+
+// Ejecutar el comando en segundo plano y guardar el PID
+const child = spawn(command, args, {
+    detached: true,
+    stdio: 'ignore'
+});
+
+fs.writeFileSync('pid.txt', child.pid.toString()); // Guarda el PID en un archivo
+
+// Desconectar el proceso secundario del proceso principal
+child.unref();
+
+
+2.Luego, para detener el proceso, puedes usar el PID guardado en el archivo pid.txt y enviar una señal de terminación al proceso:
+bash
+
+kill -SIGTERM $(cat pid.txt)

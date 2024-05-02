@@ -65,7 +65,7 @@ export class AddPageComponent {
       // Utiliza el ID de la sugerencia para cargar los datos de la sugerencia, o realiza cualquier otra lógica necesaria
     });
 
-    console.log("Id sugerencia: "+this.idEstablecimientoSugerido);
+    // console.log("Id sugerencia: "+this.idEstablecimientoSugerido);
 
     if(this.idEstablecimientoSugerido != undefined) {
       const responseSugerencias = await this.establecimientoApi.getSugerenciaApiById(this.idEstablecimientoSugerido,this.tokenApi).toPromise();

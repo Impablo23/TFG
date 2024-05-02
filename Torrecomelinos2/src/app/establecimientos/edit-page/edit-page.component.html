@@ -1,6 +1,6 @@
 
 
-<div style="height: 80%; width: 100%;">
+<div style="height: 100%; width: 100%;">
   <h1 style="font-family: monospace;text-align: center;padding: 20px;">Vista Previa</h1>
 
   <section>
@@ -29,9 +29,7 @@
       </article>
     </div>
   </section>
-</div>
 
-<div style="height: 20%; width: 100%;margin-bottom: 30px;">
   <h1 style="font-family: monospace;text-align: center;padding: 20px;">Editar establecimiento: {{establecimientoDetalles?.nombre}}</h1>
 
   <div style="width: 70%; margin: auto;">
@@ -103,10 +101,15 @@
     </form>
   </div>
 
-  <div style="font-family: monospace;width: 50%;margin: auto;margin-top: 20px;margin-bottom: 10px;">
+  <div style="font-family: monospace;width: 80%;margin: auto;margin-top: 20px;margin-bottom: 10px;">
     <button type="button" class="btn btn-outline-success" style="margin-right: 20px;float: left;" (click)="editarEstablecimientoApi()">Aceptar</button>
     <button type="button" class="btn btn-outline-danger" style="float: right;" (click)="goToDetails(establecimientoDetalles!.id)">Cancelar</button>
   </div>
+
 </div>
+
+<!-- <div style="height: 20%; width: 100%;margin-bottom: 30px;">
+
+</div> -->
 
 

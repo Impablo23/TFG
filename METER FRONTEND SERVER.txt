@@ -1,0 +1,21 @@
+METER FONTEND SERVER
+
+1. CREA CARPETA DIST
+2. LA ENVIAS AL SERVER Y A LA RUTA /VAR/WWW/HTML
+3. DESCARGAS NGINX Y CAMBIAS LA CONFIGURACION A ESTO
+
+server {
+    listen 80;
+    server_name tunombre.com;
+
+    root /var/www/html; # Ruta donde has copiado los archivos de tu aplicación Angular
+
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+
+
+4. REINICIAS NGINX Y CIERRAS APACHE2

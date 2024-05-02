@@ -54,6 +54,10 @@ export class DetailsPageComponent {
     this.router.navigate([`/establecimientos/edit/${id}`]);
   }
 
+  public navigateToDelete(id: number){
+    this.router.navigate([`/establecimientos/delete/${id}`]);
+  }
+
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   async ngOnInit(): Promise<void> {
 

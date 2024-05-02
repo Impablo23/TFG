@@ -20,7 +20,7 @@ export class AuthApiService {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    return this.http.post<any>('http://127.0.0.1:8000/token', formData);
+    return this.http.post<any>(`${this.baseUrl}/token`, formData);
   }
 
   //----------------------------------------------------------------------------------------------------------

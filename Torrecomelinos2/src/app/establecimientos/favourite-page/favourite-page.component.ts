@@ -45,7 +45,7 @@ export class FavouritePageComponent {
     // Obtener token API
     this.tokenApi = sessionStorage.getItem('tokenApi')!;
 
-    console.log(this.tokenApi);
+    // console.log(this.tokenApi);
 
     // Obtener zonas
     const responseZonas= await this.establecimientoApi.getZonasApi(this.tokenApi).toPromise();
