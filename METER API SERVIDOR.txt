@@ -5,6 +5,11 @@ METER API SERVIDOR
 3. ABRIR PUERTO 8000
 4. ARRANCAR API (COMANDO NORMAL O  ~/.local/bin/uvicorn api:api --host 0.0.0.0 --port 8000 --reload)
 
+5. COMANDO PARA AJECUTAR LA API EN SEGUNDO PLANO:
+
+ubuntu@nuevodolibarr:/var/www/html/Api-server$ nohup ~/.local/bin/uvicorn api:api --host 0.0.0.0 --port 8000 --reload &
+[1] 1783844
+
 
 
 CARGAR API SEGUNDO PLANO:
