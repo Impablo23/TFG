@@ -20,9 +20,10 @@
   </form>
 </div>
 
-<div style="font-family: monospace;width: 50%;margin: auto;margin-top: 30px;">
-  <button *ngIf="verificado === 0" type="button" class="btn btn-outline-danger" (click)="verificar()">No Verificado</button>
-  <button *ngIf="verificado === 1" type="button" class="btn btn-outline-success" (click)="noVerificar()">Verificado</button>
+
+<div style="margin: auto;width: 60%;margin-top: 20px;font-family: monospace;">
+  <button *ngIf="verificado === 0" type="button" class="btn btn-outline-danger" (click)="verificar()" style="width: 100%;">No Verificado</button>
+  <button *ngIf="verificado === 1" type="button" class="btn btn-outline-success" (click)="noVerificar()" style="width: 100%;">Verificado</button>
 </div>
 
 <div style="font-family: monospace;width: 100%;margin-top: 30px;">

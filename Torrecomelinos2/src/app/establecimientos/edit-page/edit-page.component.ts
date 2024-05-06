@@ -150,7 +150,7 @@ export class EditPageComponent {
       id: this.establecimientoDetalles!.id,
       nombre: this.nombre,
       descripcion: this.descripcion,
-      numResenas: this.numResenas,
+      numResenas: Math.trunc(this.numResenas),
       direccion: this.direccion,
       telefono: this.telefono,
       foto: this.foto,

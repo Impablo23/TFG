@@ -11,6 +11,9 @@ ubuntu@nuevodolibarr:/var/www/html/Api-server$ nohup ~/.local/bin/uvicorn api:ap
 [1] 1783844
 
 
+comando ver servicios de la api: lsof -i :8000 para luego killearlos
+
+
 
 CARGAR API SEGUNDO PLANO:
 

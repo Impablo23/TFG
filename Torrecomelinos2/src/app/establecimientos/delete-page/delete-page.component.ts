@@ -38,6 +38,10 @@ export class DeletePageComponent {
     this.router.navigate(['/establecimientos/list']);
   }
 
+  public goToDetails(id: number){
+    this.router.navigate([`/establecimientos/details/${id}`]);
+  }
+
   // Método que al iniciar la página, recoge los datos del establecimiento seleccionado y los almacena en el formulario y almacena en los listados las zonas y categorias
   ngOnInit(): void {
 

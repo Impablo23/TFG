@@ -43,6 +43,7 @@ export class EditUsuarioComponent {
 
   // Método para cancelar operacion y redirige hacia el apartado de inserccion de usuarios.
   public cancelar() {
+    this.snackbar.open("Operación cancelada", "Cerrar",{duration: 2000,panelClass:['background']});
     this.router.navigate(['admin/usuarios']);
   }
 

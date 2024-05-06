@@ -89,6 +89,8 @@ export class AddPageComponent {
     this.router.navigate(['/establecimientos/list']);
   }
 
+
+
   // Método que devuelve el nombre de la zona segun su id
   obtenerNombreZona(idZona: number): string {
     let nombre:string = '';
@@ -145,7 +147,7 @@ export class AddPageComponent {
       id_categoria: parseInt(this.id_categoria.toString()),
       nombre: this.nombre,
       descripcion: this.descripcion,
-      numResenas: this.numResenas,
+      numResenas: Math.trunc(this.numResenas),
       direccion: this.direccion,
       telefono: this.telefono,
       foto: this.foto,

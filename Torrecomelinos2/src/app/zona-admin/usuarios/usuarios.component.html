@@ -8,6 +8,11 @@
       <router-outlet></router-outlet>
     </div>
 
+    <div style="width: 27%;margin: auto; text-align: center; margin-bottom: 20px;">
+      <div style="background-color: red; border-radius: 20px;margin-bottom: 10px;">Administrador</div>
+      <div style="background-color: blue; border-radius: 20px;">Usuario</div>
+    </div>
+
     <table style="width: 50%;margin: auto;">
       <thead>
         <tr style="width: 100%;">
@@ -17,14 +22,11 @@
       </thead>
       <tbody>
         <tr *ngFor="let usuario of listadoUsuarios">
-          <td class="td">
+          <td class="td" *ngIf="usuario.idRol ==1" style="color: red;">
             {{usuario.email}}
           </td>
-          <td class="td" *ngIf="usuario.idRol === 1 ">
-            Administrador
-          </td>
-          <td class="td" *ngIf="usuario.idRol === 2">
-            Usuario
+          <td class="td" *ngIf="usuario.idRol ==2" style="color: blue;">
+            {{usuario.email}}
           </td>
           <td class="td">
             <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" (click)="goToEditZona((usuario.id).toString())">
