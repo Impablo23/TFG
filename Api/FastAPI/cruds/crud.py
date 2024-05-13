@@ -63,11 +63,18 @@ class Establecimiento(BaseModel):
 
 
 # Conexión a la base de datos
+# conexion = mysql.connector.connect(
+#     host="143.47.55.174",
+#     user="pablo",
+#     password="pablo",
+#     database="torrecomelinos"
+# )
+
 conexion = mysql.connector.connect(
-    host="143.47.55.174",
-    user="pablo",
-    password="pablo",
-    database="torrecomelinos"
+    host="localhost",
+    user="root",
+    password="pablo11504",
+    database="bbddTFG"
 )
 
 #----------------------------------------------------------------------------------------------------------

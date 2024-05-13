@@ -249,19 +249,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="guards/AdminGuard.html" data-type="entity-link" >AdminGuard</a>
                             </li>
                             <li class="link">
-                                <a href="guards/AdminGuard-1.html" data-type="entity-link" >AdminGuard</a>
-                            </li>
-                            <li class="link">
                                 <a href="guards/AuthGuardService.html" data-type="entity-link" >AuthGuardService</a>
                             </li>
                             <li class="link">
-                                <a href="guards/AuthGuardService-1.html" data-type="entity-link" >AuthGuardService</a>
-                            </li>
-                            <li class="link">
                                 <a href="guards/HomeGuardService.html" data-type="entity-link" >HomeGuardService</a>
-                            </li>
-                            <li class="link">
-                                <a href="guards/HomeGuardService-1.html" data-type="entity-link" >HomeGuardService</a>
                             </li>
                         </ul>
                     </li>

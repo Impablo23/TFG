@@ -115,7 +115,7 @@
             <h3>File</h3>
             </p>
             <p class="comment">
-                <code>src/app/guards/auth.guard copy.ts</code>
+                <code>src/app/guards/auth.guard.ts</code>
             </p>
 
 
@@ -177,7 +177,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/guards/auth.guard copy.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/guards/auth.guard.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -241,7 +241,7 @@
                     <tr>
                         <td class="col-md-4">
                             <div class="io-line">Defined in <a href="" data-line="31"
-                                    class="link-to-prism">src/app/guards/auth.guard copy.ts:31</a></div>
+                                    class="link-to-prism">src/app/guards/auth.guard.ts:31</a></div>
                         </td>
                     </tr>
 
@@ -315,7 +315,7 @@ export class AuthGuardService implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token &#x3D; localStorage.getItem(&#x27;token&#x27;);
+    const token &#x3D; sessionStorage.getItem(&#x27;token&#x27;);
 
     if (token) {
       return true;
@@ -335,7 +335,7 @@ export class HomeGuardService implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token &#x3D; localStorage.getItem(&#x27;token&#x27;);
+    const token &#x3D; sessionStorage.getItem(&#x27;token&#x27;);
 
     if (token) {
       this.router.navigate([&#x27;/establecimientos&#x27;]);
@@ -355,8 +355,8 @@ export class AdminGuard implements CanActivate {
   constructor(public router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const token &#x3D; localStorage.getItem(&#x27;token&#x27;);
-    const idRol &#x3D; localStorage.getItem(&#x27;idRol&#x27;);
+    const token &#x3D; sessionStorage.getItem(&#x27;token&#x27;);
+    const idRol &#x3D; sessionStorage.getItem(&#x27;idRol&#x27;);
 
     if (!token || !idRol) {
       // Si el usuario no tiene un token o idRol, significa que no está autenticado
