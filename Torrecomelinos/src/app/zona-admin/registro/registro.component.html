@@ -1,0 +1,35 @@
+<h1 style="text-align: center;font-size: 40px;font-family: monospace;padding: 30px;">Registro de Actividad</h1>
+
+<div style="height: 100%; width: 90%; margin: auto;">
+
+  <div style="width: 27%;margin: auto; text-align: center; margin-bottom: 20px;">
+    <div style="background-color: green; border-radius: 20px;margin-bottom: 10px;">Conectado</div>
+    <div style="background-color: red; border-radius: 20px;">Desconectado</div>
+  </div>
+
+  <div>
+    <table style="width: 100%;">
+      <thead>
+        <tr style="width: 100%;">
+          <th class="th" colspan="3">Últimos 10 Registros</th>
+          <!-- <th class="th" colspan="2">No hay categorías</th> -->
+        </tr>
+      </thead>
+      <tbody *ngFor="let registro of listadoRegistros">
+        <tr>
+          <td class="td" *ngIf="registro.estado == 'Conectado'" style="color: green;">
+            {{ listadoNombresUsuarios[registro.id_usuario] || 'Cargando...' }}
+          </td>
+          <td class="td" *ngIf="registro.estado == 'Desconectado'" style="color: red;">
+            {{ listadoNombresUsuarios[registro.id_usuario] || 'Cargando...' }}
+          </td>
+          <td class="td">
+            {{registro.hora}}
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

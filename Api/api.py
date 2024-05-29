@@ -6,12 +6,18 @@ from FastAPI.cruds.crud import *
 from datetime import datetime,timedelta, timezone
 from jose import jwt,JWTError
 
+import os
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
 api = FastAPI()
 
 oauth2_scheme = OAuth2PasswordBearer("/token")
 
-SECRET_KEY = '92fbf1d09b41c2a4d5d8016c11650da1' #pablo11504  # HAY QUE PONER ESTO COMO VARIABLES DE ENTORNO
-ALGORITHM = "HS256"
+SECRET_KEY = os.getenv("SECRET_KEY") # HAY QUE PONER ESTO COMO VARIABLES DE ENTORNO
+ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 

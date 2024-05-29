@@ -1,0 +1,19 @@
+<div style="background-image: url('../../../assets/logo-empresa.png');height: 296px;width: 420px;margin: auto;margin-top: 100px;border-radius: 30px;"></div>
+
+<h1 style="text-align: center;margin-top: 50px;font-family: monospace; color: black;">Iniciar Sesión</h1>
+
+<div class="input-group flex-nowrap" style="width: 50%;margin: auto;">
+  <input type="email" class="form-control" placeholder="Email*" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="email" required>
+</div>
+
+<div class="input-group flex-nowrap" style="width: 50%;margin: auto;margin-top: 30px;">
+  <input type="password" class="form-control" placeholder="Contraseña*" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="pass" required>
+</div>
+
+<div style="border: 5px solid black;width: 200px;height: 45px;margin: auto;margin-top: 30px; border-radius: 10px;">
+  <button mat-raised-button  style="width: 100%;" (click)="loginApi()">Iniciar Sesión</button>
+</div>
+
+<p style="text-align: center;margin-top: 10px; color: black;">¿No tienes cuenta?, <a style="color: white;" href="/auth/register">¡Regístrate aquí!</a></p>
+
+

@@ -2,28 +2,37 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { EstablecimientosRoutingModule } from './establecimientos-routing.module';
-import { LayoutPageComponent } from './pages/layout-page/layout-page.component';
+import { LayoutPageComponent } from './layout-page/layout-page.component';
+import { ListPageComponent } from './list-page/list-page.component';
+import { SearchPageComponent } from './search-page/search-page.component';
 import { MaterialModule } from '../material/material.module';
-import { ListPageComponent } from './pages/list-page/list-page.component';
-import { DetailsPageComponent } from './pages/details-page/details-page.component';
-import { SearchPageComponent } from './pages/search-page/search-page.component';
-import { DialogComponent } from './components/dialog/dialog.component';
-import { EditPageComponent } from './pages/edit-page/edit-page.component';
+import { DetailsPageComponent } from './details-page/details-page.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EditPageComponent } from './edit-page/edit-page.component';
+import { AddPageComponent } from './add-page/add-page.component';
+import { DeletePageComponent } from './delete-page/delete-page.component';
+import { FavouritePageComponent } from './favourite-page/favourite-page.component';
+import { SuggestionPageComponent } from './suggestion-page/suggestion-page.component';
 
 
 @NgModule({
   declarations: [
     LayoutPageComponent,
     ListPageComponent,
-    DetailsPageComponent,
     SearchPageComponent,
-    DialogComponent,
-    EditPageComponent
+    DetailsPageComponent,
+    EditPageComponent,
+    AddPageComponent,
+    DeletePageComponent,
+    FavouritePageComponent,
+    SuggestionPageComponent
   ],
   imports: [
     CommonModule,
     EstablecimientosRoutingModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class EstablecimientosModule { }

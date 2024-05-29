@@ -1,0 +1,11 @@
+<div style="width: 70%; height: 30%;margin: auto; background-color: white; margin-top: 70px;border-radius: 30px;padding: 20px; ">
+
+  <h3 style="font-family: monospace;text-align: center;">¿Seguro que deseas eliminar el establecimiento: {{nombreEstablecimiento}}.</h3>
+
+
+  <div style="font-family: monospace;width: 100%;margin-top: 30px;margin: auto;">
+    <button  type="button" class="btn btn-outline-success" style="float: left;" (click)="deleteEstablecimientoApi(idEstablecimiento)">Aceptar</button>
+    <button  type="button" class="btn btn-outline-danger" style="float: right;" (click)="goToDetails(idEstablecimiento)">Cancelar</button>
+  </div>
+
+</div>

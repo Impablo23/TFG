@@ -1,0 +1,29 @@
+<h1 style="text-align: center;font-size: 20px;font-family: monospace;padding: 30px;">Añadir Usuario</h1>
+
+<div class="input-group flex-nowrap" style="width: 100%;margin: auto;">
+  <input type="email" class="form-control" placeholder="Email*" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="email" required>
+</div>
+
+<div class="input-group flex-nowrap" style="width: 100%;margin: auto;margin-top: 30px;">
+  <input type="text" class="form-control" placeholder="Nombre*" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="nombreCompleto" required>
+</div>
+
+<div class="input-group flex-nowrap" style="width: 100%;margin: auto;margin-top: 30px;">
+  <input type="password" class="form-control" placeholder="Contraseña*" aria-label="Username" aria-describedby="addon-wrapping" [(ngModel)]="pass" required>
+</div>
+
+<div style="width: 100%; margin: auto; margin-top: 20px;">
+  <form class="input-group flex-nowrap" style="width: 100%; margin: auto; padding: 10px;">
+    <select class="form-control" id="caterogia" [(ngModel)]="idRol" name="idRol">
+      <option value=0 selected>Selecciona un Rol</option>
+      <option value=1>Administrador</option>
+      <option value=2>Usuario</option>
+    </select>
+  </form>
+</div>
+
+<div style="font-family: monospace;width: 100%;margin-top: 30px;">
+  <button *ngIf="verificaCampos() == true" type="button" class="btn btn-outline-success" style="float: left;" (click)="registrarApi()">Aceptar</button>
+  <button  type="button" class="btn btn-outline-danger" style="float: right;" (click)="cancelar()">Cancelar</button>
+</div>
+

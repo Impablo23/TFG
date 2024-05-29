@@ -1,20 +1,44 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "email": "pablo@admin.com",
       "pass": "21232f297a57a5a743894a0e4a801fc3",
       "nombreCompleto": "Pablo Admin",
-      "idRol": 1,
+      "idRol": "1",
       "token": "d4df6eff-c660-4b8d-a6df-d83baa5ad0f6"
     },
     {
-      "id": 2,
+      "id": "2",
       "email": "ivan@user.com",
       "pass": "2c42e5cf1cdbafea04ed267018ef1511",
       "nombreCompleto": "Ivan User",
-      "idRol": 2,
+      "idRol": "2",
       "token": "eca44a4e-d1e4-4e6e-ba80-a31c394a3279"
+    },
+    {
+      "id": "4",
+      "email": "juan@gmail.com",
+      "pass": "a94652aa97c7211ba8954dd15a3cf838",
+      "nombreCompleto": "juan",
+      "idRol": "2",
+      "token": "833917c0-cc27-45f9-954d-30a1d615e82d"
+    },
+    {
+      "id": "10",
+      "email": "pablo@user.com",
+      "pass": "ee11cbb19052e40b07aac0ca060c23ee",
+      "nombreCompleto": "user",
+      "idRol": "2",
+      "token": "4bb0c60f-0121-474c-97bd-ed7e07a8d4f0"
+    },
+    {
+      "id": "11",
+      "email": "f",
+      "pass": "8fa14cdd754f91cc6554c9e71929cce7",
+      "nombreCompleto": "f",
+      "idRol": "2",
+      "token": "6cb4a3c7-9056-42aa-be14-815c9da08a7f"
     }
   ],
   "categorias": [
@@ -37,6 +61,10 @@
     {
       "id": "5",
       "nombre": "Pastas"
+    },
+    {
+      "id": "6",
+      "nombre": "G"
     }
   ],
   "zonas": [
@@ -55,13 +83,17 @@
     {
       "id": "4",
       "nombre": "El Pinillo"
+    },
+    {
+      "id": "6",
+      "nombre": "Calvario"
     }
   ],
   "establecimientos": [
     {
       "id": "1",
       "id_categoria": 1,
-      "id_zona": 4,
+      "id_zona": 2,
       "nombre": "Mirador de María",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 421,
@@ -86,7 +118,7 @@
       "id": "3",
       "id_categoria": 4,
       "id_zona": 4,
-      "nombre": "Kome Kome",
+      "nombre": "Kome Kome 2",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 1003,
       "direccion": "Av. del Carmelo, 21, 29620 Torremolinos, Málaga",
@@ -145,8 +177,8 @@
     {
       "id": "8",
       "id_categoria": 2,
-      "id_zona": 2,
-      "nombre": "MC Donals",
+      "id_zona": 1,
+      "nombre": "MC Donalsdeadfd",
       "descripcion": "Descripción del Establecimiento 1",
       "numResenas": 2009,
       "direccion": "Av. del Lido, 11, 29620 Torremolinos, Málaga",
@@ -192,13 +224,13 @@
     },
     {
       "id": "12",
-      "id_categoria": 2,
-      "id_zona": 3,
-      "nombre": "La Gaviota",
-      "descripcion": "Descripción del Establecimiento 2",
-      "numResenas": 1500,
-      "direccion": "Calle del Mar, 22, 29630 Benalmádena, Málaga",
-      "telefono": "0987654321",
+      "id_categoria": 1,
+      "id_zona": 2,
+      "nombre": "Tus muertosddd",
+      "descripcion": "Descripción del Establecimiento 2dd",
+      "numResenas": 150044,
+      "direccion": "Calle del Mar, 22, 2dd9630 Benalmádena, Málaga",
+      "telefono": "0987654321dd",
       "foto": "",
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+gaviota+benalmadena&oq=restaurante+la+gaviota&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
     },
@@ -216,27 +248,56 @@
     },
     {
       "id": "14",
-      "id_categoria": 2,
+      "id_categoria": 3,
       "id_zona": 3,
-      "nombre": "La Marisma",
+      "nombre": "tdgfg",
       "descripcion": "Descripción del Establecimiento 4",
-      "numResenas": 2200,
+      "numResenas": 22005,
       "direccion": "Calle Principal, 10, 29640 Fuengirola, Málaga",
       "telefono": "2468013579",
       "foto": "",
       "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+marisma+fuengirola&oq=restaurante+la+marisma&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICAkQABgWGB7SAQg0Njk0ajBqOagCALACAA&sourceid=chrome&ie=UTF-8"
+    }
+  ],
+  "favoritos": [
+    {
+      "id": "1",
+      "id_usuario": "1",
+      "id_establecimiento": "2"
     },
     {
-      "id": 15,
-      "id_categoria": 2,
-      "id_zona": 3,
-      "nombre": "La Casita",
-      "descripcion": "Descripción del Establecimiento 5",
-      "numResenas": 1900,
-      "direccion": "Avenida de las Flores, 15, 29650 Mijas, Málaga",
-      "telefono": "9876543210",
-      "foto": "",
-      "enlace": "https://www.google.com/search?gs_ssp=eJwFwcENgCAMAMD41SUw8U_tA6MjuEWphWgUkoKR8b3rBxvtXCP7jz_otgnasWDwKwYIiLTOGzRGx4AshF6W4I59VCmVXqVUxdyULtKcTM2q8uT7TLn8kS0dBQ&q=restaurante+la+casita+mijas&oq=restaurante+la+casita&gs_lcp=EgZjaHJvbWUqEAgAEC4YrwEYxwEYgAQYjgUyEAgAEC4YrwEYxwEYgAQYjgUyBggBEEUYOTIHCAIQABiABDIICAMQABgWGB4yCAgEEAAYFhgeMggIBRAAGBYYHjIICAYQABgWGB4yCAgHEAAYFhgeMggICBAAGBYYHjIICA"
+      "id": "2",
+      "id_usuario": "1",
+      "id_establecimiento": "3"
+    },
+    {
+      "id": "3",
+      "id_usuario": "1",
+      "id_establecimiento": "1"
+    },
+    {
+      "id": "4",
+      "id_usuario": "1",
+      "id_establecimiento": "8"
+    },
+    {
+      "id": "5",
+      "id_usuario": "2",
+      "id_establecimiento": "2"
+    }
+  ],
+  "sugerencias": [
+    {
+      "id": "1",
+      "id_usuario": "2",
+      "nombre": "Tiki",
+      "enlace": "https://www.google.com/search?q=tiki&oq=tiki&gs_lcrp=EgZjaHJvbWUyCQgAEEUYORiABDIKCAEQABixAxiABDIKCAIQABixAxiABDINCAMQABiDARixAxiABDIJCAQQABgKGIAEMhAIBRAuGK8BGMcBGIAEGI4FMg0IBhAuGK8BGMcBGIAEMgcIBxAAGIAEMg8ICBAAGAoYgwEYsQMYgAQyBwgJEC4YgATSAQgxNjk0ajBqN6gCALACAA&sourceid=chrome&ie=UTF-8&zx=1712562525046&no_sw_cr=1#vhid=/g/1tqp_lw0&vssid=lcl"
+    },
+    {
+      "id": "2",
+      "id_usuario": "4",
+      "nombre": "Playa Aruba",
+      "enlace": "https://www.google.com/search?q=playa+aruba&sca_esv=55d6234f4c88031b&sca_upv=1&sxsrf=ACQVn0-Kg5lldEL40JYHBFx4f-FgqV77dQ%3A1712562520367&ei=WKETZtj9FeGskdUP_u-E6A8&gs_ssp=eJzj4tVP1zc0zCpKMS5LyjAzYLRSMahIMTdKSzJIM0lNNE-2TEuzMqhINDVOtkw2TbQwMDUyNE018-IuyEmsTFRILCpNSgQAhvATyg&oq=Playa&gs_lp=Egxnd3Mtd2l6LXNlcnAiBVBsYXlhKgIIATIKEAAYgAQYigUYQzIUEC4YgAQYsQMYgwEYxwEYrwEYjgUyDRAAGIAEGIoFGEMYsQMyDRAuGIAEGIoFGEMYsQMyCxAuGIAEGLEDGIMBMgUQLhiABDILEC4YgAQYsQMYgwEyERAuGIAEGMcBGK8BGJgFGJkFMg4QLhiABBiKBRixAxiDATILEC4YgAQYsQMYgwFIkTlQvyZYsS5wAXgBkAEAmAGIAaAB9QOqAQMzLjK4AQPIAQD4AQGYAgagApgEqAISwgIHECMY6gIYJ8ICEBAuGMcBGK8BGI4FGOoCGCfCAhYQABgDGI8BGOUCGOoCGLQCGIwD2AEBwgIWEC4YAxiPARjlAhjqAhi0AhiMA9gBAcICIBAuGIAEGOMEGOkEGMcBGK8BGMgDGI4FGOoCGLQC2AECwgIcEC4YgAQYigUYQxjHARjRAxjIAxjqAhi0AtgBAsICChAjGIAEGIoFGCfCAgUQABiABMICDhAuGIAEGLEDGMcBGNEDwgILEAAYgAQYsQMYgwHCAggQABiABBixA8ICChAuGIAEGIoFGEOYAwi6BgYIARABGAu6BgYIAhABGAiSBwM0LjKgB9ZF&sclient=gws-wiz-serp"
     }
   ]
 }

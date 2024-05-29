@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "torrecomelinos": {
+    "Torrecomelinos2": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/torrecomelinos",
+            "outputPath": "dist/torrecomelinos2",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -25,7 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/purple-green.css",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "torrecomelinos:build:production"
+              "browserTarget": "Torrecomelinos2:build:production"
             },
             "development": {
-              "browserTarget": "torrecomelinos:build:development"
+              "browserTarget": "Torrecomelinos2:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "torrecomelinos:build"
+            "browserTarget": "Torrecomelinos2:build"
           }
         },
         "test": {
@@ -88,7 +88,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/purple-green.css",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -98,6 +98,6 @@
     }
   },
   "cli": {
-    "analytics": "4990b366-4d8a-4f31-b7ec-551309a18a02"
+    "analytics": "e421a2e7-0893-499d-bf75-f2f1bffe901e"
   }
 }

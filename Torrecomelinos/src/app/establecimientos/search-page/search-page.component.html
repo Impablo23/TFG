@@ -1,0 +1,21 @@
+<div style="padding: 30px;text-align: center;">
+  <h1  style="font-size: 30px;font-family: monospace;">Busca un Establecimiento</h1>
+</div>
+<form [formGroup]="searchForm" class="input-group flex-nowrap" style="width: 80%;margin: auto;padding: 20px;">
+  <input type="text" class="form-control" placeholder="Nombre de algún establecimiento" aria-label="Username" (keyup.enter)="reseteo()" aria-describedby="addon-wrapping" formControlName="searchInput">
+</form>
+
+<div class="grid mb-8" style="background-color: rgb(124 124 252);margin: auto;height: 100%;margin-left: 20px;margin-top: 50px;">
+  <div class="card" style="margin-left: 20px;margin-bottom: 20px;background: url({{evitarErrorEnFoto(establecimiento.foto)}});background-repeat: no-repeat;background-size: 100%;" *ngFor="let establecimiento of establecimientosEncontrados">
+    <div class="card__content">
+      <p class="card__title">{{establecimiento.nombre}} ({{ obtenerNombreZona((establecimiento.id_zona)) }})</p>
+      <!-- <a href="{{establecimiento.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="margin-top: 10px;margin-left: 30px;margin-top: 30px;">Sitio web</a>
+      <a type="button" class="btn btn-outline-secondary" style="margin-top: 10px;margin-left: 10px;margin-top: 30px;" (click)="navigateToDetails(establecimiento.id)">Detalles</a> -->
+      <div style="font-family: monospace;width: 100%;margin: auto;margin-top: 20px;margin-bottom: 10px;">
+        <a  href="{{establecimiento.enlace}}" target="_blank" type="button" class="btn btn-outline-primary" style="margin-right: 20px;float: left;">Sitio web</a>
+        <a type="button" class="btn btn-outline-secondary" style="float: right;" (click)="navigateToDetails(establecimiento.id)">Detalles</a>
+      </div>
+      <!-- <a type="button" class="btn btn-outline-danger" style="margin-top: 10px;margin-left: 105px;"><mat-icon>delete</mat-icon></a> -->
+    </div>
+  </div>
+</div>
